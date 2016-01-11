@@ -1,0 +1,46 @@
+#tnpgDetails img{
+	float:left;
+	margin:20px 25px 5px 0px;
+}
+
+.tn_features li{
+	background: url("../images/tick.png") 0px 6px no-repeat;
+	padding-left: 22px;
+}
+
+.wp-plus-galllery-settings pre {
+background-color: #f4f4f4;
+background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(50%, #f4f4f4), color-stop(50%, #e5e5e5));
+background-image: -webkit-linear-gradient(#f4f4f4 50%,#e5e5e5 50%);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #f4f4f4), color-stop(50%, #e5e5e5));
+background-image: -webkit-linear-gradient(#f4f4f4 50%, #e5e5e5 50%);
+background-image: linear-gradient(#f4f4f4 50%,#e5e5e5 50%);
+-webkit-background-size: 38px 38px;
+background-size: 38px 38px;
+border: 1px solid #c5c5c5;
+display: block;
+line-height: 19px !important;
+margin-bottom: 10px;
+overflow: visible;
+overflow-y: hidden;
+padding: 0 0 0 4px;
+width:300px;
+}
+.wp-plus-galllery-settings code, .wp-plus-galllery-settings pre {
+color: #333;
+font: 11px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+.wp-plus-galllery-settings .nav-tabs{
+	position:relative;
+}
+/* .wp-plus-galllery-settings .nav-tabs li.user-guide{
+	position:absolute;
+	right:0;
+} */
+.wp-plus-galllery-settings .nav-tabs li.pl-link-service a{
+	text-decoration:underline;
+	font-weight:bold;
+}
+

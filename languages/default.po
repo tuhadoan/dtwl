@@ -1,0 +1,1008 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Woocommerce Products Layouts\n"
+"POT-Creation-Date: 2015-10-20 17:28+0700\n"
+"PO-Revision-Date: 2015-10-20 17:28+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.5\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;_e;__;_x;esc_html__;esc_attr__;"
+"esc_html_e;esc_attr_e\n"
+"X-Poedit-Basepath: /Volumes/WORK/webserver/www/wordpress/wp-content/plugins\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: dhvc-woocommerce\n"
+
+#: dhvc-woocommerce/dhvc-woocommerce.php:138
+msgid "Edit Category Page Template"
+msgstr ""
+
+#: dhvc-woocommerce/dhvc-woocommerce.php:147
+msgid "Edit Brand Page Template"
+msgstr ""
+
+#: dhvc-woocommerce/dhvc-woocommerce.php:155
+msgid "Edit Tag Page Template"
+msgstr ""
+
+#: dhvc-woocommerce/dhvc-woocommerce.php:210
+#, php-format
+msgid ""
+"<strong>%s</strong> requires <strong><a href=\"http://bit.ly/1gKaeh5\" "
+"target=\"_blank\">Visual Composer</a></strong> plugin to be installed and "
+"activated on your site."
+msgstr ""
+
+#: dhvc-woocommerce/dhvc-woocommerce.php:218
+#, php-format
+msgid ""
+"<strong>%s</strong> requires <strong><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommerce</a></strong> plugin to be "
+"installed and activated on your site."
+msgstr ""
+
+#: dhvc-woocommerce/includes/admin.php:58
+msgid "DHVC Woo Options"
+msgstr ""
+
+#: dhvc-woocommerce/includes/admin.php:62
+msgid "Product Archive / Shop Page"
+msgstr ""
+
+#: dhvc-woocommerce/includes/admin.php:63
+msgid "Use DHVC WOO Override Woocommerce Product Archive / Shop Page Options."
+msgstr ""
+
+#: dhvc-woocommerce/includes/admin.php:96
+#: dhvc-woocommerce/includes/admin.php:115
+#: dhvc-woocommerce/includes/admin.php:143
+#: dhvc-woocommerce/includes/admin.php:162
+#: dhvc-woocommerce/includes/admin.php:191
+#: dhvc-woocommerce/includes/admin.php:210
+msgid "Page Template"
+msgstr ""
+
+#: dhvc-woocommerce/includes/admin.php:103
+#: dhvc-woocommerce/includes/admin.php:124
+#: dhvc-woocommerce/includes/admin.php:150
+#: dhvc-woocommerce/includes/admin.php:171
+#: dhvc-woocommerce/includes/admin.php:198
+#: dhvc-woocommerce/includes/admin.php:219
+msgid "Select a page&hellip;"
+msgstr ""
+
+#: dhvc-woocommerce/includes/class.php:303
+msgid "Browse Wishlist"
+msgstr ""
+
+#: dhvc-woocommerce/includes/class.php:582
+msgid "All"
+msgstr ""
+
+#: dhvc-woocommerce/includes/class.php:675
+msgid "Quick view"
+msgstr ""
+
+#: dhvc-woocommerce/includes/class.php:747
+#, php-format
+msgid "Rated %s out of 5"
+msgstr ""
+
+#: dhvc-woocommerce/includes/class.php:748
+msgid "out of 5"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:41
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:335
+msgid "product-brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:48
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:50
+msgid "Product Brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:51
+msgid "Product Brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:52
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:352
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-functions.php:106
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-layered-nav.php:234
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-slider-brands.php:33
+#: dhvc-woocommerce/includes/functions.php:688
+msgid "Brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:53
+msgid "Search Product Brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:54
+msgid "All Product Brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:55
+msgid "Parent Product Brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:56
+msgid "Parent Product Brand:"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:57
+msgid "Edit Product Brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:58
+msgid "Update Product Brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:59
+msgid "Add New Product Brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:60
+msgid "New Product Brand Name"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/dhwc-brand.php:222
+msgid "Brand:"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:17
+msgid ""
+"Product brands for your store can be managed here. To change the order of "
+"brands on the front-end you can drag and drop to sort them. To see more "
+"brands listed click the \"screen options\" link at the top of the page."
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:29
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:105
+msgid "Thumbnail"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:35
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:110
+msgid "Upload/Add image"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:36
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:111
+msgid "Remove image"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:59
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:136
+msgid "Choose an image"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:61
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:138
+msgid "Use image"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:200
+msgid "Image"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:255
+msgid "Brands Options"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:259
+msgid "Show description"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:260
+msgid "Show/hide the product brand description on the archive page."
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-admin.php:297
+msgid "Product brand base"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-functions.php:57
+msgid "Select a brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-functions.php:61
+msgid "Uncategorized"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-brand-functions.php:98
+msgid "No brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:11
+msgid "A list or dropdown of product brands."
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:13
+msgid "DHWOO Product Brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:22
+msgid "Product brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:88
+msgid "No product brands exist."
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:116
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-layered-nav.php:252
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-slider-brands.php:107
+msgid "Title:"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:119
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-slider-brands.php:112
+msgid "Order by:"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:121
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-slider-brands.php:114
+msgid "Order"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:122
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-slider-brands.php:115
+msgid "Name"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:127
+msgid "Show as dropdown"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:130
+msgid "Show post counts"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:133
+msgid "Show hierarchy"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-brands.php:136
+msgid "Only show children for the current brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-layered-nav.php:11
+msgid ""
+"Shows product brands in a widget which lets you narrow down the list of "
+"products when viewing product categories"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-layered-nav.php:13
+msgid "DHWOO Product Brand Layered Nav"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-layered-nav.php:70
+msgid "Any brand"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-layered-nav.php:255
+msgid "Display Type:"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-layered-nav.php:257
+#: dhvc-woocommerce/includes/functions.php:878
+msgid "List"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-layered-nav.php:258
+msgid "Dropdown"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-slider-brands.php:10
+msgid "Shows product brans with slider"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-slider-brands.php:12
+msgid "DHWOO Product Brand Slider"
+msgstr ""
+
+#: dhvc-woocommerce/includes/dhwc-brand/includes/dhwc-widget-slider-brands.php:120
+msgid "Hide empty brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:366
+#, php-format
+msgid "%s &ndash; %s"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:377
+msgid "-- Select --"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:459
+msgid "Default sorting"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:460
+msgid "Sort by popularity"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:461
+msgid "Sort by average rating"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:462
+msgid "Sort by newness"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:463
+msgid "Sort by price: low to high"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:464
+msgid "Sort by price: high to low"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:506
+msgid "Showing the single result"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:508
+#, php-format
+msgid "Showing all %d results"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:510
+#, php-format
+msgid "Showing %1$d–%2$d of %3$d results"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:540
+msgid "&larr;"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:541
+msgid "&rarr;"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:600
+msgid "Heading"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:607
+msgid "Heading Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:614
+msgid "Heading Font Size"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:617
+msgid "Enter your custom size. Example: 20px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:627
+msgid "Query Type"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:631
+msgid "Build Query"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:632
+msgid "Use Main Query"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:633
+msgid "Up-Sells Product"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:634
+msgid "Cross-Sells Product"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:635
+msgid "Related Product"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:640
+msgid "Products"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:652
+msgid "Exclude Products"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:664
+msgid "Categories"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:676
+msgid "Exclude Categories"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:700
+msgid "Exclude Brands"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:712
+msgid "Tags"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:724
+msgid "Exclude Tags"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:736
+msgid "Attributes"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:748
+msgid "Products Per Page"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:758
+msgid "number of post to show per page. If value -1 to show all posts"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:764
+msgid "Products Per Row"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:774
+msgid "2"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:775
+msgid "3"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:776
+msgid "4"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:777
+msgid "6"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:783
+msgid "Show"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:792
+msgid "All Products"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:793
+msgid "Featured Products"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:794
+msgid "On-sale Products"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:800
+msgid "Products Ordering"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:810
+msgid "Publish Date"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:811
+msgid "Modified Date"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:812
+msgid "Random"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:813
+msgid "Alphabetic"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:814
+msgid "Comment Count"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:815
+msgid "Price"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:822
+msgid "Ascending or Descending"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:830
+msgid ""
+"After the Sort Order is selected, the products will be sorted by this "
+"condition"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:832
+msgid "Ascending"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:833
+msgid "Descending"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:845
+msgid "Hide free products"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:848
+#: dhvc-woocommerce/includes/functions.php:863
+#: dhvc-woocommerce/includes/functions.php:890
+#: dhvc-woocommerce/includes/functions.php:907
+#: dhvc-woocommerce/includes/functions.php:924
+#: dhvc-woocommerce/includes/functions.php:941
+#: dhvc-woocommerce/includes/functions.php:1047
+#: dhvc-woocommerce/includes/functions.php:1062
+#: dhvc-woocommerce/includes/functions.php:1273
+#: dhvc-woocommerce/includes/functions.php:1282
+#: dhvc-woocommerce/includes/functions.php:1370
+#: dhvc-woocommerce/includes/functions.php:1434
+#: dhvc-woocommerce/includes/functions.php:1500
+#: dhvc-woocommerce/includes/functions.php:1556
+#: dhvc-woocommerce/includes/functions.php:1621
+#: dhvc-woocommerce/includes/functions.php:1630
+#: dhvc-woocommerce/includes/functions.php:1639
+msgid "Yes, please"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:854
+msgid "Show hidden products"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:874
+msgid "Display type"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:877
+msgid "Grid"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:880
+msgid "Masonry Grid"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:881
+msgid "Carousel"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:887
+msgid "Hide result count"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:904
+msgid "Hide Ordering List"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:921
+msgid "Show Pagination"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:938
+msgid "Hide Masonry Filters"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:953
+msgid "Masonry Filters Background"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:966
+msgid "Masonry Filters Selected Background"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:979
+msgid "Masonry Filters Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:992
+msgid "Masonry Filters Selected Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1005
+msgid "Masonry Filters Border Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1018
+msgid "Masonry Filters Selected Border Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1031
+msgid "Masonry Gutter"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1044
+msgid "Hide Carousel Arrows"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1059
+msgid "Show Carousel Pagination"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1074
+msgid "Carousel Arrows Background"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1088
+msgid "Carousel Arrows Hover Background"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1101
+msgid "Carousel Arrows Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1114
+msgid "Carousel Arrows Hover Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1127
+msgid "Carousel Arrows Size"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1130
+msgid "Enter your custom size. Example: 24px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1141
+msgid "Carousel Arrows Front Size"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1144
+#: dhvc-woocommerce/includes/functions.php:1199
+msgid "Enter your custom size. Example: 12px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1155
+msgid "Carousel Arrows Border Radius"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1158
+msgid "Enter your custom border radius. Example: 3px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1170
+msgid "Carousel Pagination Background"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1183
+msgid "Carousel Pagination Active Background"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1196
+msgid "Carousel Pagination Size"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1210
+msgid "Item Border Style"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1213
+#: dhvc-woocommerce/includes/functions.php:1260
+#: dhvc-woocommerce/includes/functions.php:1299
+msgid "Solid"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1214
+#: dhvc-woocommerce/includes/functions.php:1261
+#: dhvc-woocommerce/includes/functions.php:1300
+msgid "Dashed"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1215
+#: dhvc-woocommerce/includes/functions.php:1262
+#: dhvc-woocommerce/includes/functions.php:1301
+msgid "Dotted"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1216
+#: dhvc-woocommerce/includes/functions.php:1263
+#: dhvc-woocommerce/includes/functions.php:1302
+msgid "None"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1223
+msgid "Item Border Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1231
+msgid "Item Border Width"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1234
+msgid "Enter your custom item border width . Example: 5px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1240
+msgid "Row Separator Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1248
+msgid "Row Separator Height"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1251
+msgid "Enter your custom row separator height . Example: 20px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1257
+msgid "Row Separator Border Style"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1270
+msgid "Hide Thumbnail"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1279
+msgid "Hover Thumbnail Effects"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1288
+msgid "Thumbnail Background Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1296
+msgid "Thumbnail Border Style"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1309
+msgid "Thumbnail Border Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1317
+msgid "Thumbnail Border Width"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1320
+msgid "Enter your custom thumbnail border width . Example: 2px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1326
+msgid "Thumbnail Border Radius"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1329
+msgid ""
+"Enter your custom thumbnail border radius . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1335
+msgid "Thumbnail Padding"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1338
+msgid "Enter your custom thumbnail padding . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1344
+msgid "Thumbnail Margin"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1347
+msgid "Enter your custom thumbnail margin . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1353
+msgid "Thumbnail Width"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1355
+msgid "Enter your custom thumbnail width . Example: 200."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1360
+msgid "Thumbnail Height"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1362
+msgid "Enter your custom thumbnail height . Example: 200."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1367
+msgid "Hide Title"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1376
+msgid "Title Align"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1379
+#: dhvc-woocommerce/includes/functions.php:1453
+msgid "Center"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1380
+#: dhvc-woocommerce/includes/functions.php:1454
+msgid "Left"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1381
+#: dhvc-woocommerce/includes/functions.php:1455
+msgid "Right"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1388
+msgid "Title Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1396
+msgid "Title Hover Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1404
+msgid "Title Font Size"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1407
+msgid "Enter your custom title font size . Example: 20px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1413
+msgid "Title Padding"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1416
+msgid "Enter your custom title padding . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1422
+msgid "Title Margin"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1425
+msgid "Enter your custom title margin . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1431
+msgid "Show Excerpt"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1440
+msgid "Excerpt Words"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1443
+msgid "Excerpt max words"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1450
+msgid "Excerpt Align"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1462
+msgid "Excerpt Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1470
+msgid "Excerpt Font Size"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1473
+msgid "Enter your custom excerpt font size . Example: 14px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1479
+msgid "Excerpt Padding"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1482
+msgid "Enter your custom excerpt padding . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1488
+msgid "Excerpt Margin"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1491
+msgid "Enter your custom excerpt margin . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1497
+msgid "Hide Price"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1506
+msgid "Price Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1513
+msgid "Non-discount Price Color"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1520
+msgid "Price Font Size"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1523
+msgid "Enter your custom price font size . Example: 20px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1528
+msgid "Non-discount Price Font Size"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1531
+msgid "Enter your custom price font size . Example: 14px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1536
+msgid "Price Padding"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1539
+msgid "Enter your custom price padding . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1544
+msgid "Price Margin"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1547
+msgid "Enter your custom price margin . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1553
+msgid "Hide Add to cart"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1584
+msgid "Add To Cart Padding"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1587
+msgid "Enter your custom add to cart padding . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1592
+msgid "Add To Cart Margin"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1595
+msgid "Enter your custom add to cart margin . Example: 10px 10px 10px 10px."
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1600
+msgid "Add Cart & Price Style"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1611
+msgid "2 Columns"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1612
+msgid "1 Colum Center"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1618
+msgid "Hide Rating"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1627
+msgid "Hide Sale flash"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1636
+msgid "Show Quick view"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1644
+msgid "Extra class name"
+msgstr ""
+
+#: dhvc-woocommerce/includes/functions.php:1646
+msgid ""
+"If you wish to style particular content element differently, then use this "
+"field to add a class name and then refer to it in your css file."
+msgstr ""
+
+#: dhvc-woocommerce/includes/map.php:3
+msgid "Woo Products Layouts"
+msgstr ""
+
+#: dhvc-woocommerce/includes/map.php:5
+msgid "Woocomerce"
+msgstr ""
