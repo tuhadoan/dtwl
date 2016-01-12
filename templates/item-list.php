@@ -50,13 +50,6 @@ global $product, $plist_desc_show, $woocommerce_loop, $yith_woocompare;
 						 * @hooked woocommerce_template_loop_add_to_cart - 10
 						 */
 						add_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10);
-						
-						if ( class_exists('YITH_WCQV_Frontend') ) {
-							remove_action('woocommerce_after_shop_loop_item',  array( YITH_WCQV_Frontend::get_instance(), 'yith_add_quick_view_button'), 15);
-						}
-						if ( isset($yith_woocompare) ) {
-						    remove_action( 'woocommerce_after_shop_loop_item', array( $yith_woocompare->obj, 'add_compare_link' ), 20 );
-						}
 						do_action( 'woocommerce_after_shop_loop_item' ); 
 					?>
 				</div>

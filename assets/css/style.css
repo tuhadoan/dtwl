@@ -1,3 +1,9 @@
+.dtwl-woo {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
 .dtwl-woo * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -62,18 +68,35 @@
   left: 0;
   bottom: -50px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.65);
   opacity: 0;
   visibility: hidden;
   -webkit-transition: all 0.25s ease;
   -o-transition: all 0.25s ease;
   transition: all 0.25s ease;
 }
-.dtwl-woo .dtwl-woo-products .dtwl-woo-item .dtwl-woo-item-wrapper .dtwl-woo-item-box-add .dtwl-woo-add-cart a {
+.dtwl-woo .dtwl-woo-products .dtwl-woo-item .dtwl-woo-item-wrapper:hover .dtwl-woo-item-box-add {
+  bottom: 0;
+  opacity: 1;
+  visibility: visible;
+}
+
+.dtwl-woo-item-box-add {
+  background: rgba(0, 0, 0, 0.65);
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action {
+  display: table;
+  width: 100%;
+  vertical-align: middle;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .add_to_cart_button,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .added_to_cart,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .yith-wcqv-button,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .compare,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist {
+  display: table-cell;
+  vertical-align: middle;
   color: #ffffff;
   background: transparent;
-  display: block;
-  width: 100%;
   height: 40px;
   line-height: 40px;
   text-align: center;
@@ -86,14 +109,202 @@
   border-radius: 0px;
   transition: all 0.25s ease-out;
   -webkit-transition: all 0.25s ease-out;
+  border-right: 1px solid #5f5f5f;
 }
-.dtwl-woo .dtwl-woo-products .dtwl-woo-item .dtwl-woo-item-wrapper .dtwl-woo-item-box-add .dtwl-woo-add-cart a.add_to_cart_button.added {
+.dtwl-woo-item-box-add .dtwl-woo-add-action .add_to_cart_button:last-child,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .added_to_cart:last-child,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .yith-wcqv-button:last-child,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .compare:last-child,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist:last-child {
+  border: none;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .add_to_cart_button:hover,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .added_to_cart:hover,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .yith-wcqv-button:hover,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .compare:hover,
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist:hover {
+  background: rgba(0, 0, 0, 0.85);
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .add_to_cart_button {
+  font-size: 0px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .add_to_cart_button:before {
+  content: "\f07a";
+  display: inline-block;
+  vertical-align: middle;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  line-height: 1;
+  font-size: 14px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .add_to_cart_button.loading:before {
+  content: "\f110";
+  display: inline-block;
+  vertical-align: middle;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  line-height: 1;
+  font-size: 14px;
+  -webkit-animation: spin 1s ease-in-out infinite;
+  -moz-animation: spin 1s ease-in-out infinite;
+  -o-animation: spin 1s ease-in-out infinite;
+  animation: spin 1s ease-in-out infinite;
+  width: 100%;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .add_to_cart_button.added {
   display: none;
 }
-.dtwl-woo .dtwl-woo-products .dtwl-woo-item .dtwl-woo-item-wrapper:hover .dtwl-woo-item-box-add {
-  bottom: 0;
-  opacity: 1;
-  visibility: visible;
+.dtwl-woo-item-box-add .dtwl-woo-add-action .added_to_cart {
+  font-size: 0px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .added_to_cart:before {
+  content: "\f090";
+  display: inline-block;
+  vertical-align: middle;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  line-height: 1;
+  font-size: 14px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .yith-wcqv-button {
+  font-size: 0px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .yith-wcqv-button:before {
+  content: "\f06e";
+  display: inline-block;
+  vertical-align: middle;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  line-height: 1;
+  font-size: 14px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .compare {
+  font-size: 0px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .compare:before {
+  content: "\f074";
+  display: inline-block;
+  vertical-align: middle;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  line-height: 1;
+  font-size: 12px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist {
+  min-width: 50px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist .yith-wcwl-add-to-wishlist {
+  position: relative;
+  font-size: 0px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  line-height: 1;
+  vertical-align: middle;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist .yith-wcwl-add-to-wishlist .yith-wcwl-add-button.show a.add_to_wishlist {
+  font-size: 0px;
+  line-height: 40px;
+  display: block;
+  vertical-align: middle;
+  color: #ffffff;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist .yith-wcwl-add-to-wishlist .yith-wcwl-add-button.show a.add_to_wishlist:before {
+  content: "\f004";
+  display: inline-block;
+  vertical-align: middle;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  line-height: 1;
+  font-size: 12px;
+  line-height: 100%;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist .yith-wcwl-add-to-wishlist .yith-wcwl-add-button.show .ajax-loading {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 50% !important;
+  top: 50% !important;
+  margin: -8px 0 0 -8px !important;
+  margin-left: -8px !important;
+  border-radius: 11px;
+  overflow: hidden;
+  background: #fff;
+  opacity: 0.6;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist .yith-wcwl-add-to-wishlist .show a {
+  font-size: 0px;
+  display: block;
+  line-height: 40px;
+  position: relative;
+  color: #ffffff;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action .dtwl-woo-add-to-wishlist .yith-wcwl-add-to-wishlist .show a:before {
+  content: "\f00c";
+  display: inline-block;
+  vertical-align: middle;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  line-height: 1;
+  font-size: 12px;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action.add_to_cart_fa .add_to_cart_button {
+  font-size: 1em;
+}
+.dtwl-woo-item-box-add .dtwl-woo-add-action.add_to_cart_fa .add_to_cart_button:before {
+  margin-right: 7px;
+  vertical-align: top;
+  line-height: 39px;
 }
 
 .dtwl-woo-loadmore-wrap {
@@ -1347,6 +1558,25 @@
     transform: rotate(0);
   }
 
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
