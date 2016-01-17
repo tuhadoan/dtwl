@@ -1,220 +1,32 @@
-//Vendor Prefixes
-// - Animations
-// - Backface visibility
-// - Box shadow
-// - Box sizing
-// - Content columns
-// - Hyphens
-// - Placeholder text
-// - Transformations
-// - Transitions
-// - User Select
-
-
-// Animations
-@mixin animation($animation) {
-  -webkit-animation: $animation;
-       -o-animation: $animation;
-          animation: $animation;
-}
-@mixin animation-name($name) {
-  -webkit-animation-name: $name;
-          animation-name: $name;
-}
-@mixin animation-duration($duration) {
-  -webkit-animation-duration: $duration;
-          animation-duration: $duration;
-}
-@mixin animation-timing-function($timing-function) {
-  -webkit-animation-timing-function: $timing-function;
-          animation-timing-function: $timing-function;
-}
-@mixin animation-delay($delay) {
-  -webkit-animation-delay: $delay;
-          animation-delay: $delay;
-}
-@mixin animation-iteration-count($iteration-count) {
-  -webkit-animation-iteration-count: $iteration-count;
-          animation-iteration-count: $iteration-count;
-}
-@mixin animation-direction($direction) {
-  -webkit-animation-direction: $direction;
-          animation-direction: $direction;
-}
-@mixin animation-fill-mode($fill-mode) {
-  -webkit-animation-fill-mode: $fill-mode;
-          animation-fill-mode: $fill-mode;
-}
-
-// Backface visibility
-// Prevent browsers from flickering when using CSS 3D transforms.
-// Default value is `visible`, but can be changed to `hidden`
-
-@mixin backface-visibility($visibility){
-  -webkit-backface-visibility: $visibility;
-     -moz-backface-visibility: $visibility;
-          backface-visibility: $visibility;
-}
-
-// Drop shadows
-//
-// Note: Deprecated `.box-shadow()` as of v3.1.0 since all of Bootstrap's
-// supported browsers that have box shadow capabilities now support it.
-
-@mixin box-shadow($shadow...) {
-  -webkit-box-shadow: $shadow; // iOS <4.3 & Android <4.1
-          box-shadow: $shadow;
-}
-
-// Box sizing
-@mixin box-sizing($boxmodel) {
-  -webkit-box-sizing: $boxmodel;
-     -moz-box-sizing: $boxmodel;
-          box-sizing: $boxmodel;
-}
-
-// CSS3 Content Columns
-@mixin content-columns($column-count, $column-gap: $grid-gutter-width) {
-  -webkit-column-count: $column-count;
-     -moz-column-count: $column-count;
-          column-count: $column-count;
-  -webkit-column-gap: $column-gap;
-     -moz-column-gap: $column-gap;
-          column-gap: $column-gap;
-}
-
-// Optional hyphenation
-@mixin hyphens($mode: auto) {
-  word-wrap: break-word;
-  -webkit-hyphens: $mode;
-     -moz-hyphens: $mode;
-      -ms-hyphens: $mode; // IE10+
-       -o-hyphens: $mode;
-          hyphens: $mode;
-}
-
-// Placeholder text
-@mixin placeholder($color: $input-color-placeholder) {
-  // Firefox
-  &::-moz-placeholder {
-    color: $color;
-    opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
-  }
-  &:-ms-input-placeholder { color: $color; } // Internet Explorer 10+
-  &::-webkit-input-placeholder  { color: $color; } // Safari and Chrome
-}
-
-// Transformations
-@mixin scale($ratio...) {
-  -webkit-transform: scale($ratio);
-      -ms-transform: scale($ratio); // IE9 only
-       -o-transform: scale($ratio);
-          transform: scale($ratio);
-}
-
-@mixin scaleX($ratio) {
-  -webkit-transform: scaleX($ratio);
-      -ms-transform: scaleX($ratio); // IE9 only
-       -o-transform: scaleX($ratio);
-          transform: scaleX($ratio);
-}
-@mixin scaleY($ratio) {
-  -webkit-transform: scaleY($ratio);
-      -ms-transform: scaleY($ratio); // IE9 only
-       -o-transform: scaleY($ratio);
-          transform: scaleY($ratio);
-}
-@mixin skew($x, $y) {
-  -webkit-transform: skewX($x) skewY($y);
-      -ms-transform: skewX($x) skewY($y); // See https://github.com/twbs/bootstrap/issues/4885; IE9+
-       -o-transform: skewX($x) skewY($y);
-          transform: skewX($x) skewY($y);
-}
-@mixin translate($x, $y) {
-  -webkit-transform: translate($x, $y);
-      -ms-transform: translate($x, $y); // IE9 only
-       -o-transform: translate($x, $y);
-          transform: translate($x, $y);
-}
-@mixin translate3d($x, $y, $z) {
-  -webkit-transform: translate3d($x, $y, $z);
-          transform: translate3d($x, $y, $z);
-}
-@mixin rotate($degrees) {
-  -webkit-transform: rotate($degrees);
-      -ms-transform: rotate($degrees); // IE9 only
-       -o-transform: rotate($degrees);
-          transform: rotate($degrees);
-}
-@mixin rotateX($degrees) {
-  -webkit-transform: rotateX($degrees);
-      -ms-transform: rotateX($degrees); // IE9 only
-       -o-transform: rotateX($degrees);
-          transform: rotateX($degrees);
-}
-@mixin rotateY($degrees) {
-  -webkit-transform: rotateY($degrees);
-      -ms-transform: rotateY($degrees); // IE9 only
-       -o-transform: rotateY($degrees);
-          transform: rotateY($degrees);
-}
-@mixin perspective($perspective) {
-  -webkit-perspective: $perspective;
-     -moz-perspective: $perspective;
-          perspective: $perspective;
-}
-@mixin perspective-origin($perspective) {
-  -webkit-perspective-origin: $perspective;
-     -moz-perspective-origin: $perspective;
-          perspective-origin: $perspective;
-}
-@mixin transform-origin($origin) {
-  -webkit-transform-origin: $origin;
-     -moz-transform-origin: $origin;
-      -ms-transform-origin: $origin; // IE9 only
-          transform-origin: $origin;
-}
-
-
-// Transitions
-
-@mixin transition($transition...) {
-  -webkit-transition: $transition;
-       -o-transition: $transition;
-          transition: $transition;
-}
-@mixin transition-property($transition-property...) {
-  -webkit-transition-property: $transition-property;
-          transition-property: $transition-property;
-}
-@mixin transition-delay($transition-delay) {
-  -webkit-transition-delay: $transition-delay;
-          transition-delay: $transition-delay;
-}
-@mixin transition-duration($transition-duration...) {
-  -webkit-transition-duration: $transition-duration;
-          transition-duration: $transition-duration;
-}
-@mixin transition-timing-function($timing-function) {
-  -webkit-transition-timing-function: $timing-function;
-          transition-timing-function: $timing-function;
-}
-@mixin transition-transform($transition...) {
-  -webkit-transition: -webkit-transform $transition;
-     -moz-transition: -moz-transform $transition;
-       -o-transition: -o-transform $transition;
-          transition: transform $transition;
-}
-
-
 $main_color: #ff4800;
 
-.dtwl-woo *{
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-   
-    
+// Font awesome
+@mixin font-awesome($code, $size){
+  content: $code;
+  display: inline-block;
+  vertical-align: middle;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: $size;
+  height: $size;
+  text-align: center;
+  line-height: 1;
+}
+
+.dtwl-woo{
+    *{
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 .dtwl-woo-clearfix{
@@ -292,32 +104,11 @@ $main_color: #ff4800;
                 left: 0;
                 bottom: -50px;
                 width: 100%;
-                background: rgba(0, 0, 0, 0.65);
                 opacity: 0;
                 visibility: hidden;
                 -webkit-transition: all 0.25s ease;
                 -o-transition: all 0.25s ease;
                 transition: all 0.25s ease;
-                .dtwl-woo-add-cart{
-                    a{
-                      color: #ffffff;
-                      background: transparent;
-                      display: block;
-                      width: 100%;
-                      height: 40px;
-                      line-height: 40px;
-                      text-align: center;
-                      margin: 0;
-                      padding: 0;
-                      border: none;
-                      text-shadow: none;
-                      box-shadow: none;
-                      border:none; border-radius: 0px;
-                      transition: all 0.25s ease-out;
-                      -webkit-transition: all 0.25s ease-out;
-                      &.add_to_cart_button.added{display: none}
-                    }
-                }
           }
 
           &:hover{
@@ -330,6 +121,158 @@ $main_color: #ff4800;
       }
     }
   }
+}
+
+// Block action
+.dtwl-woo-item-box-add{
+      background: rgba(0, 0, 0, 0.65);
+      .dtwl-woo-add-action{
+        display: table;
+        width: 100%;
+        vertical-align: middle;
+          .add_to_cart_button,
+          .added_to_cart,
+          .yith-wcqv-button,
+          .compare,
+          .dtwl-woo-add-to-wishlist
+          {
+            display: table-cell;
+            vertical-align: middle;
+            color: #ffffff;
+            background: transparent;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            border: none;
+            text-shadow: none;
+            box-shadow: none;
+            border:none; border-radius: 0px;
+            transition: all 0.25s ease-out;
+            -webkit-transition: all 0.25s ease-out;
+            border-right: 1px solid #5f5f5f;
+
+            &:last-child{
+              border:none;
+            }
+
+            &:hover{
+                background: rgba(0, 0, 0, 0.85);
+            }
+          }
+          .add_to_cart_button{
+            font-size: 0px;
+            &:before{
+              @include font-awesome('\f07a', 12px);
+              font-size: 14px;
+            }
+            &.loading{
+              &:before{
+                @include font-awesome('\f110', 12px);
+                font-size: 14px;
+                -webkit-animation: spin 1s ease-in-out infinite;
+                -moz-animation: spin 1s ease-in-out infinite;
+                -o-animation: spin 1s ease-in-out infinite;
+                animation: spin 1s ease-in-out infinite;
+                width: 100%;
+              }
+            }
+            &.added{display: none}
+          }
+          .added_to_cart{
+              font-size: 0px;
+              &:before{
+                @include font-awesome('\f090', 12px);
+                font-size: 14px;
+              }
+          }
+
+          .yith-wcqv-button{
+              font-size: 0px;
+              &:before{
+                @include font-awesome('\f06e', 12px);
+                font-size: 14px;
+              }
+          }
+
+          .compare{
+              font-size: 0px;
+              &:before{
+                @include font-awesome('\f074', 12px);
+                font-size: 12px;
+              }
+          }
+          
+          .dtwl-woo-add-to-wishlist{
+              min-width: 50px;
+              .yith-wcwl-add-to-wishlist{
+                  position: relative;
+                  font-size: 0px;
+                  margin: 0;
+                  padding: 0;
+                  background: transparent;
+                  border: none;
+                  line-height: 1;
+                  vertical-align: middle;
+                  
+                  .yith-wcwl-add-button.show{
+                      a.add_to_wishlist{
+                          font-size: 0px;
+                          line-height: 40px;
+                          display: block;
+                          vertical-align: middle;
+                          color: #ffffff;
+                          &:before{
+                          @include font-awesome('\f004', 12px);
+                          font-size: 12px;
+                          line-height: 100%;
+                        }
+                      }
+
+                      .ajax-loading {
+                          position: absolute;
+                          width: 16px;
+                          height: 16px;
+                          left: 50% !important;
+                          top: 50% !important;
+                          margin: -8px 0 0 -8px !important;
+                          margin-left: -8px !important;
+                          border-radius: 11px;
+                          overflow: hidden;
+                          background: #fff;
+                          opacity: 0.6;
+                      }
+                  }
+
+                  .show{
+                      a{
+                        font-size: 0px;
+                        display: block;
+                        line-height: 40px;
+                        position: relative;
+                        color: #ffffff;
+                          &:before{
+                              @include font-awesome('\f00c', 12px);
+                              font-size: 12px;
+                          }
+                      }
+                  }
+              }
+          }
+
+          // add to cart forever alone :)
+          &.add_to_cart_fa{
+            .add_to_cart_button{
+              font-size: 1em;
+              &:before{
+                  margin-right: 7px;
+                  vertical-align: top;
+                  line-height: 39px;
+              }
+            }
+          }
+      }
 }
 
 .dtwl-woo-loadmore-wrap{
@@ -1132,5 +1075,25 @@ $main_color: #ff4800;
 }
 @keyframes dtwlnavloadding{
   0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}
+}
+
+// woo animation
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform:rotate(360deg);
+  }
 }
 

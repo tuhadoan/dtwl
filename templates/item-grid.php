@@ -18,7 +18,13 @@ global $product, $woocommerce_loop, $yith_woocompare;
 					?>
 				</a>
 				<div class="dtwl-woo-item-box-add">
-					<div class="dtwl-woo-add-cart">
+					<?php 
+					$add_to_cart_fa = 'add_to_cart_fa';
+					if ( class_exists('YITH_WCQV_Frontend') || isset($yith_woocompare) || class_exists( 'YITH_WCWL' )){
+						$add_to_cart_fa = '';
+					}
+					?>
+					<div class="dtwl-woo-add-action <?php echo $add_to_cart_fa; ?>">
 						<?php
 							/**
 							 * woocommerce_after_shop_loop_item hook
@@ -26,38 +32,31 @@ global $product, $woocommerce_loop, $yith_woocompare;
 							 * @hooked woocommerce_template_loop_add_to_cart - 10
 							 */
 							add_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10);
+							$wishlist = 2;
 							
 							if ( class_exists('YITH_WCQV_Frontend') ) {
-								remove_action('woocommerce_after_shop_loop_item',  array( YITH_WCQV_Frontend::get_instance(), 'yith_add_quick_view_button'), 15);
+								add_action('woocommerce_after_shop_loop_item',  array( YITH_WCQV_Frontend::get_instance(), 'yith_add_quick_view_button'), 15);
+								$wishlist = $wishlist + 1;
 							}
 							if ( isset($yith_woocompare) ) {
-							    remove_action( 'woocommerce_after_shop_loop_item', array( $yith_woocompare->obj, 'add_compare_link' ), 20 );
+							    add_action( 'woocommerce_after_shop_loop_item', array( $yith_woocompare->obj, 'add_compare_link' ), 20 );
+							    $wishlist = $wishlist + 1;
+							    $add_to_cart = '';
 							}
 							do_action( 'woocommerce_after_shop_loop_item' );
+							
+							if( class_exists( 'YITH_WCWL' ) ):
+								
+							?>
+							<div class="dtwl-woo-add-to-wishlist" style="width: <?php echo 100 / (int)$wishlist; ?>%;">
+							<?php 
+							echo do_shortcode( '[yith_wcwl_add_to_wishlist]' );
+							?>
+							</div>
+							<?php
+							endif;
 						?>
 					</div>
-					
-					<?php
-		            if( class_exists( 'YITH_WCWL' ) ) {
-		                echo do_shortcode( '[yith_wcwl_add_to_wishlist]' );
-		            }
-		            ?>
-
-		            <?php if( class_exists( 'YITH_Woocompare' ) ) { ?>
-		                <?php
-		                $action_add = 'yith-woocompare-add-product';
-		                $url_args = array(
-		                    'action' => $action_add,
-		                    'id' => $product->id
-		                );
-		                ?>
-		                <a data-original-title="Add to compare" data-toggle="tooltip" href="<?php echo esc_url( wp_nonce_url( add_query_arg( $url_args ), $action_add ) ); ?>" class="compare btn btn-primary-outline" data-product_id="<?php echo esc_attr( $product->id ); ?>">
-		                </a>
-		            <?php } ?>
-		            <?php if ( class_exists('YITH_WCQV_Frontend') ) { ?>
-		            	<a data-original-title="<?php echo esc_html__('Quick view', DT_WOO_LAYOUTS); ?>" data-toggle="tooltip" data-product_id="<?php echo esc_attr($product->id) ?>" class="button yith-wcqv-button" href="#"></a>
-		            <?php } ?>
-					
 				</div>
 			</div>
 		</div>
