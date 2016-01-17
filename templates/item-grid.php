@@ -26,35 +26,7 @@ global $product, $woocommerce_loop, $yith_woocompare;
 					?>
 					<div class="dtwl-woo-add-action <?php echo $add_to_cart_fa; ?>">
 						<?php
-							/**
-							 * woocommerce_after_shop_loop_item hook
-							 *
-							 * @hooked woocommerce_template_loop_add_to_cart - 10
-							 */
-							add_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10);
-							$wishlist = 2;
-							
-							if ( class_exists('YITH_WCQV_Frontend') ) {
-								add_action('woocommerce_after_shop_loop_item',  array( YITH_WCQV_Frontend::get_instance(), 'yith_add_quick_view_button'), 15);
-								$wishlist = $wishlist + 1;
-							}
-							if ( isset($yith_woocompare) ) {
-							    add_action( 'woocommerce_after_shop_loop_item', array( $yith_woocompare->obj, 'add_compare_link' ), 20 );
-							    $wishlist = $wishlist + 1;
-							    $add_to_cart = '';
-							}
-							do_action( 'woocommerce_after_shop_loop_item' );
-							
-							if( class_exists( 'YITH_WCWL' ) ):
-								
-							?>
-							<div class="dtwl-woo-add-to-wishlist" style="width: <?php echo 100 / (int)$wishlist; ?>%;">
-							<?php 
-							echo do_shortcode( '[yith_wcwl_add_to_wishlist]' );
-							?>
-							</div>
-							<?php
-							endif;
+							do_action('dtwl_template_loop_item_action');
 						?>
 					</div>
 				</div>
@@ -71,11 +43,6 @@ global $product, $woocommerce_loop, $yith_woocompare;
 						 * @hooked woocommerce_template_loop_rating - 5
 						 * @hooked woocommerce_template_loop_price - 10
 						 */
-						remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10);
-						remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5);
-						// Re-order
-						add_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5);
-						add_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10);
 						do_action( 'woocommerce_after_shop_loop_item_title' );
 					?>
 				</div>

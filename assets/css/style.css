@@ -55,9 +55,6 @@
   position: relative;
   text-align: center;
 }
-.dtwl-woo .dtwl-woo-products .dtwl-woo-item .dtwl-woo-item-wrapper .dtwl-woo-inner .dtwl-woo-info .dtwl-woo-info-inner .dtwl-woo-title {
-  margin-bottom: 10px;
-}
 .dtwl-woo .dtwl-woo-products .dtwl-woo-item .dtwl-woo-item-wrapper .dtwl-woo-inner .dtwl-woo-info .dtwl-woo-info-inner .dtwl-woo-content .star-rating {
   float: none;
   margin: .5em auto;
@@ -78,6 +75,10 @@
   bottom: 0;
   opacity: 1;
   visibility: visible;
+}
+.dtwl-woo .dtwl-woo-title {
+  margin-bottom: 10px;
+  line-height: 1.2;
 }
 
 .dtwl-woo-item-box-add {
@@ -367,8 +368,8 @@
   -webkit-backface-visibility: hidden;
 }
 .dtwl-woo-loadmore-wrap .dtwl-woo-loadmore.loading {
-  border-color: transparent;
-  background-color: transparent;
+  border-color: transparent !important;
+  background-color: transparent !important;
 }
 .dtwl-woo-loadmore-wrap .dtwl-woo-loadmore.loading .dtwl-navloading {
   opacity: 1;
@@ -380,7 +381,7 @@
 }
 
 /* Custom col layout */
-.dtwl-woo-tab-content {
+.dtwl-woo-tab-content, .dtwl-woo-mansory-list {
   margin-left: -15px;
   margin-right: -15px;
 }
@@ -667,27 +668,49 @@
 }
 .dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li a {
   display: block;
-  padding: 3px 15px;
+  padding: 0px 10px;
   text-decoration: none;
-  background-color: #ffffff;
+  background-color: transparent;
   color: #666666;
   font-weight: bold;
 }
-.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li:hover a, .dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li.active a {
+.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li a span {
+  display: inline-block;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.25s ease-out;
+  -webkit-transition: all 0.25s ease;
+}
+.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li a.selected {
+  border: none;
+  background: transparent;
+  color: #666666;
+  text-decoration: none;
+}
+.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li a.selected span {
   border-color: #ff4800;
-  background-color: #ff4800;
-  color: #ffffff;
+}
+.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li:hover a, .dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li:focus a, .dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li.active a {
+  border: none;
+  background: transparent;
+  color: #666666;
+  text-decoration: none;
+}
+.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li:hover a span, .dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li:focus a span, .dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li.active a span {
+  border-color: #ff4800;
+}
+.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li:first-child a {
+  padding-left: 0px;
 }
 
 .dtwl-woo-product-list .dtwl-heading {
   margin-bottom: 20px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #e8e4e3;
 }
 .dtwl-woo-product-list .dtwl-woo-list-content {
   display: block;
   position: relative;
-  padding: 20px;
-  border: 1px solid #e8e4e3;
 }
 .dtwl-woo-product-list .dtwl-woo-list-content:after {
   display: table;
@@ -729,18 +752,95 @@
     padding-top: 25px;
   }
 }
-.dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .item-content {
+.dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .dtwl-woo-content {
   margin-bottom: 20px;
 }
-.dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .item-content .price {
+.dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .dtwl-woo-content .star-rating {
+  margin-bottom: 10px;
+}
+.dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .dtwl-woo-content .price {
   margin-bottom: 10px;
   display: inline-block;
 }
 .dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .dtwl-woo-desc {
   margin-bottom: 1.5em;
 }
+.dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .dtwl-woo-list-item-box-add .dtwl-woo-add-action > a, .dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .dtwl-woo-list-item-box-add .dtwl-woo-add-action > div {
+  display: inline-block;
+  vertical-align: middle;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.65);
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  margin: 0 10px 0 0;
+  padding: 0 10px;
+  border: none;
+  text-shadow: none;
+  box-shadow: none;
+  border: none;
+  border-radius: 0px;
+  transition: all 0.25s ease-out;
+  -webkit-transition: all 0.25s ease-out;
+  border-right: 1px solid #5f5f5f;
+}
+.dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .dtwl-woo-list-item-box-add .dtwl-woo-add-action > a:hover, .dtwl-woo-product-list .dtwl-woo-list-content .dtwl-woo-list-item .dtwl-woo-list-item-wrapper .dtwl-woo-list-item-info .dtwl-woo-list-item-box-add .dtwl-woo-add-action > div:hover {
+  background: rgba(0, 0, 0, 0.85);
+  border-color: rgba(0, 0, 0, 0.85);
+}
+
+/* Product slider */
+.dtwl-woo.template-slider .dtwl-woo-products .dtwl-woo-item {
+  margin-bottom: 0px;
+}
+.dtwl-woo.template-slider.dtwl-pre-load {
+  height: 0px;
+  overflow: hidden;
+}
+.dtwl-woo.template-slider .slick-prev, .dtwl-woo.template-slider .slick-next {
+  top: 35%;
+  cursor: pointer;
+  border-radius: 0px;
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-in-out;
+}
+.dtwl-woo.template-slider .slick-prev:before, .dtwl-woo.template-slider .slick-next:before {
+  font-size: 30px;
+}
+.dtwl-woo.template-slider .slick-prev {
+  left: -20%;
+}
+.dtwl-woo.template-slider .slick-next {
+  right: -20%;
+}
+.dtwl-woo.template-slider:hover .slick-prev {
+  left: 0px;
+}
+.dtwl-woo.template-slider:hover .slick-next {
+  right: 0px;
+}
+.dtwl-woo.template-slider .slick-dots li button:before,
+.dtwl-woo.template-slider .slick-dots li.slick-active button:before {
+  color: #ff4800;
+}
 
 /* Effects */
+.dtwl-woo-tab-content > .active {
+  display: block;
+}
+.dtwl-woo-tab-content .fade {
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
+  -o-transition: opacity 0.15s linear;
+  transition: opacity 0.15s linear;
+}
+.dtwl-woo-tab-content .fade.in {
+  opacity: 1;
+}
+
 .item-animate {
   opacity: 0;
   position: relative;

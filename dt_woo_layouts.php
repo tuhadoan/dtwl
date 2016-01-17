@@ -34,12 +34,6 @@ if ( ! defined( 'DT_WOO_LAYOUTS_URL' ) )
 if ( ! defined( 'DT_WOO_LAYOUTS_DIR' ) )
 	define( 'DT_WOO_LAYOUTS_DIR' , plugin_dir_path(__FILE__));
 
-if( ! class_exists( 'Gamajo_Template_Loader' ) ) {
-	require DT_WOO_LAYOUTS_DIR . 'includes/class-gamajo-template-loader.php';
-}
-
-require DT_WOO_LAYOUTS_DIR . 'includes/class-dt-template-loader.php';
-
 require_once DT_WOO_LAYOUTS_DIR . 'includes/functions.php';
 
 /*
@@ -60,6 +54,7 @@ class DT_WL_Manager{
 	
 	public function __construct(){
 		add_action('init', array(&$this, 'init'));
+		add_action( 'after_setup_theme', array( &$this, 'include_template_functions' ), 11 );
 		
 		add_action('wp_head', array($this, 'dtwl_renderurlajax'), 15);
 		// Ajax load more
@@ -93,6 +88,11 @@ class DT_WL_Manager{
 		}
 	}
 	
+	public function include_template_functions(){
+		include_once( 'includes/dt-template-functions.php' );
+		include_once( 'includes/dt-template-hooks.php' );
+	}
+	
 	public function woocommerce_notice(){
 		$plugin  = get_plugin_data(__FILE__);
 		echo '
@@ -111,13 +111,19 @@ class DT_WL_Manager{
 	
 	public function enqueue_styles(){
 		wp_enqueue_style('dtwl-woo-font-awesome', DT_WOO_LAYOUTS_URL .'assets/fonts/awesome/css/font-awesome.min.css');
-		wp_enqueue_style('dtwl-woo-owlcarousel', DT_WOO_LAYOUTS_URL .'assets/css/owl.carousel.min.css');
+		// register styles
+		wp_register_style('dtwl-woo-owlcarousel', DT_WOO_LAYOUTS_URL .'assets/css/owl.carousel.min.css');
+		wp_register_style('dtwl-woo-slick', DT_WOO_LAYOUTS_URL .'assets/slick/slick.css');
+		wp_register_style('dtwl-woo-slick-theme', DT_WOO_LAYOUTS_URL .'assets/slick/slick-theme.css');
 		wp_enqueue_style('dtwl-woo', DT_WOO_LAYOUTS_URL .'assets/css/style.css');
 	}
 	
 	public function enqueue_scripts(){
-		wp_enqueue_script('dtwl-woo-owlcarousel', DT_WOO_LAYOUTS_URL .'assets/js/owl.carousel.min.js', array('jquery'), '', true);
-		wp_enqueue_script('dtwl-woo-masonry', DT_WOO_LAYOUTS_URL .'assets/js/masonry.pkgd.min.js', array('jquery'), '', true);
+		// register scritps
+		wp_register_script('dtwl-woo-owlcarousel', DT_WOO_LAYOUTS_URL .'assets/js/owl.carousel.min.js', array('jquery'), '', true);
+		wp_register_script('dtwl-woo-imagesloaded', DT_WOO_LAYOUTS_URL .'assets/js/imagesloaded.pkgd.min.js', array('jquery'), '', false);
+		wp_register_script('dtwl-woo-isotope', DT_WOO_LAYOUTS_URL .'assets/js/isotope.pkgd.min.js', array('jquery'), '', false);
+		wp_register_script('dtwl-woo-slick', DT_WOO_LAYOUTS_URL .'assets/slick/slick.min.js', array('jquery'), '', false);
 		
 		wp_enqueue_script('dtwl-woo',DT_WOO_LAYOUTS_URL.'assets/js/script.js',array('jquery'),DTWL_VERSION,true);
 	}
@@ -130,13 +136,14 @@ class DT_WL_Manager{
 		<?php
 	}
 	public function dtwl_woo_loadmore(){
-		$orderby        = $_POST['order'];
-		$number_query   = $_POST['numberquery'];
-		$start          = $_POST['start'];
-		$cat       		= $_POST['cat'];
-		$tag       		= $_POST['tag'];
-		$col            = $_POST['col'];
-		$eclass         = $_POST['eclass'];
+		$template_name	= isset($_POST['template']) ? $_POST['template'] : 'item-grid';
+		$orderby        = isset($_POST['order']) ?$_POST['order'] : '';
+		$number_query   = isset($_POST['numberquery']) ?$_POST['numberquery'] : '';
+		$start          = isset($_POST['start']) ?$_POST['start'] : '';
+		$cat       		= isset($_POST['cat']) ?$_POST['cat'] : '';
+		$tag       		= isset($_POST['tag']) ?$_POST['tag'] : '';
+		$col            = isset($_POST['col']) ?$_POST['col'] : '';
+		$eclass         = isset($_POST['eclass']) ?$_POST['eclass'] : '';
 		
 		$loop = dhwl_woo_query($orderby, $number_query, $cat, $tag, $start);
 		while ( $loop->have_posts() ) : $loop->the_post();
@@ -148,16 +155,22 @@ class DT_WL_Manager{
 			$column3 = absint(12/($col-2));
 			$class .= ' dtwl-woo-col-md-'.$column.' dtwl-woo-col-sm-'.$column2.' dtwl-woo-col-xs-'.$column3.' dtwl-woo-col-phone-12';
 			endif;
+			if($template_name == 'item-list'):
+				$class .= ' dtwl-woo-list-content';
+			endif;	
 			$class .= ' item-animate';
 			if ( isset($eclass) && $eclass) :
 			$class .= ' '.$eclass;
 			endif;
 			?>
 			<div class="<?php echo $class; ?>">
-				<?php
-				dtwl_get_template_part('item', 'grid');
-				?>
+			<?php
+				if ($template_name == 'item-grid' || $template_name == ''):
+				wc_get_template( 'item-grid.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+				endif;
+			?>
 			</div>
+			
 			<?php
 		endwhile;
 		wp_die();

@@ -38,12 +38,25 @@ global $product, $woocommerce_loop, $yith_woocompare;
 								add_action('woocommerce_after_shop_loop_item',  array( YITH_WCQV_Frontend::get_instance(), 'yith_add_quick_view_button'), 15);
 								$wishlist = $wishlist + 1;
 							}
+							
 							if ( isset($yith_woocompare) ) {
-							    add_action( 'woocommerce_after_shop_loop_item', array( $yith_woocompare->obj, 'add_compare_link' ), 20 );
+							    remove_action( 'woocommerce_after_shop_loop_item', array( $yith_woocompare->obj, 'add_compare_link' ), 20 );
 							    $wishlist = $wishlist + 1;
 							    $add_to_cart = '';
 							}
 							do_action( 'woocommerce_after_shop_loop_item' );
+							
+							if( class_exists( 'YITH_Woocompare' ) ):
+							$action_add = 'yith-woocompare-add-product';
+							$url_args = array(
+								'action' => $action_add,
+								'id' => $product->id
+							);
+							?>
+    			                <a rel="nofollow" data-product_id="<?php echo esc_attr( $product->id ); ?>" class="compare button" href="<?php echo esc_url( wp_nonce_url( add_query_arg( $url_args ), $action_add ) ); ?>"><?php esc_html_e('Compare', DT_WOO_LAYOUTS);?></a>
+						    
+							<?php
+							endif;
 							
 							if( class_exists( 'YITH_WCWL' ) ):
 								
@@ -71,11 +84,6 @@ global $product, $woocommerce_loop, $yith_woocompare;
 						 * @hooked woocommerce_template_loop_rating - 5
 						 * @hooked woocommerce_template_loop_price - 10
 						 */
-						remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10);
-						remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5);
-						// Re-order
-						add_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5);
-						add_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10);
 						do_action( 'woocommerce_after_shop_loop_item_title' );
 					?>
 				</div>
