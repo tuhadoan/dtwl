@@ -1,11 +1,4 @@
 <?php
-
-function dtwl_get_template_part($lug ='', $name = ''){
-	$templates = new DTWL_Template_Loader;
-
-	$templates->get_template_part( $lug , $name );
-}
-
 function dtwl_woo_get_id(){
 	$chars = '0123456789abcdefghijklmnopqrstuvwxyz';
 	$max = strlen($chars) - 1;
@@ -18,14 +11,14 @@ function dtwl_woo_get_id(){
 	return 'dtwl_woo_'.substr(md5($token.$id),0,10);
 }
 
-function dhwl_woo_setting_field_id($settings, $value){
+function dhwl_woo_setting_field_id($settings, $value, $dependency=''){
 	if(empty($value)){
 		$value = dtwl_woo_get_id();
 	}
 	return '<input name="'.$settings['param_name'].'" class="wpb_vc_param_value dtwl-woo-param-value wpb-textinput" type="hidden" value="'.$value.'"/>';
 }
 
-function dtwl_woo_setting_field_categories($settings, $value,$dependency=''){
+function dtwl_woo_setting_field_categories($settings, $value, $dependency=''){
 	$category_ids = explode(',',$value);
 	$args = array(
 		'orderby' => 'name',
@@ -62,6 +55,10 @@ function dtwl_woo_setting_field_tags($settings, $value, $dependency = ''){
 	$output .= '</select>';
 	$output .= '<input id= "'.$settings['param_name'].'" type="hidden" class="wpb_vc_param_value wpb-textinput" name="'.$settings['param_name'].'" value="'.$value.'" />';
 	return $output;
+}
+
+function dtwl_woo_setting_field_heading( $settings, $value, $dependency='' ){
+	return '<div '.$dependency.' style="background: none repeat scroll 0 0 #ffcc00;font-size: 14px; color: #ffffff; font-weight: bold;padding: 5px;">'.$value.'</div>';
 }
 
 function dtwl_woo_setting_field_orderby($settings, $value, $dependency = ''){
@@ -166,30 +163,39 @@ function dhwl_woo_query($type, $post_per_page=-1, $cat='', $tag = '', $offset=0,
 	if($tag!=''){
 		$args['product_tag']= $tag;
 	}
-	
+	wp_reset_postdata();
 	return new WP_Query($args);
 }
 
 
 function dhwl_woo_params(){
 	return array(
-		array (
-			"type" => "dtwl_woo_field_id",
-			"param_name" => "id"
-		),
+// 		array (
+// 			"type" => "dtwl_woo_field_id",
+// 			"param_name" => "id"
+// 		),
 		array (
 			"type" => "textfield",
 			"class" => "",
 			"heading" => esc_html__( "Heading", DT_WOO_LAYOUTS ),
-			'admin_label'=>true,
+			'admin_label'=> true,
 			"param_name" => "heading",
 			"value" => ""
 		),
-		array(
+		array (
 			"type" => "colorpicker",
-			"value" => "#ff4800",
-			"heading" => esc_html__("Main Color", DT_WOO_LAYOUTS),
-			"param_name" => "main_color"
+			"class" => "",
+			"heading" => esc_html__( "Heading Color", DT_WOO_LAYOUTS ),
+			"param_name" => "heading_color",
+			"value" => "#363230"
+		),
+		array (
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__( "Heading font size", DT_WOO_LAYOUTS ),
+			"param_name" => "heading_font_size",
+			"value" => "20px",
+			"description" => __ ( "Enter your custom size. Example: 20px.", DT_WOO_LAYOUTS ),
 		),
 		array(
 			"type" => "dropdown",
@@ -199,6 +205,7 @@ function dhwl_woo_params(){
 			"admin_label" => true,
 			"value" => array(
 				"Product Tabs" => "product_tabs",
+				"Product Slider" =>  "product_slider",
 				"Product List" =>  "product_list",
 			),
 			"description" => ""
@@ -209,8 +216,9 @@ function dhwl_woo_params(){
 			"heading" => esc_html__("Template", DT_WOO_LAYOUTS),
 			"param_name" => "template",
 			"value" => array(
-				"Grid" => "grid",
-				"Carousel" =>  "carousel",
+				esc_html__("Grid", DT_WOO_LAYOUTS) => "grid",
+				esc_html__("Carousel", DT_WOO_LAYOUTS) =>  "carousel",
+				esc_html__("Masonry", DT_WOO_LAYOUTS) =>  "masonry",
 			),
 			"dependency" => array (
 				'element' => "display_type",
@@ -234,6 +242,7 @@ function dhwl_woo_params(){
 				'element' => "display_type",
 				'value' => array (
 					'product_tabs',
+					'product_slider',
 				)
 			),
 			"description" => ""
@@ -297,7 +306,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Row", DT_WOO_LAYOUTS),
 			"param_name" => "row",
-			"dependency" => array("element" => "template" , "value" => "grid" ),
+			"dependency" => array("element" => "template" , "value" => array("grid") ),
 			"value" => "2"
 		),
 		array(
@@ -305,7 +314,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Column per Row", DT_WOO_LAYOUTS),
 			"param_name" => "col",
-			"dependency" => array("element" => "template" , "value" => "grid" ),
+			"dependency" => array("element" => "template" , "value" => array("grid","masonry") ),
 			"value" => array(
 				'2' => "2",
 				'3' => "3",
@@ -319,7 +328,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Number product with each click to Load more button", DT_WOO_LAYOUTS),
 			"param_name" => "number_load",
-			"dependency" => array("element" => "template" , "value" => "grid" ),
+			"dependency" => array("element" => "template" , "value" => array("grid") ),
 			"value" => array(
 				'2' => "2",
 				'3' => "3",
@@ -346,15 +355,15 @@ function dhwl_woo_params(){
 				esc_html__('slideRight',  DT_WOO_LAYOUTS) => "slideRight",
 				esc_html__('bounceIn',  DT_WOO_LAYOUTS) => "bounceIn",
 			),
-			"dependency" => array("element" => "template" , "value" => "grid" ),
+			"dependency" => array("element" => "template" , "value" => array("grid") ),
 			"description" => ""
 		),
 		array(
 			"type" => "textfield",
 			"class" => "",
-			"heading" => esc_html__("Product number display per row", DT_WOO_LAYOUTS),
+			"heading" => esc_html__("Number display", DT_WOO_LAYOUTS),
 			"param_name" => "number_display",
-			"dependency" => array("element" => "template" , "value" => "carousel" ),
+			"dependency" => array("element" => "template" , "value" => array("carousel") ),
 			"value" => "4"
 		),
 		array(
@@ -362,8 +371,9 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Product number limit", DT_WOO_LAYOUTS),
 			"param_name" => "number_limit",
-			"dependency" => array("element" => "template" , "value" => "carousel" ),
-			"value" => "10"
+			"dependency" => array("element" => "template" , "value" => array("carousel","masonry") ),
+			"value" => "10",
+			"description" => esc_html__('the number limit to query.', DT_WOO_LAYOUTS),
 		),
 		
 		
@@ -394,7 +404,7 @@ function dhwl_woo_params(){
 				esc_html__('Show',  DT_WOO_LAYOUTS) => "show",
 			),
 			"dependency" => array("element" => "display_type" , "value" => "product_list" ),
-			"description" => "Show / Hide Product short description. if show, the button add to cart will be shown."
+			"description" => esc_html__("Show / Hide Product short description. if show, the button add to cart will be shown.", DT_WOO_LAYOUTS )
 		),
 		array(
 			"type" => "textfield",
@@ -405,14 +415,236 @@ function dhwl_woo_params(){
 			"value" => "4"
 		),
 		
+		// Product Slider params
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Speed. int(ms)", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_speed",
+			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"value" => "300",
+			"description" => "",
+		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Width Between Each Slide. int(px)", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_margin",
+			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"value" => "10px",
+			"description" => esc_html__('', DT_WOO_LAYOUTS),
+		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Slides To Show.", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_toshow",
+			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"value" => "3",
+			"description" => "",
+		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Slides To Scroll", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_toscroll",
+			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"value" => "3",
+			"description" => "",
+		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Product number limit", DT_WOO_LAYOUTS),
+			"param_name" => "pslider_limit",
+			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"value" => "10",
+			"description" => esc_html__('The number limit to query.', DT_WOO_LAYOUTS),
+		),
 		
+		// Custom Options
+		array (
+			"type" => "dtwl_woo_field_heading",
+			"value" => "Custom Options",
+			"param_name" => "custom_options"
+		),
+		array(
+			"type" => "colorpicker",
+			"value" => "#ff4800",
+			"heading" => esc_html__("Main Color", DT_WOO_LAYOUTS),
+			"param_name" => "main_color"
+		),
+		// for procut list
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("List Border Wrapper", DT_WOO_LAYOUTS),
+			"param_name" => "plist_border",
+			"value" => array(
+				esc_html__('no',  DT_WOO_LAYOUTS) => "no",
+				esc_html__('Yes',  DT_WOO_LAYOUTS) => "yes",
+			),
+			"dependency" => array("element" => "display_type" , "value" => array('product_list') ),
+		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("List Padding", DT_WOO_LAYOUTS),
+			"param_name" => "plist_padding",
+			"dependency" => array("element" => "display_type" , "value" => "product_list" ),
+			"value" => "0px",
+			"description" => __ ( "Enter your custom padding of product list wrapper. Example: 10px 10px 10px 10px.", DT_WOO_LAYOUTS )
+		),
+		
+		array(
+			"type" => "colorpicker",
+			"value" => "#ffffff",
+			"heading" => esc_html__("Thumbnail Backgroud Color", DT_WOO_LAYOUTS),
+			"param_name" => "thumbnail_background_color"
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Thumbnail Border Style", DT_WOO_LAYOUTS),
+			"param_name" => "thumbnail_border_style",
+			"value" => array(
+				esc_html__('None',  DT_WOO_LAYOUTS) => "none",
+				esc_html__('Solid',  DT_WOO_LAYOUTS) => "solid",
+				esc_html__('Dashed',  DT_WOO_LAYOUTS) => "dashed",
+				esc_html__('Dotted',  DT_WOO_LAYOUTS) => "dotted",
+				esc_html__('Double',  DT_WOO_LAYOUTS) => "double",
+				esc_html__('Groove',  DT_WOO_LAYOUTS) => "groove",
+				esc_html__('Ridge',  DT_WOO_LAYOUTS) => "ridge",
+				esc_html__('Inset',  DT_WOO_LAYOUTS) => "inset",
+				esc_html__('Outset',  DT_WOO_LAYOUTS) => "outset",
+				esc_html__('Mix',  DT_WOO_LAYOUTS) => "mix",
+			),
+		),
+		array(
+			"type" => "colorpicker",
+			"value" => "#e1e1e1",
+			"heading" => esc_html__("Thumbnail Border Color", DT_WOO_LAYOUTS),
+			"param_name" => "thumbnail_border_color",
+			"dependency" => array("element" => "thumbnail_border_style" , "value" => array('solid','dashed','dotted','double','groove','ridge','inset','outset','mix') ),
+		),
+		array(
+			"type" => "textfield",
+			"value" => "1px",
+			"heading" => esc_html__("Thumbnail Border Width", DT_WOO_LAYOUTS),
+			"param_name" => "thumbnail_border_width",
+			"dependency" => array("element" => "thumbnail_border_style" , "value" => array('solid','dashed','dotted','double','groove','ridge','inset','outset','mix') ),
+			"description" => esc_html__("Enter border width: ex: 1px.", DT_WOO_LAYOUTS )
+		),
+		array (
+			"type" => "textfield",
+			"class" => "",
+			"heading" => __ ( "Thumbnail Border Radius", DT_WOO_LAYOUTS ),
+			"param_name" => "thumbnail_border_radius",
+			"value" => "0px",
+			"description" => __ ( "Enter your custom border radius . Example: 10px 10px 10px 10px.", DT_WOO_LAYOUTS )
+		),
+		array (
+			"type" => "textfield",
+			"class" => "",
+			"heading" => __ ( "Thumbnail Padding", DT_WOO_LAYOUTS ),
+			"param_name" => "thumbnail_padding",
+			"value" => '0',
+			"description" => __ ( "Enter your custom padding . Example: 10px 10px 10px 10px.", DT_WOO_LAYOUTS )
+		),
+		array (
+			"type" => "textfield",
+			"class" => "",
+			"heading" => __ ( "Thumbnail Margin", DT_WOO_LAYOUTS ),
+			"param_name" => "thumbnail_margin",
+			"value" => '0',
+			"description" => __ ( "Enter your custom margin . Example: 10px 10px 10px 10px.", DT_WOO_LAYOUTS )
+		),
+		// Product title
+		array (
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__( "Product title font size", DT_WOO_LAYOUTS ),
+			"param_name" => "product_font_size",
+			"value" => "20px",
+			"description" => __ ( "Enter your custom size. Example: 20px.", DT_WOO_LAYOUTS ),
+		),
+		array (
+			"type" => "checkbox",
+			"class" => "",
+			"heading" => __ ( "Hide Rating", DT_WOO_LAYOUTS ),
+			"param_name" => "show_rating",
+			"value" => array (
+				__ ( 'Yes, please', DT_WOO_LAYOUTS ) => '0'
+			)
+		),
+		// Loadmore
+		// Custom Loadmore
+// 		array (
+// 			"type" => "dtwl_woo_field_heading",
+// 			"value" => "Custom Loadmore",
+// 			"param_name" => "custom_options",
+// 			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+// 		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Load more text", DT_WOO_LAYOUTS),
+			"param_name" => "loadmore_text",
+			"value" => "Load more",
+			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Loaded text", DT_WOO_LAYOUTS),
+			"param_name" => "loaded_text",
+			"value" => "All ready",
+			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Loadmore Border Style", DT_WOO_LAYOUTS),
+			"param_name" => "loadmore_border_style",
+			"value" => array(
+				esc_html__('Solid',  DT_WOO_LAYOUTS) => "solid",
+				esc_html__('Dashed',  DT_WOO_LAYOUTS) => "dashed",
+				esc_html__('Dotted',  DT_WOO_LAYOUTS) => "dotted",
+				esc_html__('None',  DT_WOO_LAYOUTS) => "none",
+			),
+			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+		),
+		array(
+			"type" => "colorpicker",
+			"value" => "#eaeaea",
+			"heading" => esc_html__("Loadmore Border Color", DT_WOO_LAYOUTS),
+			"param_name" => "loadmore_border_color",
+			"dependency" => array("element" => "loadmore_border_style" , "value" => array('solid','dashed','dotted') ),
+		),
+		array(
+			"type" => "textfield",
+			"value" => "3px",
+			"heading" => esc_html__("Loamore Border Width", DT_WOO_LAYOUTS),
+			"param_name" => "thumbnail_border_width",
+			"dependency" => array("element" => "loadmore_border_style" , "value" => array('solid','dashed','dotted') ),
+			"description" => esc_html__("Enter border width: ex: 3px.", DT_WOO_LAYOUTS )
+		),
+		array (
+			"type" => "textfield",
+			"class" => "",
+			"heading" => __ ( "Loamore Border Radius", DT_WOO_LAYOUTS ),
+			"param_name" => "loadmore_border_radius",
+			"value" => "0px",
+			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+			"description" => __ ( "Enter your custom border radius . Example: 10px 10px 10px 10px.", DT_WOO_LAYOUTS )
+		),
 		////
 		array (
 			"type" => "textfield",
 			"heading" => esc_html__( "Extra class name", DT_WOO_LAYOUTS ),
 			"param_name" => "el_class",
 			"description" => esc_html__( "If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", DT_WOO_LAYOUTS )
-		)
+		),
 	);
 }
 
