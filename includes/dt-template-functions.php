@@ -72,3 +72,15 @@ if( ! function_exists('dtwl_add_compare_link') ){
 		endif;
 	}
 }
+
+if( ! function_exists('dtwl_product_thumbnail') ){
+	function dtwl_product_thumbnail(){
+	    global $post;
+	    $size = 'shop_thumbnail';
+	    if ( has_post_thumbnail() ) {
+	        echo get_the_post_thumbnail( $post->ID, $size, array('class' => "attachment-$size") );
+	    } elseif ( wc_placeholder_img_src() ) {
+	        echo wc_placeholder_img( $size );
+	    }
+	}
+}

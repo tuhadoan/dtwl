@@ -58,11 +58,15 @@ class DT_WooCommerce_Layouts{
 		'plist_desc'		=> 'hide',
 		'list_limit'		=> 4,
 		// product slider params
-		'pslider_limit'		=> 10,
+		'pslides_template'	=> 'def',
+		'pslides_centerpadding'	=> '100px',
+		'pslides_autoplay'	=> 'true',
 		'pslides_speed'		=> 300,
 		'pslides_margin'	=> 10,
 		'pslides_toshow'	=> 3,
 		'pslides_toscroll'	=> 3,
+		'pslider_limit'		=> 10,
+		'pslides_dots'		=> 'false',
 		// Custom options
 		'main_color'		=> '#ff4800',
 		'thumbnail_background_color' => '#ffffff',
@@ -163,7 +167,7 @@ class DT_WooCommerce_Layouts{
 		}
 		
 		// custom product slider style
-		if( $display_type == 'product_slider'){
+		if( $display_type == 'product_slider' && $pslides_template !== 'single_mode' ){
 			$pslides_margin = ((int)$pslides_margin) ? (int)$pslides_margin : 10;
 			$inline_style .= '#'.$id.'.dtwl-woo-product-slider .slick-slider{
 				margin-left: -'. $pslides_margin .'px;
@@ -189,7 +193,7 @@ class DT_WooCommerce_Layouts{
 			 */
 			
 			// Class
-			$class = 'dtwl-woo dtwl-woo-product-tabs woocommerce template-'.esc_attr($template);
+			$class = 'dtwl-woo dtwl-woo-product-tabs woocommerce dtwl-woo-template-'.esc_attr($template);
 			if( $template == 'carousel' ) $class .= ' dtwl-pre-load';
 			$class .= esc_attr($el_class);
 			
@@ -451,7 +455,7 @@ class DT_WooCommerce_Layouts{
 					<script>
 						jQuery(document).ready(function($){
 							// Only handle preload for template is carousel
-							$('#<?php echo $id;?>.template-carousel').removeClass('dtwl-pre-load');
+							$('#<?php echo $id;?>.dtwl-woo-template-carousel').removeClass('dtwl-pre-load');
 							// Tab
 							$('#<?php echo $id;?> .dtwl-woo-nav-tabs').find("li").first().addClass("active");
 							// Tab content
@@ -554,7 +558,7 @@ class DT_WooCommerce_Layouts{
 			$plist_desc_show = $plist_desc;
 			
 			// Class
-			$class = 'dtwl-woo dtwl-woo-product-list woocommerce template-list';
+			$class = 'dtwl-woo dtwl-woo-product-list woocommerce dtwl-woo-template-list';
 			$class .= esc_attr($el_class);
 			$loop = dhwl_woo_query($plist_orderby, $list_limit);
 			ob_start();
@@ -582,7 +586,7 @@ class DT_WooCommerce_Layouts{
 			 */
 			$number_query = $pslider_limit;
 			// Class
-			$class = 'dtwl-woo dtwl-woo-product-slider woocommerce template-slider';
+			$class = 'dtwl-woo dtwl-woo-product-slider woocommerce template-slider dtwl-woo-' .$pslides_template;
 			$class .= ' dtwl-pre-load';
 			$class .= esc_attr($el_class);
 			ob_start();
@@ -592,11 +596,7 @@ class DT_WooCommerce_Layouts{
 				<h2 class="dtwl-heading"><?php echo esc_html($heading);?></h2>
 				<?php endif; ?>
 				
-				<div class="dtwl-woo-slider-content dtwl-woo-products"
-					data-slidesspeed = "<?php echo esc_attr($pslides_speed);?>"
-					data-slidestoshow = "<?php echo esc_attr($pslides_toshow);?>"
-					data-slidestoscroll = "<?php echo esc_attr($pslides_toscroll);?>"
-				>
+				<div class="dtwl-woo-slider-content dtwl-woo-products">
 					<?php
 					if ($query_types == 'category') :
 						$tag = '';
@@ -605,7 +605,6 @@ class DT_WooCommerce_Layouts{
 						}else{
 							$cats = dtwl_get_cats();
 						}
-						
 						foreach ($cats as $cat): 
 							if( !empty($categories) ){
 								$cat_term = get_term($cat,'product_cat');
@@ -613,19 +612,12 @@ class DT_WooCommerce_Layouts{
 							}
 							
 							$loop = dhwl_woo_query($orderby, $number_query, $cat);
+							$this->slider_template($loop, $pslides_template);
 							
-								while ( $loop->have_posts() ) : $loop->the_post();
-									?>
-									<div class="dtwl-woo-item product">
-										<?php
-											wc_get_template( 'item-grid.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
-										?>
-									</div>
-									<?php
-						    	endwhile;
 						endforeach;
 					?>
-					<?php 
+					<?php
+					// 
 					elseif( $query_types == 'tags' ):
 								$cat = '';
 								if( !empty($tags)){
@@ -635,141 +627,162 @@ class DT_WooCommerce_Layouts{
 								}
 								
 								foreach ($tags_r as $tag):
-								if($tags){ // has include tags_ids
-									$tag_term = get_term($tag,'product_tag');
-									$tag = $tag_term->slug;
-								}
-								
-								?>
-								<div id="dtwl_pdtabs_<?php echo esc_attr($tag); ?>" class="tab-pan fade">
-								<?php
-									
-									$loop = dhwl_woo_query($query_types, $number_query, $cat, $tag);
-									
-									if ($template == 'grid') :
-										?>
-										<div class="dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list grid <?php echo esc_attr($effect_load); ?>">
-										<?php
-										while ( $loop->have_posts() ) : $loop->the_post();
-											$class = 'dtwl-woo-item product';
-											
-											if ( isset($col) && $col > 0) :
-												$column = ($col == 5) ? '15' : absint(12/$col);
-												$column2 = absint(12/($col-1));
-												$column3 = absint(12/($col-2));
-												$class .= ' dtwl-woo-col-md-'.$column.' dtwl-woo-col-sm-'.$column2.' dtwl-woo-col-xs-'.$column3.' dtwl-woo-col-phone-12';
-											endif;
-											if ( isset($animate) && $animate) :
-											$class .= ' item-animate';
-											endif;
-											
-											?>
-											<div class="<?php echo $class; ?>">
-												<?php
-												wc_get_template( 'item-grid.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
-												?>
-											</div>
-											<?php
-								    	endwhile;
-								    	?>
-								    	</div>
-								    	<div class="dtwl-woo-loadmore-wrap">
-								    		<?php 
-								    		$btn_id = $tag.'_'.$rt;
-								    		$btn_type = 'tag';
-								    		$content_div = '#dtwl_pdtabs_'.$tag. ' .dtwl-woo-product-list';
-								    		$this->load_more_button($btn_id, $content_div, $template_part, $number_load, $number_query, $cat, $tag, $col, $btn_type, $loadmore_text, $loaded_text); ?>
-								    	</div>
-								    	<?php
-								    else:
-								    ?>
-								   		<div class="dtwl-woo-navslider" style="display:none"><span class="prev"><i class="fa fa-chevron-left"></i></span><span class="next"><i class="fa fa-chevron-right"></i></span></div>
-								    <?php
-								    	// Carousel template
-								    	$this->carousel_template($loop, 'dtwl_pdtabs_'.$tag, $number_display);
-								    endif;
-							    ?>
-								</div>
-						    <?php
-							endforeach;
-						?>
-						<?php 
-						else: // Tabs type list orderby
-							$orderbys = explode(',', $list_orderby); 
-							$tag	= '';
-							foreach ($orderbys as $orderby): ?>
-									<div id="dtwl_pdtabs_<?php echo esc_attr($orderby); ?>" class="tab-pan fade">
-								<?php  
-									$loop = dhwl_woo_query($orderby, $number_query, $categories);
-									
-									if ($template == 'grid') :
-										?>
-										<div class="dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list grid <?php echo esc_attr($effect_load); ?>">
-										<?php
-										while ( $loop->have_posts() ) : $loop->the_post();
-											$class = 'dtwl-woo-item product';
-											
-											if ( isset($col) && $col > 0) :
-												$column = ($col == 5) ? '15' : absint(12/$col);
-												$column2 = absint(12/($col-1));
-												$column3 = absint(12/($col-2));
-												$class .= ' dtwl-woo-col-md-'.$column.' dtwl-woo-col-sm-'.$column2.' dtwl-woo-col-xs-'.$column3.' dtwl-woo-col-phone-12';
-											endif;
-											if ( isset($animate) && $animate) :
-											$class .= ' item-animate';
-											endif;
-											
-											?>
-											<div class="<?php echo $class; ?>">
-												<?php
-												wc_get_template( 'item-grid.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
-												?>
-											</div>
-											<?php
-								    	endwhile;
-								    	?>
-								    	</div>
-								    	<div class="dtwl-woo-loadmore-wrap">
-								    		<?php 
-								    		$btn_id = $orderby.'_'.$rt;
-								    		$btn_type = 'order';
-								    		$content_div = '#dtwl_pdtabs_'.$orderby. ' .dtwl-woo-product-list';
-								    		$cat = '';
-								    		$this->load_more_button($btn_id, $content_div, $template_part, $number_load, $number_query, $cat, $tag, $col, $btn_type, $loadmore_text, $loaded_text); ?>
-								    	</div>
-								    	<?php
-								    else:
-								    ?>
-								   		<div class="dtwl-woo-navslider" style="display:none"><span class="prev"><i class="fa fa-chevron-left"></i></span><span class="next"><i class="fa fa-chevron-right"></i></span></div>
-								    <?php
-								    	// Carousel template
-								    	$this->carousel_template($loop, 'dtwl_pdtabs_'.$orderby, $number_display);
-								    endif;
-							    ?>
-								</div>
-							<?php
-							endforeach;
-						endif;
-						?>
+									if($tags){ // has include tags_ids
+										$tag_term = get_term($tag,'product_tag');
+										$tag = $tag_term->slug;
+									}
+										$loop = dhwl_woo_query($query_types, $number_query, $cat, $tag);
+										$this->slider_template($loop, $pslides_template);
+										
+								endforeach;
+					?>
+					<?php 
+					else: // Tabs type list orderby
+						$orderbys = explode(',', $list_orderby); 
+						$tag	= '';
+						foreach ($orderbys as $orderby): ?>
+							<?php  
+								$loop = dhwl_woo_query($orderby, $number_query, $categories);
+								$this->slider_template($loop, $pslides_template);
+						endforeach;
+					endif;
+					?>
 					</div><!-- /.dtwl-woo-slider-content -->
-					<script>
-						jQuery(document).ready(function(){
-							var $this = jQuery('#<?php echo $id?>.dtwl-woo-product-slider'),
-							$container = $this.find('.dtwl-woo-slider-content');
-							
-							jQuery($container).slick({
-								dots: true,
-								infinite: true,
-								speed: 300,
-								adaptiveHeight: true,
-								autoplay: false,
-								slidesToShow: 3,
-								slidesToScroll: 3,
+					
+					<?php
+					$pslides_autoplay 	= ($pslides_autoplay == 'true') ? 'true' : 'false';
+					$pslides_toshow		= ((int)$pslides_toshow) ? (int)$pslides_toshow : 3;
+					$pslides_toscroll	= ((int)$pslides_toscroll) ? (int)$pslides_toscroll : 3;
+					$centerMode			= ($pslides_template == 'center_mode') ? 'true' : 'false';
+					$pslides_dots	 	= ($pslides_dots == 'true') ? 'true' : 'false';
+					
+					switch ($pslides_template){
+						case 'slider_syncing':?>
+							<script>
+							jQuery(document).ready(function(){
+								var $this = jQuery('#<?php echo $id ?>.dtwl-woo-product-slider'),
+								$container = $this.find('.dtwl-woo-slider-content');
+								
+								jQuery('.dtwl-woo-slider-for').slick({
+								  slidesToShow: 1,
+								  slidesToScroll: 1,
+								  arrows: false,
+								  fade: true,
+								  asNavFor: '.dtwl-woo-slider-nav'
+								});
+								jQuery('.dtwl-woo-slider-nav').slick({
+									autoplay: <?php echo esc_attr($pslides_autoplay);?>,
+    								slidesToShow: <?php echo intval($pslides_toshow);?>,
+    								slidesToScroll: <?php echo intval($pslides_toscroll);?>,
+								  	asNavFor: '.dtwl-woo-slider-for',
+								  	dots: <?php echo esc_attr($pslides_dots)?>,
+								  	centerMode: true,
+								  	centerPadding: '100px',
+								  	focusOnSelect: true,
+								  	responsive: [
+												{
+												    breakpoint: 480,
+												    settings: {
+												      slidesToShow: 3,
+												      slidesToScroll: 1,
+												      centerMode: false,
+												      arrows: false,
+												      infinite: false,
+												      dots: false
+												    }
+												  }
+												]
+								});
+								
+								jQuery($this).removeClass('dtwl-pre-load');
 							});
+							</script>
+							<?php
+							break;
+						case 'single_mode':
+							?>
+							<script>
+							jQuery(document).ready(function(){
+								var $this = jQuery('#<?php echo $id?>.dtwl-woo-product-slider'),
+								$container = $this.find('.dtwl-woo-slider-content');
+								
+								jQuery($container).slick({
+								  dots: <?php echo esc_attr($pslides_dots)?>,
+								  infinite: true,
+								  autoplay: <?php echo esc_attr($pslides_autoplay);?>,
+								  speed: <?php echo intval($pslides_speed);?>,
+								  fade: true,
+								  cssEase: 'linear'
+								});
 
-							jQuery($this).removeClass('dtwl-pre-load');
-						});
-					</script>
+								jQuery($this).removeClass('dtwl-pre-load');
+							});
+							</script>
+							<?php
+							break;
+						case 'def' || 'center_mode':
+							?>
+		    				<script>
+    							jQuery(document).ready(function(){
+    								var $this = jQuery('#<?php echo $id?>.dtwl-woo-product-slider'),
+    								$container = $this.find('.dtwl-woo-slider-content');
+    								
+    								jQuery($container).slick({
+    									dots: <?php echo esc_attr($pslides_dots)?>,
+    									infinite: true,
+    									speed: <?php echo intval($pslides_speed);?>,
+    									adaptiveHeight: true,
+    									centerMode: <?php echo esc_attr($centerMode);?>,
+    									centerPadding: '<?php echo esc_attr($pslides_centerpadding)?>',
+    									autoplay: <?php echo esc_attr($pslides_autoplay);?>,
+    									slidesToShow: <?php echo intval($pslides_toshow);?>,
+    									slidesToScroll: <?php echo intval($pslides_toscroll);?>,
+    									responsive: [
+    									             {
+    									               breakpoint: 1024,
+    									               settings: {
+    									                 slidesToShow: <?php echo intval($pslides_toshow)-1;?>,
+    									                 slidesToScroll: <?php echo intval($pslides_toshow)-1;?>,
+    									                 centerMode: <?php echo esc_attr($centerMode);?>,
+    								    				 centerPadding: '40px',
+    									                 infinite: true,
+    									                 dots: <?php echo esc_attr($pslides_dots)?>
+    									               }
+    									             },
+    									             {
+    									               breakpoint: 600,
+    									               settings: {
+    									                 slidesToShow: 2,
+    									                 slidesToScroll: 2,
+    									                 centerMode: <?php echo esc_attr($centerMode);?>,
+    	    								    		 centerPadding: '40px',
+    									                 infinite: false,
+    									                 dots: false
+    									               }
+    									             },
+    									             {
+    									               breakpoint: 480,
+    									               settings: {
+    									                 slidesToShow: 1,
+    									                 slidesToScroll: 1,
+    									                 centerMode: <?php echo esc_attr($centerMode);?>,
+    	    								    		 centerPadding: '40px',
+    									                 infinite: false,
+    									                 dots: false
+    									               }
+    									             }
+    									           ]
+    								});
+    	
+    								jQuery($this).removeClass('dtwl-pre-load');
+    							});
+		    				</script>
+							<?php
+							break;
+						default:
+							break;
+					}
+					?>
 				<?php
 				$html .= ob_get_clean();
 				return $html;
@@ -877,6 +890,64 @@ class DT_WooCommerce_Layouts{
 				</div>
 				<?php
 	    	endwhile;
+		}
+		
+		public function slider_template($loop, $pslides_template = 'def'){
+			switch ($pslides_template){
+				case 'slider_syncing':?>
+					<div class="dtwl-woo-slider-for">
+					<?php
+					while ( $loop->have_posts() ) : $loop->the_post();
+					?>	
+						<div class="dtwl-woo-item product">
+							<?php
+								wc_get_template( 'item-slider-syncing.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+							?>
+						</div>
+						<?php
+			    	endwhile;
+			    	?>
+			    	</div>
+					<div class="dtwl-woo-slider-nav">
+					<?php
+					while ( $loop->have_posts() ) : $loop->the_post();
+					?>
+						<div>
+							<?php
+								wc_get_template( 'item-slider-syncing-nav.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+							?>
+						</div>
+						<?php
+			    	endwhile;
+			    	?>
+			    	</div>
+			    	<?php
+					break;
+				case 'single_mode':
+					while ( $loop->have_posts() ) : $loop->the_post();
+					?>
+						<div class="dtwl-woo-item product">
+							<?php
+								wc_get_template( 'item-slider-single.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+							?>
+						</div>
+						<?php
+			    	endwhile;
+					break;
+				case 'def' || 'center_mode':
+					while ( $loop->have_posts() ) : $loop->the_post();
+					?>
+						<div class="dtwl-woo-item product">
+							<?php
+								wc_get_template( 'item-grid.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+							?>
+						</div>
+						<?php
+			    	endwhile;
+					break;
+				default:
+					break;
+			}
 		}
 //
 }

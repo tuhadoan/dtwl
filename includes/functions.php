@@ -231,6 +231,34 @@ function dhwl_woo_params(){
 		array(
 			"type" => "dropdown",
 			"class" => "",
+			"heading" => esc_html__("Template", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_template",
+			"value" => array(
+				esc_html__("Default", DT_WOO_LAYOUTS) => "def",
+				esc_html__("Center Mode", DT_WOO_LAYOUTS) => "center_mode",
+				esc_html__("Slider Syncing", DT_WOO_LAYOUTS) => "slider_syncing",
+				esc_html__("Single Mode", DT_WOO_LAYOUTS) => "single_mode",
+			),
+			"dependency" => array (
+				'element' => "display_type",
+				'value' => array (
+					'product_slider',
+				)
+			),
+			"description" => esc_html__("In the Slider Syncing mode, you should use query single category, single tag or use query orderby.", DT_WOO_LAYOUTS)
+		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Center Padding", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_centerpadding",
+			"dependency" => array("element" => "pslides_template" , "value" => "center_mode"),
+			"value" => "100px",
+			"description" => esc_html__("Side padding when in center mode (px). EX: 100px", DT_WOO_LAYOUTS)
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
 			"heading" => esc_html__("Query types", DT_WOO_LAYOUTS),
 			"param_name" => "query_types",
 			"value" => array(
@@ -417,6 +445,18 @@ function dhwl_woo_params(){
 		
 		// Product Slider params
 		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Autoplay", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_autoplay",
+			"value" => array(
+				esc_html__('True',  DT_WOO_LAYOUTS) => "true",
+				esc_html__('False',  DT_WOO_LAYOUTS) => "false",
+			),
+			"dependency" => array("element" => "display_type" , "value" => "product_slider" ),
+			"description" => ""
+		),
+		array(
 			"type" => "textfield",
 			"class" => "",
 			"heading" => esc_html__("Speed. int(ms)", DT_WOO_LAYOUTS),
@@ -430,7 +470,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Width Between Each Slide. int(px)", DT_WOO_LAYOUTS),
 			"param_name" => "pslides_margin",
-			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
 			"value" => "10px",
 			"description" => esc_html__('', DT_WOO_LAYOUTS),
 		),
@@ -439,7 +479,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Slides To Show.", DT_WOO_LAYOUTS),
 			"param_name" => "pslides_toshow",
-			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
 			"value" => "3",
 			"description" => "",
 		),
@@ -448,7 +488,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Slides To Scroll", DT_WOO_LAYOUTS),
 			"param_name" => "pslides_toscroll",
-			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
 			"value" => "3",
 			"description" => "",
 		),
@@ -460,6 +500,18 @@ function dhwl_woo_params(){
 			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
 			"value" => "10",
 			"description" => esc_html__('The number limit to query.', DT_WOO_LAYOUTS),
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Dots", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_dots",
+			"value" => array(
+				esc_html__('False',  DT_WOO_LAYOUTS) => "false",
+				esc_html__('True',  DT_WOO_LAYOUTS) => "true",
+			),
+			"dependency" => array("element" => "display_type" , "value" => "product_slider" ),
+			"description" => esc_html__("Show dot indicators", DT_WOO_LAYOUTS),
 		),
 		
 		// Custom Options
