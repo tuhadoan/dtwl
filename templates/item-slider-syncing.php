@@ -13,13 +13,6 @@ global $product, $woocommerce_loop, $yith_woocompare;
 						 * @hooked woocommerce_show_product_loop_sale_flash - 10
 						 * @hooked woocommerce_template_loop_product_thumbnail - 10
 						 */
-						if(isset($hover_thumbnail) && $hover_thumbnail === '1'){
-							remove_action('woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10);
-							add_action('woocommerce_before_shop_loop_item_title', 'dtwl_woo_template_loop_product_thumbnail', 10);
-						}else{
-							remove_action('woocommerce_before_shop_loop_item_title', 'dtwl_woo_template_loop_product_thumbnail', 10);
-							add_action('woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10);
-						}
 						do_action( 'woocommerce_before_shop_loop_item_title' );
 					?>
 				</a>

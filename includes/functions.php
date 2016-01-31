@@ -29,7 +29,7 @@ function dtwl_woo_setting_field_categories($settings, $value, $dependency=''){
 	$output .= '<option value="">' . esc_html__('-- Select --',DT_WOO_LAYOUTS) . '</option>';
 	if( ! empty($categories)){
 		foreach ($categories as $cat):
-		$output .= '<option value="' . esc_attr( $cat->term_id ) . '"' . selected( in_array( $cat->term_id, $category_ids ), true, false ) . '>' . esc_html( $cat->name ) . '</option>';
+		$output .= '<option value="' . esc_attr( $cat->slug ) . '"' . selected( in_array( $cat->slug, $category_ids ), true, false ) . '>' . esc_html( $cat->name ) . '</option>';
 		endforeach;
 	}
 	$output .= '</select>';
@@ -49,7 +49,7 @@ function dtwl_woo_setting_field_tags($settings, $value, $dependency = ''){
 	$output = '<select '.$dependency.' id="'.$settings['param_name'].'" multiple="multiple" class="dtwl-woo-select chosen_select_nostd">';
 	if( ! empty($tags) ){
 		foreach ($tags as $tag){
-			$output .= '<option value="' . esc_attr($tag->term_id) . '" '. selected( in_array($tag->term_id, $tags_ids), true, false) .'>' . esc_html( $tag->name ) . '</option>';
+			$output .= '<option value="' . esc_attr($tag->slug) . '" '. selected( in_array($tag->slug, $tags_ids), true, false) .'>' . esc_html( $tag->name ) . '</option>';
 		}
 	}
 	$output .= '</select>';
@@ -85,29 +85,43 @@ function dtwl_woo_setting_field_orderby($settings, $value, $dependency = ''){
 	return $output;
 }
 
-function dhwl_woo_query($type, $post_per_page=-1, $cat='', $tag = '', $offset=0, $paged=1){
+function dhwl_woo_tabs_query($query_types, $tab, $orderby, $post_per_page=-1, $offset=0, $paged=1){
 	global $woocommerce;
-	$args = array(
+	$query_args = array(
 		'post_type' => 'product',
 		'posts_per_page' => $post_per_page,
 		'post_status' => 'publish',
 		'offset'            => $offset,
 		'paged' => $paged
 	);
-	switch ($type) {
+	
+	if ($query_types == 'category'){
+		if($tab!=''){
+			$query_args['product_cat']= $tab;
+		}
+	}elseif ($query_types == 'tags'){
+		if($tab!=''){
+			$query_args['product_tag']= $tab;
+		}
+	}else{ // List orderby
+		$tab = $orderby;
+	}
+	
+	
+	switch ($tab) {
 		case 'best_selling':
-			$args['meta_key']='total_sales';
-			$args['orderby']='meta_value_num';
-			$args['ignore_sticky_posts']   = 1;
-			$args['meta_query'] = array();
-			$args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-			$args['meta_query'][] = $woocommerce->query->visibility_meta_query();
+			$query_args['meta_key']='total_sales';
+			$query_args['orderby']='meta_value_num';
+			$query_args['ignore_sticky_posts']   = 1;
+			$query_args['meta_query'] = array();
+			$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
+			$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
 			break;
 		case 'featured_product':
-			$args['ignore_sticky_posts']=1;
-			$args['meta_query'] = array();
-			$args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-			$args['meta_query'][] = array(
+			$query_args['ignore_sticky_posts']=1;
+			$query_args['meta_query'] = array();
+			$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
+			$query_args['meta_query'][] = array(
 				'key' => '_featured',
 				'value' => 'yes'
 			);
@@ -115,19 +129,19 @@ function dhwl_woo_query($type, $post_per_page=-1, $cat='', $tag = '', $offset=0,
 			break;
 		case 'top_rate':
 			add_filter( 'posts_clauses',  array( $woocommerce->query, 'order_by_rating_post_clauses' ) );
-			$args['meta_query'] = array();
-			$args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-			$args['meta_query'][] = $woocommerce->query->visibility_meta_query();
+			$query_args['meta_query'] = array();
+			$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
+			$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
 			break;
 		case 'recent':
-			$args['meta_query'] = array();
-			$args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
+			$query_args['meta_query'] = array();
+			$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
 			break;
 		case 'on_sale':
-			$args['meta_query'] = array();
-			$args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-			$args['meta_query'][] = $woocommerce->query->visibility_meta_query();
-			$args['post__in'] = wc_get_product_ids_on_sale();
+			$query_args['meta_query'] = array();
+			$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
+			$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
+			$query_args['post__in'] = wc_get_product_ids_on_sale();
 			break;
 		case 'recent_review':
 			if($post_per_page == -1) $_limit = 4;
@@ -142,38 +156,35 @@ function dhwl_woo_query($type, $post_per_page=-1, $cat='', $tag = '', $offset=0,
 				0, 'product', 'publish', 0 );
 				$results = $wpdb->get_results($query, OBJECT);
 				$_pids = array();
-					foreach ($results as $re) {
-			if(!in_array($re->comment_post_ID, $_pids))
-				$_pids[] = $re->comment_post_ID;
-				if(count($_pids) == $_limit)
-					break;
+				foreach ($results as $re) {
+				if(!in_array($re->comment_post_ID, $_pids))
+					$_pids[] = $re->comment_post_ID;
+					if(count($_pids) == $_limit)
+						break;
 				}
 
-			$args['meta_query'] = array();
-			$args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-			$args['meta_query'][] = $woocommerce->query->visibility_meta_query();
-			$args['post__in'] = $_pids;
+				$query_args['meta_query'] = array();
+				$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
+					$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
+					$query_args['post__in'] = $_pids;
+				break;
+		case 'price':
+			$query_args['meta_key'] = '_price';
+			$query_args['orderby'] = 'meta_value_num';
+			$query_args['order'] = $order;
+			break;
+		case 'rand':
+			$query_args['orderby']  = 'rand';
 			break;
 	}
-
-	if($cat!=''){
-		$args['product_cat']= $cat;
-	}
 	
-	if($tag!=''){
-		$args['product_tag']= $tag;
-	}
 	wp_reset_postdata();
-	return new WP_Query($args);
+	return new WP_Query($query_args);
 }
 
 
 function dhwl_woo_params(){
 	return array(
-// 		array (
-// 			"type" => "dtwl_woo_field_id",
-// 			"param_name" => "id"
-// 		),
 		array (
 			"type" => "textfield",
 			"class" => "",
@@ -227,6 +238,34 @@ function dhwl_woo_params(){
 				)
 			),
 			"description" => ""
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Template", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_template",
+			"value" => array(
+				esc_html__("Default", DT_WOO_LAYOUTS) => "def",
+				esc_html__("Center Mode", DT_WOO_LAYOUTS) => "center_mode",
+				esc_html__("Slider Syncing", DT_WOO_LAYOUTS) => "slider_syncing",
+				esc_html__("Single Mode", DT_WOO_LAYOUTS) => "single_mode",
+			),
+			"dependency" => array (
+				'element' => "display_type",
+				'value' => array (
+					'product_slider',
+				)
+			),
+			"description" => esc_html__("In the Slider Syncing mode, you should use query single category, single tag or use query orderby.", DT_WOO_LAYOUTS)
+		),
+		array(
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__("Center Padding", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_centerpadding",
+			"dependency" => array("element" => "pslides_template" , "value" => "center_mode"),
+			"value" => "100px",
+			"description" => esc_html__("Side padding when in center mode (px). EX: 100px", DT_WOO_LAYOUTS)
 		),
 		array(
 			"type" => "dropdown",
@@ -417,6 +456,18 @@ function dhwl_woo_params(){
 		
 		// Product Slider params
 		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Autoplay", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_autoplay",
+			"value" => array(
+				esc_html__('True',  DT_WOO_LAYOUTS) => "true",
+				esc_html__('False',  DT_WOO_LAYOUTS) => "false",
+			),
+			"dependency" => array("element" => "display_type" , "value" => "product_slider" ),
+			"description" => ""
+		),
+		array(
 			"type" => "textfield",
 			"class" => "",
 			"heading" => esc_html__("Speed. int(ms)", DT_WOO_LAYOUTS),
@@ -430,7 +481,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Width Between Each Slide. int(px)", DT_WOO_LAYOUTS),
 			"param_name" => "pslides_margin",
-			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
 			"value" => "10px",
 			"description" => esc_html__('', DT_WOO_LAYOUTS),
 		),
@@ -439,7 +490,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Slides To Show.", DT_WOO_LAYOUTS),
 			"param_name" => "pslides_toshow",
-			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
 			"value" => "3",
 			"description" => "",
 		),
@@ -448,7 +499,7 @@ function dhwl_woo_params(){
 			"class" => "",
 			"heading" => esc_html__("Slides To Scroll", DT_WOO_LAYOUTS),
 			"param_name" => "pslides_toscroll",
-			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
+			"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
 			"value" => "3",
 			"description" => "",
 		),
@@ -460,6 +511,18 @@ function dhwl_woo_params(){
 			"dependency" => array("element" => "display_type" , "value" => 'product_slider' ),
 			"value" => "10",
 			"description" => esc_html__('The number limit to query.', DT_WOO_LAYOUTS),
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Dots", DT_WOO_LAYOUTS),
+			"param_name" => "pslides_dots",
+			"value" => array(
+				esc_html__('False',  DT_WOO_LAYOUTS) => "false",
+				esc_html__('True',  DT_WOO_LAYOUTS) => "true",
+			),
+			"dependency" => array("element" => "display_type" , "value" => "product_slider" ),
+			"description" => esc_html__("Show dot indicators", DT_WOO_LAYOUTS),
 		),
 		
 		// Custom Options
@@ -591,7 +654,8 @@ function dhwl_woo_params(){
 			"heading" => esc_html__("Load more text", DT_WOO_LAYOUTS),
 			"param_name" => "loadmore_text",
 			"value" => "Load more",
-			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+			"dependency" => array("element" => "template" , "value" => array("grid") ),
+			"description" => ""
 		),
 		array(
 			"type" => "textfield",
@@ -599,7 +663,7 @@ function dhwl_woo_params(){
 			"heading" => esc_html__("Loaded text", DT_WOO_LAYOUTS),
 			"param_name" => "loaded_text",
 			"value" => "All ready",
-			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+			"dependency" => array("element" => "template" , "value" => array("grid") ),
 		),
 		array(
 			"type" => "dropdown",
@@ -612,7 +676,7 @@ function dhwl_woo_params(){
 				esc_html__('Dotted',  DT_WOO_LAYOUTS) => "dotted",
 				esc_html__('None',  DT_WOO_LAYOUTS) => "none",
 			),
-			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+			"dependency" => array("element" => "template" , "value" => array("grid") ),
 		),
 		array(
 			"type" => "colorpicker",
@@ -635,7 +699,7 @@ function dhwl_woo_params(){
 			"heading" => __ ( "Loamore Border Radius", DT_WOO_LAYOUTS ),
 			"param_name" => "loadmore_border_radius",
 			"value" => "0px",
-			"dependency" => array("element" => "display_type" , "value" => 'product_tabs' ),
+			"dependency" => array("element" => "template" , "value" => array("grid") ),
 			"description" => __ ( "Enter your custom border radius . Example: 10px 10px 10px 10px.", DT_WOO_LAYOUTS )
 		),
 		////
@@ -649,7 +713,7 @@ function dhwl_woo_params(){
 }
 
 
-function dtwl_get_list_tab_title($query_types, $categories, $tags, $list_orderby){
+function dtwl_get_list_tab_title($query_types, $categories, $tags, $tabs_orderby){
 	
 	$array_tab 	= array();
 	$list_tab 	= array();
@@ -660,25 +724,17 @@ function dtwl_get_list_tab_title($query_types, $categories, $tags, $list_orderby
 		}else{
 			$array_tab 	= explode(',', $categories);
 		}
-	}elseif($query_types == 'tags'){
+	}elseif($query_types == 'tags'){ 
 		if(empty($tags)){
 			$array_tab 	= dtwl_get_tags();
 		}else{
 			$array_tab 	= explode(',', $tags);
 		}
 	}else{ // list_orderby
-		$array_tab 	= explode(',', $list_orderby);
+		$array_tab 	= explode(',', $tabs_orderby);
 	}
 	
 	foreach ($array_tab as $tab) {
-		if($query_types == 'category' && $categories){
-			$cat_term 	= get_term($tab,'product_cat');
-			$tab 		= $cat_term->slug;
-		}elseif($query_types == 'tags' && $tags){
-			$tag_term 	= get_term($tab,'product_tag');
-			$tab 		= $tag_term->slug;
-		}
-		
 		$list_tab[$tab] = dtwl_tab_title($tab, $query_types);
 	}
 	
@@ -693,7 +749,7 @@ function dtwl_tab_title($tab, $query_types){
 		
 	}elseif($query_types == 'tags' ){ // Tab title is tags
 		$tag = get_term_by('slug', $tab, 'product_tag');
-			
+		
 		return array('name'=>str_replace(' ', '_', $tab),'title'=>$tag->name,'short_title'=>$tag->name);
 		
 	}else{
@@ -707,7 +763,7 @@ function dtwl_tab_title($tab, $query_types){
 			case 'best_selling':
 				return array('name'=>$tab,'title'=>esc_html__('BestSeller Products', DT_WOO_LAYOUTS),'short_title'=>esc_html__('Best Seller', DT_WOO_LAYOUTS));
 			case 'on_sale':
-				return array('name'=>$tab,'title'=>esc_html__('Special Products', DT_WOO_LAYOUTS),'short_title'=>esc_html__('Special', DT_WOO_LAYOUTS));
+				return array('name'=>$tab,'title'=>esc_html__('Special Products', DT_WOO_LAYOUTS),'short_title'=>esc_html__('Sale', DT_WOO_LAYOUTS));
 		}
 	}
 }
