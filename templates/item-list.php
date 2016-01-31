@@ -4,7 +4,6 @@ if(isset($desc_show) && $desc_show)
 	$plist_desc_show = $desc_show;
 ?>
 <div class="dtwl-woo-list-item">
-	<?php do_action( 'woocommerce_before_shop_loop_item' ); ?>
 	<div class="dtwl-woo-list-item-wrapper clearfix">
 			<div class="dtwl-woo-list-item-thumb">
 				<a class="dtwl-woo-product-image" href="<?php the_permalink(); ?>">
@@ -15,6 +14,13 @@ if(isset($desc_show) && $desc_show)
 						 * @hooked woocommerce_show_product_loop_sale_flash - 10
 						 * @hooked woocommerce_template_loop_product_thumbnail - 10
 						 */
+						if(isset($hover_thumbnail) && $hover_thumbnail === '1'){
+							remove_action('woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10);
+							add_action('woocommerce_before_shop_loop_item_title', 'dtwl_woo_template_loop_product_thumbnail', 10);
+						}else{
+							remove_action('woocommerce_before_shop_loop_item_title', 'dtwl_woo_template_loop_product_thumbnail', 10);
+							add_action('woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10);
+						}
 						do_action( 'woocommerce_before_shop_loop_item_title' );
 					?>
 				</a>

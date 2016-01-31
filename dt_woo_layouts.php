@@ -50,6 +50,11 @@ if( ! function_exists('dtwl_is_active') ){
 	}
 }
 
+// DT Widget
+if( dtwl_is_activeb() ){
+	include_once plugin_dir_path(__FILE__). '/includes/widget.php';
+}
+
 class DT_WL_Manager{
 	
 	public function __construct(){
@@ -60,6 +65,10 @@ class DT_WL_Manager{
 		// Ajax load more
 		add_action('wp_ajax_dtwl_wooloadmore', array($this, 'dtwl_woo_loadmore'));
 		add_action('wp_ajax_nopriv_dtwl_wooloadmore', array($this, 'dtwl_woo_loadmore'));
+		
+		// Ajax load more
+		add_action('wp_ajax_dtwl_wootabloadproducts', array($this, 'dtwl_woo_tab_load_products'));
+		add_action('wp_ajax_nopriv_dtwl_wootabloadproducts', array($this, 'dtwl_woo_tab_load_products'));
 	}
 	
 	public function init(){
@@ -121,7 +130,6 @@ class DT_WL_Manager{
 	public function enqueue_scripts(){
 		// register scritps
 		wp_register_script('dtwl-woo-owlcarousel', DT_WOO_LAYOUTS_URL .'assets/js/owl.carousel.min.js', array('jquery'), '', true);
-		wp_register_script('dtwl-woo-imagesloaded', DT_WOO_LAYOUTS_URL .'assets/js/imagesloaded.pkgd.min.js', array('jquery'), '', false);
 		wp_register_script('dtwl-woo-isotope', DT_WOO_LAYOUTS_URL .'assets/js/isotope.pkgd.min.js', array('jquery'), '', false);
 		wp_register_script('dtwl-woo-slick', DT_WOO_LAYOUTS_URL .'assets/slick/slick.min.js', array('jquery'), '', false);
 		
@@ -136,16 +144,16 @@ class DT_WL_Manager{
 		<?php
 	}
 	public function dtwl_woo_loadmore(){
-		$template_name	= isset($_POST['template']) ? $_POST['template'] : 'item-grid';
-		$orderby        = isset($_POST['order']) ?$_POST['order'] : '';
-		$number_query   = isset($_POST['numberquery']) ?$_POST['numberquery'] : '';
+		$query_types	= isset($_POST['query_types']) ? $_POST['query_types'] : 'category';
+		$tab			= isset($_POST['tab']) ? $_POST['tab'] : '';
+		$orderby        = isset($_POST['orderby']) ?$_POST['orderby'] : 'recent';
+		$number_query   = isset($_POST['number_load']) ?$_POST['number_load'] : '';
 		$start          = isset($_POST['start']) ?$_POST['start'] : '';
-		$cat       		= isset($_POST['cat']) ?$_POST['cat'] : '';
-		$tag       		= isset($_POST['tag']) ?$_POST['tag'] : '';
 		$col            = isset($_POST['col']) ?$_POST['col'] : '';
 		$eclass         = isset($_POST['eclass']) ?$_POST['eclass'] : '';
 		
-		$loop = dhwl_woo_query($orderby, $number_query, $cat, $tag, $start);
+		$loop = dhwl_woo_tabs_query($query_types, $tab, $orderby, $number_query, $start);
+		
 		while ( $loop->have_posts() ) : $loop->the_post();
 			$class = 'dtwl-woo-item product';
 				
@@ -155,9 +163,7 @@ class DT_WL_Manager{
 			$column3 = absint(12/($col-2));
 			$class .= ' dtwl-woo-col-md-'.$column.' dtwl-woo-col-sm-'.$column2.' dtwl-woo-col-xs-'.$column3.' dtwl-woo-col-phone-12';
 			endif;
-			if($template_name == 'item-list'):
-				$class .= ' dtwl-woo-list-content';
-			endif;	
+			
 			$class .= ' item-animate';
 			if ( isset($eclass) && $eclass) :
 			$class .= ' '.$eclass;
@@ -165,18 +171,41 @@ class DT_WL_Manager{
 			?>
 			<div class="<?php echo $class; ?>">
 			<?php
-				if ($template_name == 'item-grid' || $template_name == ''):
 				wc_get_template( 'item-grid.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
-				endif;
 			?>
 			</div>
 			
 			<?php
 		endwhile;
+		
+		wp_die();
+	}
+	
+	public function dtwl_woo_tab_load_products(){
+			
+		$tab_args = array(
+			'display_type'		=> $_POST['display_type'],
+			'query_types'		=> $_POST['query_types'],
+			'tab'				=> $_POST['tab'],
+			'orderby'			=> $_POST['orderby'],
+			'number_query'		=> $_POST['number_query'],
+			'number_load'		=> $_POST['number_load'],
+			'number_display'	=> $_POST['number_display'],
+			'template'			=> $_POST['template'],
+			'speed'				=> $_POST['speed'],
+			'dots'				=> $_POST['dots'],
+			'effect_load'		=> $_POST['effect_load'],
+			'col'				=> $_POST['col'],
+			'loadmore_text'		=> $_POST['loadmore_text'],
+			'loaded_text'		=> $_POST['loaded_text'],
+			'eclass'			=> $_POST['eclass'],
+			'hover_thumbnail'	=> $_POST['hover_thumbnail'],
+			'animate'			=> 'yes',
+		);
+		
+		wc_get_template( 'tpl-tab.php', array('tab_args' => $tab_args), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
 		wp_die();
 	}
 	
 }
-
 $dt_wl = new DT_WL_Manager();
-

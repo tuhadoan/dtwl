@@ -69,25 +69,33 @@ var dtwl_effect= {
 };
 
 ;(function(jQuery){
-	function dtwl_woo_init() {
-		// Click loadmore from shortcode SNS Product Tabs
+	function dtwl_woo_init(){
+		dtwl_woo_loadmore();
+		dtwl_woo_tab_loadmore();
+		dtwl_woo_tab_filters_menu();
+		dtwl_woo_isotope();
+
+		jQuery(window).resize(function(){
+			dtwl_woo_tab_filters_menu();
+		});
+	};
+
+	function dtwl_woo_loadmore(){
+		// Click loadmore from shortcode Product Tabs
 		jQuery('.dtwl-woo-loadmore').each(function() {
 			jQuery(this).click(function(){
 				var $this_ = jQuery(this);
 				if(!$this_.hasClass('loaded')){
-					var btnid, numberquery, start, order, col, cat, tag, loadtext, loadedtext, type, wrapid, eclass;
+					var btnid, query_types, tab, orderby, number_load, start, loadtext, loadedtext, wrapid, eclass;
 					btnid       = $this_.attr('id');
-					numberquery = $this_.attr('data-numberquery');
-					start       = $this_.attr('data-start');
-	            	order       = $this_.attr('data-order');
+					query_types = $this_.attr('data-query-types');
+					tab         = $this_.attr('data-tab');
+	            	orderby     = $this_.attr('data-orderby');
+	            	number_load = $this_.attr('data-number-load');
+	            	start       = $this_.attr('data-start');
 	            	col         = $this_.attr('data-col');
-	            	cat         = $this_.attr('data-cat');
-	            	tag         = $this_.attr('data-tag');
 	            	loadtext    = $this_.attr('data-loadtext');
 	            	loadedtext  = $this_.attr('data-loadedtext');
-	            	type        = $this_.attr('data-type');
-	            	content_div = $this_.attr('data-target');
-	            	item_template = $this_.attr('data-template');
 
 	            	wrapid = jQuery('#'+btnid).parents('.dtwl-woo').attr('id');
 
@@ -99,40 +107,30 @@ var dtwl_effect= {
 		                url: dtwl_ajaxurl,
 		                data:{
 		                	action 		: 'dtwl_wooloadmore',
-		                	template 	: item_template,
-		                	numberquery : numberquery,
+		                	query_types : query_types,
+		                	tab 		: tab,
+		                	orderby     : orderby,
+		                	number_load : number_load,
 		                	start       : start,
-		                	order       : order,
 		                	col         : col,
-		                	cat         : cat,
-		                	tag			: tag,
 		                	eclass      : eclass,
 		                },
 		                type: 'POST',
 		                success: function(data){
-		                	if( data!='' ){
-		                		jQuery('#'+wrapid+' '+content_div).append(data);
-			                	if(type == 'order'){
-			                		//jQuery('#'+wrapid+' #dtwl_pdtabs_'+order+' .dtwl-woo-product-list').append(data);
-			                		dtwl_effect.setAnimate( '#'+wrapid+' #dtwl_pdtabs_'+order, eclass );
-			                	}else if(type == 'cat'){
-			                		//jQuery('#'+wrapid+' #dtwl_pdtabs_'+cat+' .dtwl-woo-product-list').append(data);
-			                		dtwl_effect.setAnimate('#'+wrapid+' #dtwl_pdtabs_'+cat, eclass );
-			                	}else if(type == 'tag'){
-			                		//jQuery('#'+wrapid+' #dtwl_pdtabs_'+tag+' .dtwl-woo-product-list').append(data);
-			                		dtwl_effect.setAnimate('#'+wrapid+' #dtwl_pdtabs_'+tag, eclass );
-			                	}
+		                	if( jQuery.trim(data)!='' ){
+
+		                		jQuery('#'+wrapid+' .dtwl-woo-tab-content  #dtwl_pdtabs_'+tab + ' .dtwl-woo-product-list').append(data);
+			                	dtwl_effect.setAnimate('#'+wrapid+' #dtwl_pdtabs_'+tab, eclass );
 			                	
 			                	jQuery('#'+btnid).removeClass('loading');
-			                	if( (parseInt(start) + parseInt(numberquery)) > jQuery('.dtwl-woo-product-tabs #dtwl_pdtabs_'+order+' .dtwl-woo-product-list .dtwl-woo-item').size() ){
+			                	if( (parseInt(start) + parseInt(number_load)) > jQuery('.dtwl-woo-product-tabs #dtwl_pdtabs_'+tab+' .dtwl-woo-product-list .dtwl-woo-item').size() ){
 			                		jQuery('#'+btnid + ' > span').html(loadedtext);
 			                		jQuery('#'+btnid).addClass('loaded');
 			                	}else{
 			                		jQuery('#'+btnid + ' > span').html(loadtext);
 			                	}
-			                	jQuery('#'+btnid).attr('data-start', parseInt(start) + parseInt(numberquery));
-			                	// Callback quickview, wishlist
-			                	//jQuery.fn.yith_quick_view();
+			                	jQuery('#'+btnid).attr('data-start', parseInt(start) + parseInt(number_load));
+			                	
 			                }else{
 			                	jQuery('#'+btnid + ' > span').html(loadedtext);
 			                	jQuery('#'+btnid).removeClass('loading');
@@ -147,9 +145,110 @@ var dtwl_effect= {
 		        }
 		    });
 		});
+	};
 
+	function dtwl_woo_tab_loadmore(){
+		if(jQuery('.dtwl-woo-product-tabs').length > 0){
+			jQuery('.dtwl-woo-product-tabs').each(function(){
+				var $wapp_id = jQuery(this).attr('id');
+				var $wapp_height = jQuery(this).find('.dtwl-woo-tab-content').height();
+				jQuery(this).find('.dtwl-woo-tab-content').css('min-height', $wapp_height);
+
+				jQuery(this).find('.dtwl-woo-filters .dtwl-woo-nav-tabs li a.tab-intent').one('click', function(e){
+					var $this = jQuery(this);
+					if( ! jQuery(this).hasClass('tab-loaded') ){
+						//console.log(jQuery(this).attr('data-tab'));
+						jQuery('#'+$wapp_id+' .dtwl-woo-tab-content').addClass('dtwl-woo-tab-loading');
+
+						var display_type 	= jQuery(this).attr('data-display_type'),
+							query_types 	= jQuery(this).attr('data-query_types'),
+							tab 			= jQuery(this).attr('data-tab'),
+							orderby 		= jQuery(this).attr('data-orderby'),
+							number_query 	= jQuery(this).attr('data-number_query'),
+							number_load 	= jQuery(this).attr('data-number_load'),
+							number_display 	= jQuery(this).attr('data-number_display'),
+							template 		= jQuery(this).attr('data-template'),
+							speed 			= jQuery(this).attr('data-speed'),
+							dots 			= jQuery(this).attr('data-dots'),
+							effect_load 	= jQuery(this).attr('data-effect_load'),
+							col 			= jQuery(this).attr('data-col'),
+							loadmore_text 	= jQuery(this).attr('data-loadmore_text'),
+							loaded_text 	= jQuery(this).attr('data-loaded_text'),
+							hover_thumbnail = jQuery(this).attr('data-hover_thumbnail');
+
+						var eclass = 'animate-'+Math.floor((Math.random() * 1000000000));
+
+						jQuery.ajax({
+								url : dtwl_ajaxurl,
+								data:{
+									action			: 'dtwl_wootabloadproducts',
+									display_type 	: display_type,
+									query_types 	: query_types,
+									tab 			: tab,
+									orderby 		: orderby,
+									number_query 	: number_query,
+									number_load 	: number_load,
+									number_display 	: number_display,
+									template 		: template,
+									speed 			: speed,
+									dots 			: dots,
+									effect_load 	: effect_load,
+									col 			: col,
+									loadmore_text 	: loadmore_text,
+									loaded_text 	: loaded_text,
+									hover_thumbnail : hover_thumbnail,
+									eclass			: eclass,
+								},
+								type: 'POST',
+								success: function(data){
+									if(data != ''){
+										setTimeout(function(){
+											jQuery('#'+$wapp_id+' .dtwl-woo-tab-content').removeClass('dtwl-woo-tab-loading');
+
+											jQuery('#'+$wapp_id+' .dtwl-woo-tab-content').append(data);
+						                	jQuery('#'+$wapp_id+' .dtwl-woo-tab-content').find('#dtwl_pdtabs_'+tab).addClass('active in');
+						                	dtwl_effect.setAnimate('#'+$wapp_id+' .dtwl-woo-tab-content #dtwl_pdtabs_'+tab, eclass );
+
+						                	$this.addClass('tab-loaded');
+						                	dtwl_woo_loadmore();
+										},3000);
+
+									}else{
+
+									}
+								}
+						});
+					}
+				});
+			});
+		}
 	};
 	
+	function dtwl_woo_tab_filters_menu(){
+		if(jQuery('.dtwl-woo-filters').length > 0){
+			jQuery('.dtwl-woo-filters').each(function(){
+				var wrapid = jQuery(this).parents('.dtwl-woo').attr('id');
+				if( jQuery( window ).width() < 992){
+					jQuery('#'+wrapid).find('#dtwl-woo-nav-tabs').slideUp();
+
+					jQuery(this).find('a.dtwl-inevent-flters').on('click',function(e){
+						e.preventDefault();
+
+						if(jQuery(this).hasClass('active')){
+							jQuery('#'+wrapid).find('#dtwl-woo-nav-tabs').slideUp();
+							jQuery(this).removeClass('active')
+						}else{
+							jQuery(this).addClass('active');
+							jQuery('#'+wrapid).find('#dtwl-woo-nav-tabs').slideDown();
+						}
+
+						return false;
+					});
+				}
+			});
+		}
+	};
+
 	function dtwl_woo_isotope(){
 		jQuery('.dtwl-woo-mansory-list').each(function(){
 			var $this = jQuery(this);
@@ -199,12 +298,10 @@ var dtwl_effect= {
 			var $this = jQuery(this),
 			$container = $this.find('.dtwl-woo-slider-content'),
 			$slidesSpeed = jQuery($container).attr('data-slidesspeed'),
-			$slidesToShow = jQuery($container).attr('data-slidestoshow'),
-			$slidesToScroll = jQuery($container).attr('data-slidestoscroll')
+			$slidesToShow = jQuery($container).attr('data-slidestoshow')
 			;
 			console.log($slidesSpeed);
 			console.log($slidesToShow);
-			console.log($slidesToScroll);
 			
 			window.setTimeout(function(){
 				jQuery($container).slick({
@@ -213,7 +310,7 @@ var dtwl_effect= {
 					speed: 300,
 					adaptiveHeight: true,
 					slidesToShow: 3,
-					slidesToScroll: $slidesToScroll,
+					slidesToScroll: 1,
 				});
 				// remove pre load
 				$this.removeClass('dtwl-pre-load');
@@ -225,7 +322,6 @@ var dtwl_effect= {
 	
 	jQuery(document).ready(function($) {
 		dtwl_woo_init();
-		dtwl_woo_isotope();
 		DTWL_ProductTabsListHeight();
 	});
 })(jQuery);

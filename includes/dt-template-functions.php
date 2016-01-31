@@ -10,6 +10,77 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+if ( ! function_exists( 'dtwl_woo_template_loop_product_thumbnail' ) ) {
+
+	/**
+	 * Get the product thumbnail for the loop.
+	 *
+	 * @subpackage	Loop
+	 */
+	function dtwl_woo_template_loop_product_thumbnail() {
+		echo dtwl_woo_get_product_thumbnail();
+		echo dtwl_woo_get_product_first_thumbnail();
+	}
+}
+
+if ( ! function_exists( 'dtwl_woo_get_product_thumbnail' ) ) {
+
+	/**
+	 * Get the product thumbnail, or the placeholder if not set.
+	 *
+	 * @subpackage	Loop
+	 * @param string $size (default: 'shop_catalog')
+	 * @param int $deprecated1 Deprecated since WooCommerce 2.0 (default: 0)
+	 * @param int $deprecated2 Deprecated since WooCommerce 2.0 (default: 0)
+	 * @return string
+	 */
+	function dtwl_woo_get_product_thumbnail( $size = 'shop_catalog', $deprecated1 = 0, $deprecated2 = 0 ) {
+		global $post;
+		$html = '<div class="dtwl-woo-product-thumbnail dtwl-woo-product-front-thumbnail">';
+		if ( has_post_thumbnail() ) {
+			$html .=  get_the_post_thumbnail( $post->ID, $size );
+		} elseif ( wc_placeholder_img_src() ) {
+			$html .=  wc_placeholder_img( $size );
+		}
+		$html .= '</div>';
+		return $html;
+	}
+}
+if ( ! function_exists( 'dtwl_woo_get_product_first_thumbnail' ) ) {
+	function dtwl_woo_get_product_first_thumbnail( $size = 'shop_catalog', $deprecated1 = 0, $deprecated2 = 0 ) {
+		global $post, $product;
+		$html = '';
+		$attachment_ids = $product->get_gallery_attachment_ids();
+		$i = 0;
+		
+		if($attachment_ids){
+			$i++;
+			foreach ( $attachment_ids as $attachment_id ) {
+				$image_link = wp_get_attachment_url( $attachment_id );
+				
+				if ( ! $image_link )
+					continue;
+				
+				$image_title 	= esc_attr( get_the_title( $attachment_id ) );
+				
+				$image       = wp_get_attachment_image( $attachment_id, apply_filters( 'single_product_small_thumbnail_size', $size ), 0, $attr = array(
+					'title'	=> $image_title,
+					'alt'	=> $image_title
+				) );
+				
+				$html = '<div class="dtwl-woo-product-thumbnail dtwl-woo-product-back-thumbnail">';
+				$html .= $image;
+				$html .= '</div>';
+				
+				if($i == 1)
+					break;
+			}
+		}
+		return $html;
+	}
+}
+
+
 if ( ! function_exists( 'dtwl_template_loop_add_action' ) ) {
 
 	/**
@@ -26,7 +97,8 @@ if ( ! function_exists( 'dtwl_template_loop_add_action' ) ) {
 		 * @hooked woocommerce_after_shop_loop_item - 15
 		 * @hooked dtwl_add_compare_link - 20
 		 */
-		add_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10);
+		remove_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10);
+		add_action('woocommerce_after_shop_loop_item', 'dtwl_template_loop_add_to_cart', 10);
 		$wishlist = 2;
 			
 		if ( class_exists('YITH_WCQV_Frontend') ) {
@@ -82,5 +154,32 @@ if( ! function_exists('dtwl_product_thumbnail') ){
 	    } elseif ( wc_placeholder_img_src() ) {
 	        echo wc_placeholder_img( $size );
 	    }
+	}
+}
+
+
+if( ! function_exists('dtwl_template_loop_add_to_cart') ){
+	function dtwl_template_loop_add_to_cart(){
+		global $product;
+		
+		$add_class = 'button ';
+		if( $product->is_type( 'simple' ) ){
+		  // a simple product
+			$add_class .= 'product_type_simple add_to_cart_button ajax_add_to_cart ';
+		} elseif( $product->is_type( 'variable' ) ){
+		  // a variable product
+			$add_class .= 'product_type_variable add_to_cart_button ';
+		}
+		
+		echo apply_filters( 'woocommerce_loop_add_to_cart_link',
+			sprintf( '<a rel="nofollow" href="%s" data-quantity="%s" data-product_id="%s" data-product_sku="%s" class="%s">%s</a>',
+				esc_url( $product->add_to_cart_url() ),
+				esc_attr( isset( $quantity ) ? $quantity : 1 ),
+				esc_attr( $product->id ),
+				esc_attr( $product->get_sku() ),
+				esc_attr( isset( $class ) ? $class : $add_class ),
+				esc_html( $product->add_to_cart_text() )
+			),
+		$product );
 	}
 }

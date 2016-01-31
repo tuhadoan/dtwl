@@ -4,7 +4,6 @@ class DTWL_Admin{
 	public function __construct(){
 
 		add_action ('admin_init', array(&$this,'init'));
-		
 	}
 	
 	public function init(){
