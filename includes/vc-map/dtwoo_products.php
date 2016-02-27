@@ -1,10 +1,10 @@
 <?php
 vc_map(array(
-	"name" => esc_html__( "DT Product List", DT_WOO_LAYOUTS ),
-	"base" => "dtwoo_list",
+	"name" => esc_html__( "DT Products", DT_WOO_LAYOUTS ),
+	"base" => "dtwoo_products",
 	"category" => esc_html__( "DT WooCommerce", DT_WOO_LAYOUTS ),
-	"icon" => "icon-dtwl-woo-tabs",
-	"description" => esc_html__( "Show multiple products in list", DT_WOO_LAYOUTS ),
+	"icon" => "icon-dtwl-woo-products",
+	"description" => esc_html__( "Show multiple products in catalog page.", DT_WOO_LAYOUTS ),
 	"params" => array(
 		array (
 			"type" => "textfield",
@@ -12,7 +12,7 @@ vc_map(array(
 			"heading" => esc_html__( "Heading", DT_WOO_LAYOUTS ),
 			'admin_label'=> true,
 			"param_name" => "heading",
-			"value" => esc_html__( "DT Product List", DT_WOO_LAYOUTS )
+			"value" => esc_html__( "Catalog Page", DT_WOO_LAYOUTS )
 		),
 		array (
 			"type" => "colorpicker",
@@ -28,6 +28,44 @@ vc_map(array(
 			"param_name" => "heading_font_size",
 			"value" => "20px",
 			"description" => __ ( "Enter your custom size. Example: 20px.", DT_WOO_LAYOUTS ),
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Template", DT_WOO_LAYOUTS),
+			"param_name" => "template",
+			'admin_label'=> true,
+			"value" => array(
+				esc_html__("Grid", DT_WOO_LAYOUTS) => "grid",
+				esc_html__("List", DT_WOO_LAYOUTS) =>  "list",
+			),
+			"description" => esc_html__("Default mode view.", DT_WOO_LAYOUTS )
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Enable Switch Template", DT_WOO_LAYOUTS),
+			"param_name" => "switch_template",
+			"value" => array(
+				esc_html__("Yes", DT_WOO_LAYOUTS) => "yes",
+				esc_html__("No", DT_WOO_LAYOUTS) =>  "no",
+			),
+			"description" => esc_html__("User can switch mode view grid or list", DT_WOO_LAYOUTS ),
+		),
+		array(
+			"type" => "dropdown",
+			"class" => "",
+			"heading" => esc_html__("Grid Columns", DT_WOO_LAYOUTS),
+			"param_name" => "col",
+			"value" => array(
+				'4' => "4",
+				'2' => "2",
+				'3' => "3",
+				'4' => "4",
+				'5' => "5",
+				'6' => "6",
+			),
+			"description" => esc_html__("Grid columns layout", DT_WOO_LAYOUTS),
 		),
 		array (
 			"type" => "dtwl_woo_field_categories",
@@ -71,20 +109,21 @@ vc_map(array(
 		array(
 			"type" => "textfield",
 			"class" => "",
-			"heading" => esc_html__("Number display", DT_WOO_LAYOUTS),
-			"param_name" => "number_limit",
-			"value" => "4"
+			"heading" => esc_html__("Products Per Page", DT_WOO_LAYOUTS),
+			"param_name" => "posts_per_page",
+			"value" => "10"
 		),
 		array(
 			"type" => "dropdown",
 			"class" => "",
-			"heading" => esc_html__("Short Description", DT_WOO_LAYOUTS),
-			"param_name" => "show_desc",
+			"heading" => esc_html__("Page Navigation", DT_WOO_LAYOUTS),
+			"param_name" => "page_navigation",
 			"value" => array(
-				esc_html__('Hide',  DT_WOO_LAYOUTS) => "hide",
-				esc_html__('Show',  DT_WOO_LAYOUTS) => "show",
+				esc_html__('WooCommerce Pagination',  DT_WOO_LAYOUTS) => "woo_pagination",
+				esc_html__('Ajax Loadmore',  DT_WOO_LAYOUTS) => "ajax",
+				//esc_html__('Infinite Scroll',  DT_WOO_LAYOUTS) => "infinite_scroll",
 			),
-			"description" => esc_html__("Show / Hide Product short description. if show, the button add to cart will be shown.", DT_WOO_LAYOUTS )
+			"description" => esc_html__("Choose Type of navigation.", DT_WOO_LAYOUTS )
 		),
 		// Custom Options
 		array (
@@ -97,24 +136,6 @@ vc_map(array(
 			"value" => "#ff4800",
 			"heading" => esc_html__("Main Color", DT_WOO_LAYOUTS),
 			"param_name" => "main_color"
-		),
-		array(
-			"type" => "dropdown",
-			"class" => "",
-			"heading" => esc_html__("List Border Wrapper", DT_WOO_LAYOUTS),
-			"param_name" => "list_border",
-			"value" => array(
-				esc_html__('no',  DT_WOO_LAYOUTS) => "no",
-				esc_html__('Yes',  DT_WOO_LAYOUTS) => "yes",
-			),
-		),
-		array(
-			"type" => "textfield",
-			"class" => "",
-			"heading" => esc_html__("List Padding", DT_WOO_LAYOUTS),
-			"param_name" => "list_padding",
-			"value" => "0px",
-			"description" => __ ( "Enter your custom padding of product list wrapper. Example: 10px 10px 10px 10px.", DT_WOO_LAYOUTS )
 		),
 		array(
 			"type" => "colorpicker",
@@ -187,6 +208,15 @@ vc_map(array(
 			"param_name" => "product_font_size",
 			"value" => "20px",
 			"description" => __ ( "Enter your custom size. Example: 20px.", DT_WOO_LAYOUTS ),
+		),
+		array (
+			"type" => "checkbox",
+			"class" => "",
+			"heading" => __ ( "Hover Thumbnail Effects", DT_WOO_LAYOUTS ),
+			"param_name" => "hover_thumbnail",
+			"value" => array (
+				esc_html__( 'Yes, please', DT_WOO_LAYOUTS ) => '1'
+			)
 		),
 		array (
 			"type" => "checkbox",

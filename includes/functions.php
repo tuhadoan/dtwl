@@ -97,11 +97,31 @@ function dhwl_woo_tabs_query($query_types, $tab, $orderby, $post_per_page=-1, $o
 	
 	if ($query_types == 'category'){
 		if($tab!=''){
-			$query_args['product_cat']= $tab;
+			$category_array = array_filter(explode(',', $tab));
+			
+			if(!empty($category_array)){
+				$query_args['tax_query'][] =
+				array(
+					'taxonomy'			=> 'product_cat',
+					'field'				=> 'slug',
+					'terms'				=> $category_array,
+					'operator'			=> 'IN'
+				);
+			}
 		}
 	}elseif ($query_types == 'tags'){
 		if($tab!=''){
-			$query_args['product_tag']= $tab;
+		$tags_array = array_filter(explode(',', $tab));
+				
+			if( !empty($tags_array) ){
+				$query_args['tax_query'][] =
+				array(
+					'taxonomy'			=> 'product_tag',
+					'field'				=> 'slug',
+					'terms'				=> $tags_array,
+					'operator'			=> 'IN'
+				);
+			}
 		}
 	}else{ // List orderby
 		$tab = $orderby;
@@ -785,4 +805,3 @@ function dtwl_get_tags(){
 	}
 	return $arr;
 }
-

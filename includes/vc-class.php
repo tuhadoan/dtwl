@@ -25,7 +25,7 @@ class DT_WooCommerce_Layouts{
 			//require shortcodes
 			require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-map/dtwoo_tabs.php';
 			require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-map/dtwoo_slider.php';
-			require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-map/dtwoo_list.php';
+			require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-map/dtwoo_products.php';
 			require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-map/dtwoo_product_category.php';
 		}
 	}
@@ -38,5 +38,5 @@ new DT_WooCommerce_Layouts();
 // require shortcodes
 require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-product-tabs.php';
 require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-product-slider.php';
-require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-product-list.php';
+require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-products.php';
 //require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-product-category.php';

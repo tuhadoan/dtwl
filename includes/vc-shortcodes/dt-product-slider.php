@@ -264,8 +264,6 @@ class dtwoo_slider{
     							slidesToScroll: 1,
 							  	asNavFor: '#<?php echo $id ?> .dtwl-woo-slider-for',
 							  	dots: <?php echo esc_attr($pslides_dots)?>,
-							  	centerMode: true,
-							  	centerPadding: '100px',
 							  	focusOnSelect: true,
 							  	nextArrow: '<div class="dtwl-woo-navslider"><span class="next"><i class="fa fa-chevron-right"></i></span></div>',
 								prevArrow: '<div class="dtwl-woo-navslider"><span class="prev"><i class="fa fa-chevron-left"></i></span></div>',

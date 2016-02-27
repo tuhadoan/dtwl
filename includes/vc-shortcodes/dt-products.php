@@ -1,15 +1,18 @@
 <?php
-class dtwoo_list{
+class dtwoo_products{
 	
 	public function __construct(){
 		$this->init();
 	}
 	
 	public function init(){
-		add_shortcode('dtwoo_list', array(&$this, 'dtwoo_list_sc'));
+		add_shortcode('dtwoo_products', array(&$this, 'dtwoo_products_sc'));
+		
+		add_action('wp_ajax_dtwl_woosetmodeview', array(&$this, 'dtwl_woosetmodeview'));
+		add_action('wp_ajax_nopriv_dtwl_woosetmodeview', array(&$this, 'dtwl_woosetmodeview'));
 	}
 	
-	public function dtwoo_list_sc($atts, $content){
+	public function dtwoo_products_sc($atts, $content){
 		$rt = rand().time();
 		$html = '';
 		
@@ -17,16 +20,17 @@ class dtwoo_list{
 		'heading'			=> '',
 		'heading_color'		=> '#363230',
 		'heading_font_size'	=> '20px',
+		'template'			=> 'grid',
+		'switch_template'	=> 'yes',
+		'col'				=> 4,
 		'categories'		=> '', // id
 		'tags'				=> '', // id
 		'orderby'			=> 'recent',
 		'order'				=> 'DESC',
-		'number_limit'		=> 4,
-		'show_desc'			=> 'hide',
+		'posts_per_page'	=> 10,
+		'page_navigation'	=> 'woo_pagination',
 		// Custom options
 		'main_color'		=> '#ff4800',
-		'list_border'		=> 'no',
-		'list_padding'		=> '',
 		'thumbnail_background_color' => '#ffffff',
 		'thumbnail_border_style' => 'none',
 		'thumbnail_border_color' => '#e1e1e1',
@@ -35,6 +39,7 @@ class dtwoo_list{
 		'thumbnail_padding' => '',
 		'thumbnail_margin' => '',
 		'show_rating' => '1',
+		'hover_thumbnail' => '0',
 		'el_class'	=> '',
 		), $atts) );
 		
@@ -70,15 +75,6 @@ class dtwoo_list{
 		}
 		';
 		
-		if($list_border == 'yes'){
-			$inline_style .= '#'.$id.'.template-list .dtwl-woo-list-content{
-				border: 1px solid #e8e4e3;
-			}';
-			$inline_style .= '#'.$id.'.template-list .dtwl-woo-list-content{
-				padding: '. $list_padding .';
-			}';
-		}
-		
 		
 		// Hide star-rating
 		if( $show_rating == '0' )
@@ -86,13 +82,20 @@ class dtwoo_list{
 		
 		$html .= '<style type="text/css">'.$inline_style.'</style>';
 		
-		global $woocommerce,$product,$wp_the_query;
-		$posts_per_page      	= $number_limit ;
+		global $woocommerce, $product;
+		
 		$orderby    		 	= sanitize_title( $orderby );
 		$order       			= sanitize_title( $order );
 		
+		if( is_front_page() ) {
+			$paged = ( get_query_var( 'page' ) ) ? get_query_var( 'page' ) : 1;
+		} else {
+			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1 ;
+		}
+		
 		$query_args = array(
-			'posts_per_page' 	=> $posts_per_page,
+			'paged' 			=> $paged,
+			'posts_per_page' 	=> absint($posts_per_page),
 			'post_status' 	 	=> 'publish',
 			'post_type' 	 	=> 'product',
 			'order'          	=> $order == 'asc' ? 'ASC' : 'DESC'
@@ -204,13 +207,10 @@ class dtwoo_list{
 		}
 		
 		$query_args = apply_filters('dtwl_woo_query_args', $query_args, $atts, $content);
-		$p = new WP_Query( $query_args  );
+		$query = new WP_Query( $query_args );
 		
-		global $plist_desc_show;
-		$plist_desc_show = $show_desc;
-			
 		// Class
-		$class = 'dtwl-woo dtwl-woo-product-list woocommerce dtwl-woo-template-list';
+		$class = 'dtwl-woo dtwl-woo-products woocommerce';
 		$class .= esc_attr($el_class);
 		ob_start();
 		?>
@@ -218,19 +218,120 @@ class dtwoo_list{
 			<?php if( ! empty( $heading ) ):?>
 			<h2 class="dtwl-heading"><span><?php echo esc_html($heading);?></span></h2>
 			<?php endif; ?>
-			<div class="dtwl-woo-list-content">
-				<?php 
-				while ( $p->have_posts() ) : $p->the_post();
-					wc_get_template( 'item-list.php', array(), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
-				endwhile;
+			<?php 
+			if($query->have_posts()):
+			?>
+			<?php 
+			if($switch_template == 'yes'):
+				$mode_view = $template;
+				if( isset($_COOKIE['dtwl_woo_list_modeview']) ){
+					if( $_COOKIE['dtwl_woo_list_modeview'] == 'dtwl-woo-list' ){
+						$mode_view = 'list';
+					}elseif( $_COOKIE['dtwl_woo_list_modeview'] == 'dtwl-woo-grid' ){
+						$mode_view = 'grid';
+					}
+				}
+			?>
+			<div class="dtwl-woo-switch_template">
+				<a href="#" class="dtwl-woo-mode-view dtwl-woo-grid <?php echo ($mode_view == 'grid') ? 'active' : '';?>" data-mode-view="dtwl-woo-grid" title="<?php esc_attr_e('Grid', DT_WOO_LAYOUTS);?>">
+					<i class="fa fa-th"></i>
+					<span><?php esc_html_e('Grid', DT_WOO_LAYOUTS);?></span>
+				</a>
+				<a href="#" class="dtwl-woo-mode-view dtwl-woo-list <?php echo ($mode_view == 'list') ? 'active' : '';?>" data-mode-view="dtwl-woo-list" title="<?php esc_attr_e('List', DT_WOO_LAYOUTS);?>">
+					<i class="fa fa-th-list"></i>
+					<span><?php esc_html_e('List', DT_WOO_LAYOUTS);?></span>
+				</a>
+			</div>
+			<?php endif; ?>
+			<div class="dtwl-woo-prdlist-content">
+				<ul id="dtwl-woo-prdlist" class="dtwl-woo-products dtwl-woo-product-list dtwl-woo-<?php echo $mode_view; ?> dtwl-woo-row-fluid">
+					<?php
+					while ( $query->have_posts() ) : $query->the_post();
+						wc_get_template( 'item-content-product.php', array('grid_columns' => absint($col), 'hover_thumbnail' => $hover_thumbnail), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+					endwhile;
+					?>
+				</ul>
+				<?php
+					/*
+					 * Page navigation
+					 */
+					$nav_type = ($page_navigation) ? $page_navigation : 'woo_pagination';
+					
+					$max_num_pages = $GLOBALS['wp_query']->max_num_pages;
+					
+					if (!empty($query) ) {
+						$max_num_pages = $query->max_num_pages;
+					}
+					
+					// Don't print empty markup if there's only one page.
+					if ( $max_num_pages < 2 ) {
+						return;
+					}else{
+						
+						switch ($nav_type){
+							case 'ajax':
+									?>
+									<nav class="dtwl-navigation-ajax" role="navigation">
+										<a href="javascript:void(0)"
+										data-cat	= "<?php echo esc_attr($categories) ?>"
+										data-tags	= "<?php echo esc_attr($tags) ?>"
+										data-orderby	= "<?php echo esc_attr($orderby) ?>"
+										data-order	= "<?php echo esc_attr($order) ?>"
+										data-target ="#<?php echo $id;?> #dtwl-woo-prdlist"
+										data-grid-col="<?php echo absint($col); ?>"
+										data-hover-thumbnail = "<?php echo esc_attr($hover_thumbnail) ?>"
+										data-posts-per-page = "<?php echo absint($posts_per_page) ?>"
+										data-offset = "<?php echo absint($posts_per_page) ?>"
+										id="dtwl-navigation-ajax" class="dtwl-load-more">
+											<span class="dtwl-loadmore-title"><?php echo esc_html__('Load more', DT_WOO_LAYOUTS);?></span>
+											<div class="dtwl-navloading"><div class="dtwl-navloader"></div></div>
+										</a>
+									</nav>
+									<?php
+								break;
+							case 'infinite_scroll':
+								break;
+							default:
+								?>
+								<nav class="dtwl-woocommerce-pagination">
+									<?php
+										echo paginate_links( apply_filters( 'woocommerce_pagination_args', array(
+											'base'         => esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) ),
+											'format'       => '',
+											'add_args'     => '',
+											'current'      => max( 1, get_query_var( 'paged' ) ),
+											'total'        => $query->max_num_pages,
+											'prev_text'    => '&larr;',
+											'next_text'    => '&rarr;',
+											'type'         => 'list',
+											'end_size'     => 3,
+											'mid_size'     => 3
+										) ) );
+									?>
+								</nav>
+								<?php
+								break;
+						}
+						
+					}// print navigation
 				?>
 			</div>
+			<?php 
+			else:
+				wc_get_template( 'loop/no-products-found.php' );
+			endif;
+			
+			?>
 		</div>
 		<?php
 		$html .= ob_get_clean();
-		wp_reset_postdata ();
+		
+		wp_reset_postdata(); //wp_reset_query ();
 		return $html;
 	}
-		
+	
+	public function dtwl_woosetmodeview(){
+		setcookie('dtwl_woo_list_modeview', $_POST['mode'], time()+3600*24*100, '/');
+	}
 }
-new dtwoo_list();
+new dtwoo_products();
