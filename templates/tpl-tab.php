@@ -11,16 +11,22 @@ if(isset($hover_thumbnail) && $hover_thumbnail){
 }else{
 	$hover_thumbnail_r = '0';
 }
+
+$offset = (isset($offset) && $offset) ? $offset : 0;
+$paged = (isset($paged) && $paged) ? $paged : 1;
+
 ?>
-<div id="dtwl_pdtabs_<?php echo esc_attr($tab); ?>" class="tab-pan fade dhwl-template-tab">
+<div class="dhwl-template-tab">
 <?php 
-	$loop = dhwl_woo_tabs_query($query_types, $tab, $orderby, $number_query);
+	$loop = dhwl_woo_tabs_query($query_types, $tab, $orderby, $number_query, $offset, $paged);
+	$idx = 0;
     if( $loop->have_posts() ):
         	if ($template == 'grid') :
         		?>
-        		<div class="dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list grid <?php echo esc_attr($effect_load); ?>">
+        		<div class="dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list dtwl-woo-grid">
 					<?php
 					while ( $loop->have_posts() ) : $loop->the_post();
+						$idx = $idx + 1;
 						$class = 'dtwl-woo-item product';
 						
 						if ( isset($col) && $col > 0) :
@@ -32,9 +38,6 @@ if(isset($hover_thumbnail) && $hover_thumbnail){
 						if ( isset($eclass) && $eclass){
 							$class .= ' '.$eclass;
 						}
-						if ( isset($animate) && $animate) :
-						$class .= ' item-animate';
-						endif;
 						
 						?>
 						<div class="<?php echo $class; ?>">
@@ -44,11 +47,16 @@ if(isset($hover_thumbnail) && $hover_thumbnail){
 						</div>
 						<?php
 			    	endwhile;
+			    	if($idx < $number_query){
+			    		// there are no more product
+			    		// print a flag to detect
+			    		echo '<div id="dtwl-ajax-no-products" class=""><!-- --></div>';
+			    	}
 			    	?>
 			    </div>
 			    <?php if($display_type != 'tabs_left'):?>
             	<div class="dtwl-woo-loadmore-wrap">
-            		<div id="dtwl_woo_loadmore_<?php echo esc_attr($tab); ?>" class="dtwl-woo-loadmore"
+            		<div class="dtwl-woo-loadmore"
 							data-query-types ="<?php echo esc_attr($query_types);?>"
 							data-tab ="<?php echo esc_attr($tab);?>"
 							data-orderby ="<?php echo esc_attr($orderby);?>"

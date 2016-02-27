@@ -18,6 +18,8 @@ class dtwoo_tabs{
 		'heading_color'		=> '#363230',
 		'heading_font_size'	=> '20px',
 		'display_type'		=> '',
+		'tabs_left_banner'	=> '',
+		'banner_url'		=> '',
 		'template'			=> 'grid',
 		'query_types'		=> 'category',
 		'categories'		=> '', // id
@@ -27,7 +29,6 @@ class dtwoo_tabs{
 		'row'				=> 2,
 		'col'				=> 4,
 		'number_load'		=> 4,
-		'effect_load'		=> 'zoomOut',
 		'number_display'	=> 4,
 		'number_limit'		=> 8,
 		'speed'				=> 300,
@@ -44,7 +45,7 @@ class dtwoo_tabs{
 		'thumbnail_margin' => '',
 		'show_rating' => '1',
 		'loadmore_text'		=> 'Load more',
-		'loaded_text'		=> 'All ready',
+		'loaded_text'		=> 'All products loaded',
 		'loadmore_border_style' => 'solid',
 		'loadmore_border_color' => '#eaeaea',
 		'loadmore_border_width' => '3px',
@@ -204,21 +205,44 @@ class dtwoo_tabs{
 								}
 								
 						}else{ // templage carousel - grid
-							$i = 0;
-							foreach ($tab_titles as $tab) {
-								$i++;
-								$sper = '<span>/</span>';
-								$aclass = 'tab-intent ';
-								if ( $i == 1){
-									$class = 'dtwl-nav-item first';
-									$sper = '';
-									$aclass .= 'tab-loaded ';
-								}else{
-									$class = 'dtwl-nav-item';
+							$data_tab = array();
+							if($query_types !== 'orderby'){
+								foreach ($tab_titles as $tab) {
+									array_push($data_tab, $tab['name']);
 								}
+							}
+							if(!empty($data_tab)){
+								$data_tab = implode(',', $data_tab);
+							}else{
+								$data_tab = '';
+							}
+							
+							?>
+							<li class="dtwl-nav-item first">
+								<a href="#" class="tab-intent" title="<?php echo esc_html__('All', DT_WOO_LAYOUTS); ?>"
+									data-display_type	= "<?php echo esc_attr($display_type) ?>"
+									data-query_types	= "<?php echo esc_attr($query_types) ?>"
+									data-tab			= "<?php echo esc_attr($data_tab) ?>"
+									data-orderby		= "<?php echo esc_attr($orderby) ?>"
+									data-number_query	= "<?php echo esc_attr($number_query) ?>"
+									data-number_load	= "<?php echo esc_attr($number_load) ?>"
+									data-number_display = "<?php echo esc_attr($number_display) ?>"
+									data-template		= "<?php echo esc_attr($template) ?>"
+									data-speed			= "<?php echo esc_attr($speed) ?>"
+									data-dots			= "<?php echo esc_attr($dots) ?>"
+									data-col			= "<?php echo esc_attr($col) ?>"
+									data-loadmore_text	= "<?php echo esc_html($loadmore_text) ?>"
+									data-loaded_text	= "<?php echo esc_html($loaded_text) ?>"
+									data-hover_thumbnail	= "<?php echo esc_attr($hover_thumbnail) ?>"
+									><span><?php echo esc_html__('All', DT_WOO_LAYOUTS); ?></span>
+								</a>
+							</li>
+							<?php
+							
+							foreach ($tab_titles as $tab) {
 								?>
-								<li class="<?php echo $class; ?>"><?php echo $sper; ?>
-									<a href="#dtwl_pdtabs_<?php echo esc_attr($tab['name']); ?>" class="<?php echo $aclass; ?>" title="<?php echo esc_attr($tab['title']); ?>"
+								<li class="dtwl-nav-item"><span>/</span>
+									<a href="#" class="tab-intent" title="<?php echo esc_attr($tab['title']); ?>"
 										data-display_type	= "<?php echo esc_attr($display_type) ?>"
 										data-query_types	= "<?php echo esc_attr($query_types) ?>"
 										data-tab			= "<?php echo esc_attr($tab['name']) ?>"
@@ -229,7 +253,6 @@ class dtwoo_tabs{
 										data-template		= "<?php echo esc_attr($template) ?>"
 										data-speed			= "<?php echo esc_attr($speed) ?>"
 										data-dots			= "<?php echo esc_attr($dots) ?>"
-										data-effect_load	= "<?php echo esc_attr($effect_load) ?>"
 										data-col			= "<?php echo esc_attr($col) ?>"
 										data-loadmore_text	= "<?php echo esc_html($loadmore_text) ?>"
 										data-loaded_text	= "<?php echo esc_html($loaded_text) ?>"
@@ -245,6 +268,30 @@ class dtwoo_tabs{
 						?>
 					</ul>
 				</div>
+				<?php if($display_type == 'tabs_left' && $tabs_left_banner):?>
+				<div class="dtwl-woo-tabs-banner">
+					<?php 
+					$baner_html = '';
+					if( !empty($banner_url) ){
+						$baner_html .= '<a href="'.esc_url($banner_url).'" target="blank">';
+						$baner_html .= wp_get_attachment_image($tabs_left_banner, 'shop_catalog');
+						$baner_html .= '</a>';
+					}else{
+						$baner_html .= wp_get_attachment_image($tabs_left_banner, 'shop_catalog');
+					}
+						
+					
+					echo $baner_html;
+					?>
+				</div>
+				<?php endif; ?>
+				
+				<?php if($display_type == 'tabs_left'):?>
+				<div class="dtwl-next-prev-wrap">
+					<a href="#" class="dtwl-ajax-prev-page ajax-page-disabled" data-offset="0" data-current-page="1"><i class="fa fa-chevron-left"></i></a>
+					<a href="#" class="dtwl-ajax-next-page" data-offset="<?php echo esc_attr($number_query) ?>" data-current-page="1"><i class="fa fa-chevron-right"></i></a>
+				</div>
+				<?php endif; ?>
 			</div> <!-- /.dtwl-nav-tabs-wapper -->
 			
 			<?php
@@ -258,34 +305,28 @@ class dtwoo_tabs{
 					<div class="dtwl-woo-filter-ajax-loading">
 					<div class="dtwl-woo-fade-loading"><i></i><i></i><i></i><i></i></div>
 					</div>
+					<div class="dhwl-template-tab-content">
 					<?php
-						$ij = 0;
-						foreach ($tabs as $tab):
-							$ij++;
-							if($ij == 1){
-								$tab_args = array(
-									'display_type'	=> $display_type,
-									'query_types'	=> $query_types,
-									'tab'			=> $tab,
-									'orderby'		=> $orderby,
-									'number_query'	=> $number_query,
-									'number_load'	=> $number_load,
-									'number_display'=> $number_display,
-									'template'		=> $template,
-									'speed'			=> $speed,
-									'dots'			=> $dots,
-									'effect_load'	=> $effect_load,
-									'col'			=> $col,
-									'loadmore_text'	=> esc_html($loadmore_text),
-									'loaded_text'	=> esc_html($loaded_text),
-									'hover_thumbnail'=> $hover_thumbnail,
-								);
-								wc_get_template( 'tpl-tab.php', array('tab_args' => $tab_args), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
-							} // END if ij
+						$tab_args = array(
+							'display_type'	=> $display_type,
+							'query_types'	=> $query_types,
+							'tab'			=> $data_tab,
+							'orderby'		=> $orderby,
+							'number_query'	=> $number_query,
+							'number_load'	=> $number_load,
+							'number_display'=> $number_display,
+							'template'		=> $template,
+							'speed'			=> $speed,
+							'dots'			=> $dots,
+							'col'			=> $col,
+							'loadmore_text'	=> esc_html($loadmore_text),
+							'loaded_text'	=> esc_html($loaded_text),
+							'hover_thumbnail'=> $hover_thumbnail,
+						);
+						wc_get_template( 'tpl-tab.php', array('tab_args' => $tab_args), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+						
 						?>
-					    <?php
-						endforeach;
-					?>
+					</div><!-- /.dhwl-template-tab-content -->
 				</div><!-- /.dtwl-woo-tab-content -->
 				<script>
 					jQuery(document).ready(function($){
@@ -293,34 +334,22 @@ class dtwoo_tabs{
 						$('#<?php echo $id;?>.dtwl-woo-template-carousel').removeClass('dtwl-pre-load');
 						// Tab
 						$('#<?php echo $id;?> .dtwl-woo-nav-tabs').find("li").first().addClass("active");
-						// Tab content
-						$('#<?php echo $id;?> .dtwl-woo-tab-content .tab-pan').css({'overflow':'hidden', 'height':'0'});
-						$('#<?php echo $id;?> .dtwl-woo-tab-content').find(".tab-pan").first().addClass("active in").css({'overflow':'', 'height':''});
+						
 						// Handle click
 						$('#<?php echo $id;?> .dtwl-woo-nav-tabs > li').click(function(e){
 							e.preventDefault();
 							if( !$(this).hasClass('active') ){
 								id = $(this).find('a').attr('href');
-								
 								// Tab
 								$('#<?php echo $id;?> .dtwl-woo-nav-tabs li').removeClass('active');
 								$(this).addClass('active');
-								
-								// Tab content
-								$('#<?php echo $id;?> .tab-pan').removeClass('active').removeClass('in').css({'overflow':'hidden', 'height':'0'});
-								$('#<?php echo $id;?>').find(id).addClass('active').addClass('in').css({'overflow':'', 'height':''});
-
-								if( $('#<?php echo $id;?>.dtwl-woo-template-grid').length > 0 ){
-									// Reset effect
-				            		dtwl_effect.resetAnimate($(this));
-								}
 								return false;
 							}
 						});
 				   	});
 				</script>
 			<?php elseif ($template == 'masonry'): ?>
-					<div class="dtwl-woo-mansory-list dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list grid">
+					<div class="dtwl-woo-mansory-list dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list dtwl-woo-grid">
 						<?php 
 						foreach ($tabs as $tab):
 							$loop = dhwl_woo_tabs_query($query_types, $tab, $orderby, $number_query);
@@ -333,7 +362,7 @@ class dtwoo_tabs{
 			
 			<?php
 			$html .= ob_get_clean();
-			//wp_reset_postdata();
+// 			wp_reset_postdata();
 			
 			return $html;
 			

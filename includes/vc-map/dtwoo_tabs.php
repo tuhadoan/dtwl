@@ -42,6 +42,33 @@ vc_map(array(
 			"description" => ""
 		),
 		array(
+			"type" => "attach_image",
+			"class" => "",
+			"heading" => esc_html__("Tabs Left Banner", DT_WOO_LAYOUTS),
+			"param_name" => "tabs_left_banner",
+			"description" => "",
+			"dependency" => array (
+				'element' => "display_type",
+				'value' => array (
+					'tabs_left',
+				)
+			)
+		),
+		array (
+			"type" => "textfield",
+			"class" => "",
+			"heading" => esc_html__( "Banner URL", DT_WOO_LAYOUTS ),
+			"param_name" => "banner_url",
+			"value" => "",
+			"description" => esc_html__("Include http://", DT_WOO_LAYOUTS),
+			"dependency" => array (
+				'element' => "display_type",
+				'value' => array (
+					'tabs_left',
+				)
+			)
+		),
+		array(
 			"type" => "dropdown",
 			"class" => "",
 			"heading" => esc_html__("Template", DT_WOO_LAYOUTS),
@@ -164,28 +191,6 @@ vc_map(array(
 				'5' => "5",
 				'6' => "6",
 			),
-		),
-		array(
-			"type" => "dropdown",
-			"class" => "",
-			"heading" => esc_html__("Select Effect", DT_WOO_LAYOUTS),
-			"param_name" => "effect_load",
-			"value" => array(
-				esc_html__('zoomOut',  DT_WOO_LAYOUTS) => "zoomOut",
-				esc_html__('zoomIn',  DT_WOO_LAYOUTS) => "zoomIn",
-				esc_html__('pageRight',  DT_WOO_LAYOUTS) => "pageRight",
-				esc_html__('pageLeft',  DT_WOO_LAYOUTS) => "pageLeft",
-				esc_html__('pageTop',  DT_WOO_LAYOUTS) => "pageTop",
-				esc_html__('pageBottom',  DT_WOO_LAYOUTS) => "pageBottom",
-				esc_html__('starwars',  DT_WOO_LAYOUTS) => "starwars",
-				esc_html__('slideBottom',  DT_WOO_LAYOUTS) => "slideBottom",
-				esc_html__('slideLeft',  DT_WOO_LAYOUTS) => "slideLeft",
-				esc_html__('slideRight',  DT_WOO_LAYOUTS) => "slideRight",
-				esc_html__('bounceIn',  DT_WOO_LAYOUTS) => "bounceIn",
-				esc_html__('none',  DT_WOO_LAYOUTS) => "",
-			),
-			"dependency" => array("element" => "template" , "value" => array("grid") ),
-			"description" => ""
 		),
 		array(
 			"type" => "textfield",
@@ -347,7 +352,7 @@ vc_map(array(
 			"class" => "",
 			"heading" => esc_html__("Loaded text", DT_WOO_LAYOUTS),
 			"param_name" => "loaded_text",
-			"value" => "All ready",
+			"value" => "All products loaded",
 			"dependency" => array("element" => "template" , "value" => array("grid") ),
 		),
 		array(
