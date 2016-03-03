@@ -28,6 +28,7 @@ class dtwoo_products{
 		'orderby'			=> 'recent',
 		'order'				=> 'DESC',
 		'posts_per_page'	=> 10,
+		'dt_filter_sidebar'	=> '0',
 		'page_navigation'	=> 'woo_pagination',
 		// Custom options
 		'main_color'		=> '#ff4800',
@@ -223,6 +224,7 @@ class dtwoo_products{
 			if($query->have_posts()):
 			?>
 			<?php 
+			$mode_view = '';
 			if($switch_template == 'yes'):
 				$mode_view = $template;
 				if( isset($_COOKIE['dtwl_woo_list_modeview']) ){
@@ -233,15 +235,17 @@ class dtwoo_products{
 					}
 				}
 			?>
-			<div class="dtwl-woo-switch_template">
-				<a href="#" class="dtwl-woo-mode-view dtwl-woo-grid <?php echo ($mode_view == 'grid') ? 'active' : '';?>" data-mode-view="dtwl-woo-grid" title="<?php esc_attr_e('Grid', DT_WOO_LAYOUTS);?>">
-					<i class="fa fa-th"></i>
-					<span><?php esc_html_e('Grid', DT_WOO_LAYOUTS);?></span>
-				</a>
-				<a href="#" class="dtwl-woo-mode-view dtwl-woo-list <?php echo ($mode_view == 'list') ? 'active' : '';?>" data-mode-view="dtwl-woo-list" title="<?php esc_attr_e('List', DT_WOO_LAYOUTS);?>">
-					<i class="fa fa-th-list"></i>
-					<span><?php esc_html_e('List', DT_WOO_LAYOUTS);?></span>
-				</a>
+			<div class="dtwl-toolbar">
+				<div class="dtwl-woo-switch_template">
+					<a href="#" class="dtwl-woo-mode-view dtwl-woo-grid <?php echo ($mode_view == 'grid') ? 'active' : '';?>" data-mode-view="dtwl-woo-grid" title="<?php esc_attr_e('Grid', DT_WOO_LAYOUTS);?>">
+						<i class="fa fa-th"></i>
+						<span><?php esc_html_e('Grid', DT_WOO_LAYOUTS);?></span>
+					</a>
+					<a href="#" class="dtwl-woo-mode-view dtwl-woo-list <?php echo ($mode_view == 'list') ? 'active' : '';?>" data-mode-view="dtwl-woo-list" title="<?php esc_attr_e('List', DT_WOO_LAYOUTS);?>">
+						<i class="fa fa-th-list"></i>
+						<span><?php esc_html_e('List', DT_WOO_LAYOUTS);?></span>
+					</a>
+				</div>
 			</div>
 			<?php endif; ?>
 			<?php $dt_ul_product_class = '';
@@ -251,6 +255,7 @@ class dtwoo_products{
 				$dt_ul_product_class = 'infinite-scroll-wrap';
 			}
 			?>
+			
 			<div class="dtwl-woo-prdlist-content">
 				<div class="dtwl-woo-content" data-msgtext="<?php esc_attr_e('Loading products', DT_WOO_LAYOUTS);?>" data-finished="<?php esc_attr_e('All products loaded','woow')?>" data-contentselector=".dtwl-woo-content ul.dtwl-woo-products" data-paginate="<?php echo esc_attr($woo_products_pagination) ?>"  data-itemselector=".dtwl-woo-content li.product">
 					<div class="dtwl-woo-shop-loop-wrap <?php echo $dt_ul_product_class; ?>">

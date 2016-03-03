@@ -3,7 +3,7 @@ vc_map(array(
 	"name" => __ ( "DT Product Slider", DT_WOO_LAYOUTS ),
 	"base" => "dtwoo_slider",
 	"category" => __ ( "DT WooCommerce", DT_WOO_LAYOUTS ),
-	"icon" => "icon-dtwl-woo-slider",
+	"icon" => "dt-vc-icon-dt_woo",
 	"description" => esc_html__( "Show multiple products in slider", DT_WOO_LAYOUTS ),
 	"params" => array(
 		array (

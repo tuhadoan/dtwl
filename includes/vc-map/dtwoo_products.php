@@ -3,7 +3,7 @@ vc_map(array(
 	"name" => esc_html__( "DT Products", DT_WOO_LAYOUTS ),
 	"base" => "dtwoo_products",
 	"category" => esc_html__( "DT WooCommerce", DT_WOO_LAYOUTS ),
-	"icon" => "icon-dtwl-woo-products",
+	"icon" => "dt-vc-icon-dt_woo",
 	"description" => esc_html__( "Show multiple products in catalog page.", DT_WOO_LAYOUTS ),
 	"params" => array(
 		array (
@@ -113,6 +113,7 @@ vc_map(array(
 			"param_name" => "posts_per_page",
 			"value" => "10"
 		),
+		
 		array(
 			"type" => "dropdown",
 			"class" => "",

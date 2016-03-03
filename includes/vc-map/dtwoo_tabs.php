@@ -3,7 +3,7 @@ vc_map(array(
 	"name" => esc_html__( "DT Product Tabs", DT_WOO_LAYOUTS ),
 	"base" => "dtwoo_tabs",
 	"category" => esc_html__( "DT WooCommerce", DT_WOO_LAYOUTS ),
-	"icon" => "icon-dtwl-woo-tabs",
+	"icon" => "dt-vc-icon-dt_woo",
 	"description" => esc_html__( "Show multiple products in tabs", DT_WOO_LAYOUTS ),
 	"params" => array(
 		array (

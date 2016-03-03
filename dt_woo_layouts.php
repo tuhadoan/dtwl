@@ -40,7 +40,7 @@ require_once DT_WOO_LAYOUTS_DIR . 'includes/functions.php';
  * Check is active require plugin
  */
 if( ! function_exists('dtwl_is_active') ){
-	function dtwl_is_activeb(){
+	function dtwl_is_active(){
 		$active_plugins = (array) get_option( 'active_plugins' , array() );
 		
 		if( is_multisite() )
@@ -51,7 +51,7 @@ if( ! function_exists('dtwl_is_active') ){
 }
 
 // DT Widget
-if( dtwl_is_activeb() ){
+if( dtwl_is_active() ){
 	include_once plugin_dir_path(__FILE__). '/includes/widget.php';
 }
 
@@ -60,6 +60,8 @@ class DT_WL_Manager{
 	public function __construct(){
 		add_action('init', array(&$this, 'init'));
 		add_action( 'after_setup_theme', array( &$this, 'include_template_functions' ), 11 );
+		// Register DT Filter Sidebar
+		add_action('widgets_init', array(&$this, 'dt_filter_sidebar'));
 		
 		add_action('wp_head', array($this, 'dtwl_renderurlajax'), 15);
 		/*
@@ -90,7 +92,7 @@ class DT_WL_Manager{
 		wp_register_style('dtwl-woo-chosen', DT_WOO_LAYOUTS_URL .'assets/css/chosen.min.css');
 		
 		// require woocommerce
-		if( !dtwl_is_activeb() ){
+		if( !dtwl_is_active() ){
 			add_action('admin_notices', array(&$this, 'woocommerce_notice'));
 		}
 		
@@ -112,6 +114,18 @@ class DT_WL_Manager{
 	public function include_template_functions(){
 		include_once( 'includes/dt-template-functions.php' );
 		include_once( 'includes/dt-template-hooks.php' );
+	}
+	
+	public function dt_filter_sidebar(){
+		register_sidebar(
+		array(
+			'name' => esc_html__( 'DT Filter Sidebar', DT_WOO_LAYOUTS ),
+			'description' => esc_html__( 'This sidebar use for DT Products', DT_WOO_LAYOUTS ),
+			'id' => 'dt-filter-sidebar',
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget' => '</div>',
+			'before_title' => '<h4 class="widget-title"><span>',
+			'after_title' => '</span></h4>' ) );
 	}
 	
 	public function woocommerce_notice(){

@@ -14,3 +14,4 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Product loop add action
  */
 add_action('dtwl_template_loop_item_action', 'dtwl_template_loop_add_action', 10);
+

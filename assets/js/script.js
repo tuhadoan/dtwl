@@ -1,5 +1,6 @@
 ;(function(jQuery){
 	function dtwl_woo_init(){
+		dtwl_woo_ajax_filter();
 		dtwl_woo_loadmore();
 		dtwl_woo_tab_loadmore();
 		dtwl_woo_products_ajax_loadmore();
@@ -12,6 +13,90 @@
 			dtwl_woo_tab_filters_menu();
 		});
 	};
+
+	function dtwl_woo_ajax_filter(){
+		jQuery('.dt-filter-toogle-button').each(function(){
+			var $_this = jQuery(this);
+			jQuery(this).find('.dt-filter').on('click',function(e){
+				e.preventDefault();
+				var $wrapid = jQuery($_this).parents('.dtwl-toolbar');
+
+				var $filter_sidebar = jQuery($wrapid).find('.dtwl-woo-sidebar-shop-filter');
+				if( !jQuery($filter_sidebar).hasClass('show') ){
+					jQuery($filter_sidebar).slideDown().addClass('show');
+				}else{
+					jQuery($filter_sidebar).slideUp().removeClass('show');
+				}
+			});
+		});
+
+		if(jQuery('[data-toggle="dtwl-shop-filter-ajax"]').length){
+			 var _shop_filter_wrap = jQuery('[data-toggle="dtwl-shop-filter-ajax"]');
+			 _shop_filter_wrap.data('loading',false);
+			 jQuery('[data-toggle="dtwl-shop-filter-ajax"]').on('click', '.widget_layered_nav a', function(e) {
+				e.preventDefault();
+				var _this = jQuery(this),
+					_url = _this.attr('href');
+				dtwl_get_shop_ajax(_url,false,_shop_filter_wrap);
+			});
+		 }
+	}
+
+	function dtwl_get_shop_ajax(_url ,pushstate , _shop_filter_wrap){
+		//var hasPushState = false;
+		_shop_filter_wrap =  _shop_filter_wrap || jQuery('[data-toggle="dtwl-shop-filter-ajax"]');
+		if( _shop_filter_wrap.data('loading'))
+			return;
+		
+		_url = _url.replace(/\/?(\?|#|$)/, '/$1');
+		
+		//if(!pushstate)
+			//setPushState(_url);
+		//Add Flag loading
+		_shop_filter_wrap.data('loading',true);
+		
+		jQuery.ajax({
+			url:_url,
+			data: {
+				dt_shop_ajax_filter: '1'
+			},
+			dataType: 'html',
+			cache: false,
+			headers: {
+				'cache-control': 'no-cache'
+			},
+			method: 'POST',
+			beforeSend: function(){
+				//show_hide_filter_ajax_loading();
+	        },
+			error: function(XMLHttpRequest, status, error) {
+				//show_hide_filter_ajax_loading();
+				_shop_filter_wrap.data('loading',false);
+			},
+			success: function(response) {
+				//Fix ERROR: $(html) HTML strings must start with '<' character
+				response = jQuery('<div>' + response + '</div>');
+				if(jQuery('.dtwl-woo-sidebar-shop-filter').length){
+					jQuery('.dtwl-woo-sidebar-shop-filter .dtwl-woo-sidebar-shop-filter-wrap').replaceWith(response.find('.dtwl-woo-sidebar-shop-filter-wrap'));
+				}else{
+					jQuery('[data-toggle="dtwl-woo-shop-filter-ajax"]').find('.widget_layered_nav').each(function(){
+						var _id = jQuery(this).attr('id');
+						if(response.find('#' + _id).length){
+							jQuery(this).replaceWith(response.find('#' + _id));
+						}else{
+							jQuery(this).remove();
+						}
+					});
+				}
+				jQuery('ul.products').replaceWith(response);
+				// var scroll_speed = filter_ajax_scroll();
+				// setTimeout(function() {
+				// 	//show_hide_filter_ajax_loading();
+				// }, scroll_speed);
+				_shop_filter_wrap.data('loading',false);
+			}
+		})
+	}
 
 	function dtwl_woo_loadmore(){
 		// Click loadmore from shortcode Product Tabs

@@ -349,7 +349,7 @@ class dtwoo_tabs{
 				   	});
 				</script>
 			<?php elseif ($template == 'masonry'): ?>
-					<div class="dtwl-woo-mansory-list dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list dtwl-woo-grid">
+					<div class="dtwl-woo-mansory-list dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list">
 						<?php 
 						foreach ($tabs as $tab):
 							$loop = dhwl_woo_tabs_query($query_types, $tab, $orderby, $number_query);
