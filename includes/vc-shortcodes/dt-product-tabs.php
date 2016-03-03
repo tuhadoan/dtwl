@@ -287,7 +287,7 @@ class dtwoo_tabs{
 				<?php endif; ?>
 				
 				<?php if($display_type == 'tabs_left'):?>
-				<div class="dtwl-next-prev-wrap">
+				<div class="dtwl-next-prev-wrap" data-offset-def="<?php echo esc_attr($number_query) ?>">
 					<a href="#" class="dtwl-ajax-prev-page ajax-page-disabled" data-offset="0" data-current-page="1"><i class="fa fa-chevron-left"></i></a>
 					<a href="#" class="dtwl-ajax-next-page" data-offset="<?php echo esc_attr($number_query) ?>" data-current-page="1"><i class="fa fa-chevron-right"></i></a>
 				</div>
@@ -349,7 +349,7 @@ class dtwoo_tabs{
 				   	});
 				</script>
 			<?php elseif ($template == 'masonry'): ?>
-					<div class="dtwl-woo-mansory-list dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list dtwl-woo-grid">
+					<div class="dtwl-woo-mansory-list dtwl-woo-row-fluid dtwl-woo-products dtwl-woo-product-list">
 						<?php 
 						foreach ($tabs as $tab):
 							$loop = dhwl_woo_tabs_query($query_types, $tab, $orderby, $number_query);

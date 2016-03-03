@@ -3,7 +3,7 @@ vc_map(array(
 	"name" => esc_html__( "DT Products", DT_WOO_LAYOUTS ),
 	"base" => "dtwoo_products",
 	"category" => esc_html__( "DT WooCommerce", DT_WOO_LAYOUTS ),
-	"icon" => "icon-dtwl-woo-products",
+	"icon" => "dt-vc-icon-dt_woo",
 	"description" => esc_html__( "Show multiple products in catalog page.", DT_WOO_LAYOUTS ),
 	"params" => array(
 		array (
@@ -113,6 +113,7 @@ vc_map(array(
 			"param_name" => "posts_per_page",
 			"value" => "10"
 		),
+		
 		array(
 			"type" => "dropdown",
 			"class" => "",
@@ -121,7 +122,7 @@ vc_map(array(
 			"value" => array(
 				esc_html__('WooCommerce Pagination',  DT_WOO_LAYOUTS) => "woo_pagination",
 				esc_html__('Ajax Loadmore',  DT_WOO_LAYOUTS) => "ajax",
-				//esc_html__('Infinite Scroll',  DT_WOO_LAYOUTS) => "infinite_scroll",
+				esc_html__('Infinite Scroll',  DT_WOO_LAYOUTS) => "infinite_scroll",
 			),
 			"description" => esc_html__("Choose Type of navigation.", DT_WOO_LAYOUTS )
 		),

@@ -140,5 +140,6 @@ $paged = (isset($paged) && $paged) ? $paged : 1;
     else:
         wc_get_template( 'loop/no-products-found.php' );
     endif;
+    
     ?>
 </div>

@@ -7,6 +7,7 @@ class DTWL_Admin{
 	}
 	
 	public function init(){
+		wp_enqueue_style('dtwl-woo-admin', DT_WOO_LAYOUTS_URL . 'assets/css/admin.css');
 		wp_register_script( 'dtwl-woo-admin',DT_WOO_LAYOUTS_URL. 'assets/js/admin.js', array('jquery'),DTWL_VERSION,false);
 		wp_enqueue_script( 'dtwl-woo-admin' );
 		wp_enqueue_style('dtwl-woo-chosen');
