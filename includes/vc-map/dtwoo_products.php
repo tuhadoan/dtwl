@@ -121,7 +121,7 @@ vc_map(array(
 			"value" => array(
 				esc_html__('WooCommerce Pagination',  DT_WOO_LAYOUTS) => "woo_pagination",
 				esc_html__('Ajax Loadmore',  DT_WOO_LAYOUTS) => "ajax",
-				//esc_html__('Infinite Scroll',  DT_WOO_LAYOUTS) => "infinite_scroll",
+				esc_html__('Infinite Scroll',  DT_WOO_LAYOUTS) => "infinite_scroll",
 			),
 			"description" => esc_html__("Choose Type of navigation.", DT_WOO_LAYOUTS )
 		),

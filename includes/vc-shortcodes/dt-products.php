@@ -45,6 +45,7 @@ class dtwoo_products{
 		
 		$id	= dtwl_woo_get_id();
 		$template_part = '';
+		$woo_products_pagination = ($page_navigation) ? $page_navigation : 'woo_pagination';
 		
 		// Inline style
 		$inline_style= '
@@ -243,78 +244,109 @@ class dtwoo_products{
 				</a>
 			</div>
 			<?php endif; ?>
+			<?php $dt_ul_product_class = '';
+			if($woo_products_pagination == 'ajax'){
+				$dt_ul_product_class = 'loadmore-wrap';
+			}elseif($woo_products_pagination == 'infinite_scroll'){
+				$dt_ul_product_class = 'infinite-scroll-wrap';
+			}
+			?>
 			<div class="dtwl-woo-prdlist-content">
-				<ul id="dtwl-woo-prdlist" class="dtwl-woo-products dtwl-woo-product-list dtwl-woo-<?php echo $mode_view; ?> dtwl-woo-row-fluid">
-					<?php
-					while ( $query->have_posts() ) : $query->the_post();
-						wc_get_template( 'item-content-product.php', array('grid_columns' => absint($col), 'hover_thumbnail' => $hover_thumbnail), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
-					endwhile;
-					?>
-				</ul>
-				<?php
-					/*
-					 * Page navigation
-					 */
-					$nav_type = ($page_navigation) ? $page_navigation : 'woo_pagination';
-					
-					$max_num_pages = $GLOBALS['wp_query']->max_num_pages;
-					
-					if (!empty($query) ) {
-						$max_num_pages = $query->max_num_pages;
-					}
-					
-					// Don't print empty markup if there's only one page.
-					if ( $max_num_pages < 2 ) {
-						return;
-					}else{
-						
-						switch ($nav_type){
-							case 'ajax':
-									?>
-									<nav class="dtwl-navigation-ajax" role="navigation">
-										<a href="javascript:void(0)"
-										data-cat	= "<?php echo esc_attr($categories) ?>"
-										data-tags	= "<?php echo esc_attr($tags) ?>"
-										data-orderby	= "<?php echo esc_attr($orderby) ?>"
-										data-order	= "<?php echo esc_attr($order) ?>"
-										data-target ="#<?php echo $id;?> #dtwl-woo-prdlist"
-										data-grid-col="<?php echo absint($col); ?>"
-										data-hover-thumbnail = "<?php echo esc_attr($hover_thumbnail) ?>"
-										data-posts-per-page = "<?php echo absint($posts_per_page) ?>"
-										data-offset = "<?php echo absint($posts_per_page) ?>"
-										id="dtwl-navigation-ajax" class="dtwl-load-more">
-											<span class="dtwl-loadmore-title"><?php echo esc_html__('Load more', DT_WOO_LAYOUTS);?></span>
-											<div class="dtwl-navloading"><div class="dtwl-navloader"></div></div>
-										</a>
-									</nav>
-									<?php
-								break;
-							case 'infinite_scroll':
-								break;
-							default:
-								?>
-								<nav class="dtwl-woocommerce-pagination">
-									<?php
-										echo paginate_links( apply_filters( 'woocommerce_pagination_args', array(
-											'base'         => esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) ),
-											'format'       => '',
-											'add_args'     => '',
-											'current'      => max( 1, get_query_var( 'paged' ) ),
-											'total'        => $query->max_num_pages,
-											'prev_text'    => '&larr;',
-											'next_text'    => '&rarr;',
-											'type'         => 'list',
-											'end_size'     => 3,
-											'mid_size'     => 3
-										) ) );
-									?>
-								</nav>
-								<?php
-								break;
-						}
-						
-					}// print navigation
-				?>
+				<div class="dtwl-woo-content" data-msgtext="<?php esc_attr_e('Loading products', DT_WOO_LAYOUTS);?>" data-finished="<?php esc_attr_e('All products loaded','woow')?>" data-contentselector=".dtwl-woo-content ul.dtwl-woo-products" data-paginate="<?php echo esc_attr($woo_products_pagination) ?>"  data-itemselector=".dtwl-woo-content li.product">
+					<div class="dtwl-woo-shop-loop-wrap <?php echo $dt_ul_product_class; ?>">
+						<ul id="dtwl-woo-prdlist" class="dtwl-woo-products dtwl-woo-product-list dtwl-woo-<?php echo $mode_view; ?> dtwl-woo-row-fluid" data-maxpage="<?php echo absint($query->max_num_pages);?>">
+							<?php
+							while ( $query->have_posts() ) : $query->the_post();
+								wc_get_template( 'item-content-product.php', array('grid_columns' => absint($col), 'hover_thumbnail' => $hover_thumbnail), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+							endwhile;
+							?>
+						</ul>
+						<?php
+							/*
+							 * Page navigation
+							 */
+							
+							$max_num_pages = $GLOBALS['wp_query']->max_num_pages;
+							
+							if (!empty($query) ) {
+								$max_num_pages = $query->max_num_pages;
+							}
+							
+							// Don't print empty markup if there's only one page.
+							if ( $max_num_pages < 2 ) {
+								return;
+							}else{
+								
+								switch ($woo_products_pagination){
+									case 'ajax':
+											?>
+											<nav class="dtwl-navigation-ajax" role="navigation">
+												<a href="javascript:void(0)"
+												data-cat	= "<?php echo esc_attr($categories) ?>"
+												data-tags	= "<?php echo esc_attr($tags) ?>"
+												data-orderby	= "<?php echo esc_attr($orderby) ?>"
+												data-order	= "<?php echo esc_attr($order) ?>"
+												data-target ="#<?php echo $id;?> #dtwl-woo-prdlist"
+												data-grid-col="<?php echo absint($col); ?>"
+												data-hover-thumbnail = "<?php echo esc_attr($hover_thumbnail) ?>"
+												data-posts-per-page = "<?php echo absint($posts_per_page) ?>"
+												data-offset = "<?php echo absint($posts_per_page) ?>"
+												id="dtwl-navigation-ajax" class="dtwl-load-more">
+													<span class="dtwl-loadmore-title"><?php echo esc_html__('Load more', DT_WOO_LAYOUTS);?></span>
+													<div class="dtwl-navloading"><div class="dtwl-navloader"></div></div>
+												</a>
+											</nav>
+											<?php
+										break;
+									case 'infinite_scroll':
+										wp_enqueue_script('dtwl-woo-vendor-infinitescroll');
+										?>
+										<nav class="woocommerce-pagination">
+											<div class="paginate">
+											<?php
+												echo paginate_links( apply_filters( 'woocommerce_pagination_args', array(
+													'base'         => esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) ),
+													'format'       => '',
+													'add_args'     => '',
+													'current'      => max( 1, get_query_var( 'paged' ) ),
+													'total'        => $query->max_num_pages,
+													'prev_text'    => '&larr;',
+													'next_text'    => '&rarr;',
+													'type'         => 'list',
+													'end_size'     => 3,
+													'mid_size'     => 3
+												) ) );
+											?>
+											</div>
+										</nav>
+										<?php
+										break;
+									default:
+										?>
+										<nav class="dtwl-woocommerce-pagination">
+											<?php
+												echo paginate_links( apply_filters( 'woocommerce_pagination_args', array(
+													'base'         => esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) ),
+													'format'       => '',
+													'add_args'     => '',
+													'current'      => max( 1, get_query_var( 'paged' ) ),
+													'total'        => $query->max_num_pages,
+													'prev_text'    => '&larr;',
+													'next_text'    => '&rarr;',
+													'type'         => 'list',
+													'end_size'     => 3,
+													'mid_size'     => 3
+												) ) );
+											?>
+										</nav>
+										<?php
+										break;
+								}
+								
+							}// print navigation
+						?>
+					</div>
+				</div>
 			</div>
 			<?php 
 			else:

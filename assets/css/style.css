@@ -1294,6 +1294,49 @@
   filter: alpha(opacity=100);
 }
 
+.dtwl-woo-content[data-paginate="infinite_scroll"] .woocommerce-pagination, .dtwl-woo-content[data-paginate="ajax"] .woocommerce-pagination {
+  display: none;
+}
+
+.dtwl-infinite-scroll-loading {
+  text-align: center;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+.dtwl-infinite-scroll-loading .dtwl-woo-fade-loading {
+  text-align: center;
+}
+.dtwl-infinite-scroll-loading .dtwl-woo-fade-loading i {
+  -webkit-animation: 1.5s ease 0s normal none infinite loadingFade;
+  -o-animation: 1.5s ease 0s normal none infinite loadingFade;
+  animation: 1.5s ease 0s normal none infinite loadingFade;
+  background: none repeat scroll 0 0 #ff4800;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  display: inline-block;
+  height: 10px;
+  margin: 0 4px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  width: 10px;
+}
+.dtwl-infinite-scroll-loading .dtwl-woo-fade-loading i:nth-child(1) {
+  -webkit-animation-delay: .2s;
+  animation-delay: .2s;
+}
+.dtwl-infinite-scroll-loading .dtwl-woo-fade-loading i:nth-child(2) {
+  -webkit-animation-delay: .4s;
+  animation-delay: .4s;
+}
+.dtwl-infinite-scroll-loading .dtwl-woo-fade-loading i:nth-child(3) {
+  -webkit-animation-delay: .6s;
+  animation-delay: .6s;
+}
+.dtwl-infinite-scroll-loading .dtwl-woo-fade-loading i:nth-child(4) {
+  -webkit-animation-delay: .8s;
+  animation-delay: .8s;
+}
+
 /* Effects */
 .dtwl-woo-tab-content > .active {
   display: block;

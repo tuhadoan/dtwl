@@ -16,7 +16,7 @@ if ( ! $product || ! $product->is_visible() )
 
 // Extra post classes
 $classes = array();
-$classes[] = 'dtwl-woo-item';
+$classes[] = 'dtwl-woo-item product';
 $col = 12/$grid_columns;
 $col2 = 12/($grid_columns-1);
 $classes[] = 'dtwl-woo-col-sm-'.$col.' dtwl-woo-col-xs-'.$col2.' dtwl-woo-col-phone-12';
