@@ -99,7 +99,7 @@ vc_map(array(
 		array (
 			"type" => "dropdown",
 			"class" => "",
-			"heading" => __ ( "Order", DT_WOO_LAYOUTS ),
+			"heading" => __ ( "Sort Order", DT_WOO_LAYOUTS ),
 			"param_name" => "order",
 			"value" => array (
 				esc_html__ ( 'Descending', DT_WOO_LAYOUTS ) => 'DESC',

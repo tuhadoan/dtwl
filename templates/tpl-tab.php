@@ -89,7 +89,7 @@ $paged = (isset($paged) && $paged) ? $paged : 1;
 		    	</ul>
 		    	<script type="text/javascript">
 			    	jQuery(document).ready(function(){
-						var $container = jQuery('#dtwl_pdtabs_<?php echo $tab; ?> ul');
+						var $container = jQuery('#<?php echo $wrap_id; ?> .dhwl-template-tab-content ul');
 						
 						jQuery($container).slick({
 							dots: <?php echo esc_attr($dots)?>,

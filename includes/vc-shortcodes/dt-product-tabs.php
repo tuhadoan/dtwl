@@ -15,8 +15,8 @@ class dtwoo_tabs{
 		
 		extract( shortcode_atts(array(
 		'heading'			=> '',
-		'heading_color'		=> '#363230',
-		'heading_font_size'	=> '20px',
+		'heading_color'		=> '#ffffff',
+		'heading_font_size'	=> '15px',
 		'display_type'		=> '',
 		'tabs_left_banner'	=> '',
 		'banner_url'		=> '',
@@ -77,12 +77,21 @@ class dtwoo_tabs{
 		$inline_style= '
 		#'.$id.' {
 		}
-		
+		#'.$id.' .dtwl-woo-heading .dtwl-heading{
+			background-color: ' . $main_color . ';
+		}
+		#'.$id.' .dtwl-woo-heading:before{
+			background-color: ' . $main_color . ';
+		}
 		#'.$id.' .dtwl-heading {
 			color:' . $heading_color . ';
 			font-size:' . $heading_font_size . ';
 		}
-		
+		#'.$id.' .dtwl-woo-heading .dtwl-next-prev-wrap a:hover{
+			background-color: ' . $main_color . ';
+    		border-color: ' . $main_color . ';
+		}
+			
 		#'.$id.'.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li:hover a span,
 		#'.$id.'.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li.focus a span,
 		#'.$id.'.dtwl-woo-product-tabs .dtwl-woo-filters .dtwl-woo-nav-tabs li.active a span{
@@ -183,10 +192,18 @@ class dtwoo_tabs{
 		ob_start();
 		?>
 		<div id="<?php echo $id;?>" class="<?php echo $class . ' ' .$display_type;?>">
-			<div class="dtwl-nav-tabs-wapper <?php echo $tab_nav_class; ?>">
+			<div class="dtwl-woo-heading">
 				<?php if( ! empty( $heading ) ):?>
 				<h2 class="dtwl-heading"><?php echo esc_html($heading);?></h2>
 				<?php endif; ?>
+				<?php if($display_type == 'tabs_left'):?>
+				<div class="dtwl-next-prev-wrap" data-offset-def="<?php echo esc_attr($number_query) ?>">
+					<a href="#" class="dtwl-ajax-prev-page ajax-page-disabled" data-offset="0" data-current-page="1"><i class="fa fa-chevron-left"></i></a>
+					<a href="#" class="dtwl-ajax-next-page" data-offset="<?php echo esc_attr($number_query) ?>" data-current-page="1"><i class="fa fa-chevron-right"></i></a>
+				</div>
+				<?php endif; ?>
+			</div>
+			<div class="dtwl-nav-tabs-wapper <?php echo $tab_nav_class; ?>">
 				<div class="dtwl-woo-filters dtwl-woo-clearfix">
 					
 					<div class="dtwl-woo-filters-menu">
@@ -220,6 +237,7 @@ class dtwoo_tabs{
 							?>
 							<li class="dtwl-nav-item first">
 								<a href="#" class="tab-intent" title="<?php echo esc_html__('All', DT_WOO_LAYOUTS); ?>"
+									data-wrap-id		= "<?php echo esc_attr($id) ?>"
 									data-display_type	= "<?php echo esc_attr($display_type) ?>"
 									data-query_types	= "<?php echo esc_attr($query_types) ?>"
 									data-tab			= "<?php echo esc_attr($data_tab) ?>"
@@ -243,6 +261,7 @@ class dtwoo_tabs{
 								?>
 								<li class="dtwl-nav-item"><span>/</span>
 									<a href="#" class="tab-intent" title="<?php echo esc_attr($tab['title']); ?>"
+										data-wrap-id		= "<?php echo esc_attr($id) ?>"
 										data-display_type	= "<?php echo esc_attr($display_type) ?>"
 										data-query_types	= "<?php echo esc_attr($query_types) ?>"
 										data-tab			= "<?php echo esc_attr($tab['name']) ?>"
@@ -285,13 +304,6 @@ class dtwoo_tabs{
 					?>
 				</div>
 				<?php endif; ?>
-				
-				<?php if($display_type == 'tabs_left'):?>
-				<div class="dtwl-next-prev-wrap" data-offset-def="<?php echo esc_attr($number_query) ?>">
-					<a href="#" class="dtwl-ajax-prev-page ajax-page-disabled" data-offset="0" data-current-page="1"><i class="fa fa-chevron-left"></i></a>
-					<a href="#" class="dtwl-ajax-next-page" data-offset="<?php echo esc_attr($number_query) ?>" data-current-page="1"><i class="fa fa-chevron-right"></i></a>
-				</div>
-				<?php endif; ?>
 			</div> <!-- /.dtwl-nav-tabs-wapper -->
 			
 			<?php
@@ -309,6 +321,7 @@ class dtwoo_tabs{
 					<?php
 						$tab_args = array(
 							'display_type'	=> $display_type,
+							'wrap_id'		=> $id,
 							'query_types'	=> $query_types,
 							'tab'			=> $data_tab,
 							'orderby'		=> $orderby,

@@ -7,6 +7,7 @@
 		dtwl_woo_tab_filters_menu();
 		dtwl_woo_isotope();
 		dtwl_woo_products_switch_template();
+		dtwl_woo_product_category();
 
 		jQuery(window).resize(function(){
 			dtwl_woo_tab_filters_menu();
@@ -88,7 +89,8 @@
 						
 						jQuery('#'+$wapp_id+' .dtwl-woo-tab-content').addClass('dtwl-woo-tab-loading');
 
-						var display_type 	= jQuery(this).attr('data-display_type'),
+						var wrap_id 		= jQuery(this).attr('data-wrap-id'),
+							display_type 	= jQuery(this).attr('data-display_type'),
 							query_types 	= jQuery(this).attr('data-query_types'),
 							tab 			= jQuery(this).attr('data-tab'),
 							orderby 		= jQuery(this).attr('data-orderby'),
@@ -108,6 +110,7 @@
 								url : dtwl_ajaxurl,
 								data:{
 									action			: 'dtwl_wootabloadproducts',
+									wrap_id			: wrap_id,
 									display_type 	: display_type,
 									query_types 	: query_types,
 									tab 			: tab,
@@ -141,7 +144,7 @@
 						                	// reset data
 						                	jQuery('#'+$wapp_id).find('.dtwl-next-prev-wrap a').each(function(){
 						                		var $data_offset_df = jQuery(this).parent('.dtwl-next-prev-wrap').attr('data-offset-def');
-						                		console.log($data_offset_df);
+						                		
 						                		jQuery(this).attr('data-current-page', 1);
 						                		if(jQuery(this).hasClass('dtwl-ajax-prev-page')){
 						                			jQuery(this).attr('data-offset', 0);
@@ -489,6 +492,99 @@
 		})
 	};
 	
+	function dtwl_woo_product_category(){
+		jQuery('.dtwl-woo-category').each(function(){
+			var $wrap_id = jQuery(this).attr('id');
+
+		// Click ajax next-prev page
+		jQuery(this).find('.dtwl-next-prev-wrap a').on('click', function(e){
+			e.preventDefault();
+			var $_this = jQuery(this);
+			if( ! jQuery(this).hasClass('ajax-page-disabled') ){
+				
+				jQuery('#'+$wrap_id+' .dtwl-woo-content').addClass('dtwl-woo-loading');
+
+				var cat 			= jQuery($_this).parents('.dtwl-next-prev-wrap').attr('data-cat'),
+					orderby 		= jQuery($_this).parents('.dtwl-next-prev-wrap').attr('data-orderby'),
+					order 			= jQuery($_this).parents('.dtwl-next-prev-wrap').attr('data-order'),
+					hover_thumbnail = jQuery($_this).parents('.dtwl-next-prev-wrap').attr('data-hover-thumbnail'),
+					offset			= jQuery($_this).attr('data-offset'),
+					current_page	= jQuery($_this).attr('data-current-page'),
+					posts_per_page  = jQuery($_this).parents('.dtwl-next-prev-wrap').attr('data-posts-per-page');
+					
+				jQuery.ajax({
+						url : dtwl_ajaxurl,
+						data:{
+							action			: 'dtwl_category_nav',
+							cat 			: cat,
+							orderby 		: orderby,
+							order 			: order,
+							hover_thumbnail : hover_thumbnail,
+							offset 			: offset,
+							current_page	: current_page,
+							posts_per_page  : posts_per_page,
+						},
+						type: 'POST',
+						success: function(data){
+							if(data != ''){
+								setTimeout(function(){
+									jQuery('#'+$wrap_id+' .dtwl-woo-content').removeClass('dtwl-woo-loading');
+									
+									jQuery('#'+$wrap_id+' .dtwl-woo-product-list').html(data).hide();
+									jQuery('#'+$wrap_id+' .dtwl-woo-product-list').fadeIn('slow');
+				                	
+				                	// uddate current page - offset
+				                	var current_page	= parseInt( jQuery($_this).attr('data-current-page') );
+				                	var current_offset	= parseInt( jQuery($_this).attr('data-offset') );
+
+				                	if( jQuery($_this).hasClass('dtwl-ajax-next-page') ) {
+				                		jQuery('#'+$wrap_id+' .dtwl-next-prev-wrap .dtwl-ajax-next-page').attr('data-current-page', current_page + 1);
+				                		var prev_page = parseInt( jQuery($_this).attr('data-current-page') - 1 );
+				                		jQuery('#'+$wrap_id+' .dtwl-next-prev-wrap .dtwl-ajax-prev-page').attr('data-current-page', prev_page);
+
+				                		jQuery($_this).attr('data-offset', parseInt(offset) + parseInt(posts_per_page));
+
+				                		jQuery('#'+$wrap_id+' .dtwl-ajax-prev-page').removeClass('ajax-page-disabled');
+				                		jQuery('#'+$wrap_id+' .dtwl-ajax-prev-page').attr('data-offset', parseInt(offset) - parseInt(posts_per_page));
+
+				                	}else if( jQuery($_this).hasClass('dtwl-ajax-prev-page') ){
+				                		jQuery('#'+$wrap_id+' .dtwl-next-prev-wrap .dtwl-ajax-prev-page').attr('data-current-page', current_page - 1);
+				                		jQuery('#'+$wrap_id+' .dtwl-next-prev-wrap .dtwl-ajax-next-page').attr('data-current-page', current_page);
+
+				                		if(current_offset <= 0){
+				                			jQuery($_this).addClass('ajax-page-disabled');
+				                			jQuery($_this).attr('data-offset', 0);
+				                			jQuery('#'+$wrap_id+' .dtwl-ajax-next-page').attr('data-offset', parseInt(posts_per_page));
+				                			jQuery('#'+$wrap_id+' .dtwl-next-prev-wrap .dtwl-ajax-next-page').attr('data-current-page', 1);
+
+				                		}else{
+				                			jQuery($_this).attr('data-offset', parseInt(current_offset) - parseInt(posts_per_page));
+
+				                			jQuery('#'+$wrap_id+' .dtwl-ajax-next-page').attr('data-offset', parseInt(current_offset) + parseInt(posts_per_page));
+				                		}
+				                		
+				                		jQuery('#'+$wrap_id+' .dtwl-ajax-next-page').removeClass('ajax-page-disabled');
+				                		
+									}
+
+				                	// hidden action
+				                	if( jQuery('#'+$wrap_id+' #dtwl-ajax-no-products').length > 0 ){
+				                		$_this.addClass('ajax-page-disabled');
+				                	}
+
+								},500);
+								
+							}else{
+
+							}
+						}
+					});
+				}
+
+			});
+		});
+	};
+
 	
 	jQuery(document).ready(function($) {
 		dtwl_woo_init();

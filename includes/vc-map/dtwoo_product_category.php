@@ -1,4 +1,18 @@
 <?php
+$product_categories_dropdown = array();
+
+$args = array(
+	'orderby' => 'name',
+	'hide_empty' => 0,
+);
+$categories = get_terms( 'product_cat', $args );
+
+if( ! empty($categories)){
+	foreach ($categories as $cat):
+	$product_categories_dropdown[$cat->name] = $cat->slug;
+	endforeach;
+}
+
 vc_map(array(
 	"name" => esc_html__( "DT Product Category", DT_WOO_LAYOUTS ),
 	"base" => "dtwoo_product_category",
@@ -26,50 +40,24 @@ vc_map(array(
 			"class" => "",
 			"heading" => esc_html__( "Heading font size", DT_WOO_LAYOUTS ),
 			"param_name" => "heading_font_size",
-			"value" => "20px",
+			"value" => "14px",
 			"description" => esc_html__( "Enter your custom size. Example: 20px.", DT_WOO_LAYOUTS ),
 		),
-		array(
+		array (
 			"type" => "dropdown",
 			"class" => "",
-			"heading" => esc_html__("Template", DT_WOO_LAYOUTS),
-			"param_name" => "pslides_template",
-			'admin_label'=> true,
-			"value" => array(
-				esc_html__("Default", DT_WOO_LAYOUTS) => "def",
-				esc_html__("Center Mode", DT_WOO_LAYOUTS) => "center_mode",
-				esc_html__("Slider Syncing", DT_WOO_LAYOUTS) => "slider_syncing",
-				esc_html__("Single Mode", DT_WOO_LAYOUTS) => "single_mode",
-			),
-			"description" => ""
-		),
-		array(
-			"type" => "textfield",
-			"class" => "",
-			"heading" => esc_html__("Center Padding", DT_WOO_LAYOUTS),
-			"param_name" => "pslides_centerpadding",
-			"dependency" => array("element" => "pslides_template" , "value" => "center_mode"),
-			"value" => "100px",
-			"description" => esc_html__("Side padding when in center mode (px). EX: 100px", DT_WOO_LAYOUTS)
-		),
-		
-		array (
-			"type" => "dtwl_woo_field_categories",
-			"class" => "",
-			"heading" => __ ( "Categories", DT_WOO_LAYOUTS ),
-			"param_name" => "categories",
-		),
-		array (
-			"type" => "dtwl_woo_field_tags",
-			"class" => "",
-			"heading" => __ ( "Tags", DT_WOO_LAYOUTS ),
-			"param_name" => "tags",
+			"heading" => __ ( "Category", DT_WOO_LAYOUTS ),
+			'value' => $product_categories_dropdown,
+			'param_name' => 'category',
+			'save_always' => true,
+			"description" => esc_html__( "Product category list", DT_WOO_LAYOUTS ),
 		),
 		array(
 			"type" => "dropdown",
 			"class" => "",
 			"heading" => esc_html__("Order By", DT_WOO_LAYOUTS),
 			"param_name" => "orderby",
+			'save_always' => true,
 			"value" => array(
 				esc_html__('Latest Products',  DT_WOO_LAYOUTS) => "recent",
 				esc_html__('BestSeller Products',  DT_WOO_LAYOUTS) => "best_selling",
@@ -80,82 +68,34 @@ vc_map(array(
 				esc_html__('Price',  DT_WOO_LAYOUTS) => "price",
 				esc_html__('Random',  DT_WOO_LAYOUTS) => "rand",
 			),
-			"description" => ""
 		),
 		array (
 			"type" => "dropdown",
 			"class" => "",
-			"heading" => __ ( "Order", DT_WOO_LAYOUTS ),
+			"heading" => __ ( "Sort Order", DT_WOO_LAYOUTS ),
 			"param_name" => "order",
+			'save_always' => true,
 			"value" => array (
-				__ ( 'Ascending', DT_WOO_LAYOUTS ) => 'ASC',
-				__ ( 'Descending', DT_WOO_LAYOUTS ) => 'DESC'
+				esc_html__ ( 'Descending', DT_WOO_LAYOUTS ) => 'DESC',
+				esc_html__ ( 'Ascending', DT_WOO_LAYOUTS ) => 'ASC',
 			),
 		),
 		array(
-			"type" => "dropdown",
-			"class" => "",
-			"heading" => esc_html__("Autoplay", DT_WOO_LAYOUTS),
-			"param_name" => "pslides_autoplay",
-			"value" => array(
-				esc_html__('True',  DT_WOO_LAYOUTS) => "true",
-				esc_html__('False',  DT_WOO_LAYOUTS) => "false",
-			),
-			"description" => ""
-		),
-		array(
 			"type" => "textfield",
 			"class" => "",
-			"heading" => esc_html__("Speed. int(ms)", DT_WOO_LAYOUTS),
-			"param_name" => "pslides_speed",
-			"value" => "300",
-			"description" => "",
+			"heading" => esc_html__("Items to show", DT_WOO_LAYOUTS),
+			"param_name" => "items_to_show",
+			"value" => "4"
 		),
-		array(
-			"type" => "textfield",
+		array (
+			"type" => "checkbox",
 			"class" => "",
-			"heading" => esc_html__("Width Between Each Slide. int(px)", DT_WOO_LAYOUTS),
-			"param_name" => "pslides_margin",
-			"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
-			"value" => "10px",
-			"description" => esc_html__('', DT_WOO_LAYOUTS),
-		),
-		array(
-			"type" => "textfield",
-			"class" => "",
-			"heading" => esc_html__("Slides To Show.", DT_WOO_LAYOUTS),
-			"param_name" => "pslides_toshow",
-			"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
-			"value" => "5",
-			"description" => "",
-		),
-		// array(
-		// 	"type" => "textfield",
-		// 	"class" => "",
-		// 	"heading" => esc_html__("Slides To Scroll", DT_WOO_LAYOUTS),
-		// 	"param_name" => "pslides_toscroll",
-		// 	"dependency" => array("element" => "pslides_template" , "value" => array('def', 'center_mode', 'slider_syncing') ),
-		// 	"value" => "5",
-		// 	"description" => "",
-		// ),
-		array(
-			"type" => "textfield",
-			"class" => "",
-			"heading" => esc_html__("Product number limit", DT_WOO_LAYOUTS),
-			"param_name" => "pslider_limit",
-			"value" => "15",
-			"description" => "",
-		),
-		array(
-			"type" => "dropdown",
-			"class" => "",
-			"heading" => esc_html__("Dots", DT_WOO_LAYOUTS),
-			"param_name" => "pslides_dots",
-			"value" => array(
-				esc_html__('False',  DT_WOO_LAYOUTS) => "false",
-				esc_html__('True',  DT_WOO_LAYOUTS) => "true",
-			),
-			"description" => esc_html__("Show dot indicators", DT_WOO_LAYOUTS),
+			"heading" => __ ( "Show Category Thumbnail", DT_WOO_LAYOUTS ),
+			"param_name" => "show_cat_thumbnail",
+			'save_always' => true,
+			"value" => array (
+				esc_html__( 'Yes, please', DT_WOO_LAYOUTS ) => '1'
+			)
 		),
 		
 		// Custom Options
@@ -170,7 +110,15 @@ vc_map(array(
 			"heading" => esc_html__("Main Color", DT_WOO_LAYOUTS),
 			"param_name" => "main_color"
 		),
-		
+		array (
+			"type" => "checkbox",
+			"class" => "",
+			"heading" => __ ( "Hover Thumbnail Effects", DT_WOO_LAYOUTS ),
+			"param_name" => "hover_thumbnail",
+			"value" => array (
+				esc_html__( 'Yes, please', DT_WOO_LAYOUTS ) => '1'
+			)
+		),
 		array(
 			"type" => "colorpicker",
 			"value" => "#ffffff",

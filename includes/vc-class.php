@@ -13,6 +13,9 @@ class DT_WooCommerce_Layouts{
 			
 			// Categories
 			vc_add_shortcode_param ( 'dtwl_woo_field_categories', 'dtwl_woo_setting_field_categories', $params_script);
+			// Category
+			vc_add_shortcode_param ( 'dtwl_woo_field_category', 'dtwl_woo_setting_field_category');
+
 			// Tags
 			vc_add_shortcode_param ( 'dtwl_woo_field_tags', 'dtwl_woo_setting_field_tags');
 			
@@ -39,4 +42,4 @@ new DT_WooCommerce_Layouts();
 require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-product-tabs.php';
 require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-product-slider.php';
 require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-products.php';
-//require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-product-category.php';
+require_once DT_WOO_LAYOUTS_DIR . '/includes/vc-shortcodes/dt-product-category.php';

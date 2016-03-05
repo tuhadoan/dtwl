@@ -81,6 +81,11 @@ class DT_WL_Manager{
 		// Ajax products navigation load more
 		add_action('wp_ajax_dtwl_wooproductsloadmore', array($this, 'dtwl_wooproducts_loadmore'));
 		add_action('wp_ajax_nopriv_dtwl_wooproductsloadmore', array($this, 'dtwl_wooproducts_loadmore'));
+		
+		// Product category shortcode
+		add_action('wp_ajax_dtwl_category_nav', array($this, 'dtwl_category_nav'));
+		add_action('wp_ajax_nopriv_dtwl_category_nav', array($this, 'dtwl_category_nav'));
+		
 	}
 	
 	public function init(){
@@ -191,6 +196,7 @@ class DT_WL_Manager{
 	public function dtwl_woo_tab_load_products(){
 			
 		$tab_args = array(
+			'wrap_id'			=> $_POST['wrap_id'],
 			'display_type'		=> $_POST['display_type'],
 			'query_types'		=> $_POST['query_types'],
 			'tab'				=> $_POST['tab'],
@@ -283,80 +289,7 @@ class DT_WL_Manager{
 			}
 		}
 		
-		switch ($orderby){
-			case 'recent':
-				$query_args['meta_query'] = array();
-				$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-				break;
-			case 'best_selling':
-				$query_args['meta_key']='total_sales';
-				$query_args['orderby']='meta_value_num';
-				$query_args['ignore_sticky_posts']   = 1;
-				$query_args['meta_query'] = array();
-				$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-				$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
-				break;
-			case 'featured_product':
-				$query_args['ignore_sticky_posts']=1;
-				$query_args['meta_query'] = array();
-				$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-				$query_args['meta_query'][] = array(
-					'key' => '_featured',
-					'value' => 'yes'
-				);
-				$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
-				break;
-			case 'top_rate':
-				add_filter( 'posts_clauses',  array( $woocommerce->query, 'order_by_rating_post_clauses' ) );
-				$query_args['meta_query'] = array();
-				$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-				$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
-				break;
-			case 'on_sale':
-				$query_args['meta_query'] = array();
-				$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-				$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
-				$query_args['post__in'] = wc_get_product_ids_on_sale();
-				break;
-			case 'recent_review':
-				if($post_per_page == -1) $_limit = 4;
-				else $_limit = $post_per_page;
-				global $wpdb;
-				$query = $wpdb->prepare( "
-					SELECT c.comment_post_ID
-					FROM {$wpdb->prefix}posts p, {$wpdb->prefix}comments c
-					WHERE p.ID = c.comment_post_ID AND c.comment_approved > %d
-					AND p.post_type = %s AND p.post_status = %s
-					AND p.comment_count > %d ORDER BY c.comment_date ASC" ,
-					0, 'product', 'publish', 0 );
-		
-					$results = $wpdb->get_results($query, OBJECT);
-					$_pids = array();
-					foreach ($results as $re) {
-					if(!in_array($re->comment_post_ID, $_pids))
-						$_pids[] = $re->comment_post_ID;
-						if(count($_pids) == $_limit)
-							break;
-					}
-		
-					$query_args['meta_query'] = array();
-				$query_args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
-						$query_args['meta_query'][] = $woocommerce->query->visibility_meta_query();
-						$query_args['post__in'] = $_pids;
-				break;
-			case 'price':
-				$query_args['meta_key'] = '_price';
-				$query_args['orderby'] = 'meta_value_num';
-				$query_args['order'] = $order;
-				break;
-			case 'rand':
-				$query_args['orderby']  = 'rand';
-				break;
-			default:
-				$ordering_args = $woocommerce->query->get_catalog_ordering_args($orderby, $order);
-				$query_args['orderby'] = $ordering_args['orderby'];
-				break;
-		}
+		dhwl_woo_query_orderby($orderby);
 		
 		$query = new WP_Query( $query_args );
 		$idx = 0;
@@ -376,6 +309,64 @@ class DT_WL_Manager{
 			// no products found
 		}
 		
+		wp_reset_postdata();
+		wp_die();
+	}
+	
+	public function dtwl_category_nav(){
+		$category			= $_POST['cat'];
+		$orderby			= $_POST['orderby'];
+		$order				= $_POST['order'];
+		$hover_thumbnail	= $_POST['hover_thumbnail'];
+		$offset				= $_POST['offset'];
+		$paged				= $_POST['current_page'];
+		$posts_per_page		= $_POST['posts_per_page'];
+	
+		$orderby    		 	= sanitize_title( $orderby );
+		$order       			= sanitize_title( $order );
+		
+		$query_args = array(
+			'posts_per_page' 	=> $posts_per_page,
+			'post_status' 	 	=> 'publish',
+			'post_type' 	 	=> 'product',
+			'offset'            => $offset,
+			'order'          	=> $order == 'asc' ? 'ASC' : 'DESC',
+			'paged'				=> $paged,
+			);
+		
+		$query_args['tax_query'][] =
+		array(
+			'taxonomy'			=> 'product_cat',
+			'field'				=> 'slug',
+			'terms'				=> $category,
+			'operator'			=> 'IN'
+		);
+		
+		dhwl_woo_query_orderby($orderby);
+		
+		$p = new WP_Query( $query_args  );
+	
+		while ( $p->have_posts() ) : $p->the_post(); $limit = $p->found_posts;
+			$class = 'dtwl-woo-item product';
+			$column = ($posts_per_page == 5) ? '15' : absint(12/$posts_per_page);
+			$column2 = absint(12/($posts_per_page-1));
+			$column3 = absint(12/($posts_per_page-2));
+			$class .= ' dtwl-woo-col-md-'.$column.' dtwl-woo-col-sm-'.$column2.' dtwl-woo-col-xs-'.$column3.' dtwl-woo-col-phone-12';
+			
+			?>
+			<div class="<?php echo $class; ?>">
+				<?php
+					wc_get_template( 'item-grid.php', array('hover_thumbnail' => $hover_thumbnail), DT_WOO_LAYOUTS_DIR . 'templates/', DT_WOO_LAYOUTS_DIR . 'templates/' );
+				?>
+			</div>
+			<?php
+			if($offset + $posts_per_page >= $limit){
+	    		// there are no more product
+	    		// print a flag to detect
+	    		echo '<div id="dtwl-ajax-no-products" class=""><!-- --></div>';
+	    	}
+    	endwhile;
+    	
 		wp_reset_postdata();
 		wp_die();
 	}

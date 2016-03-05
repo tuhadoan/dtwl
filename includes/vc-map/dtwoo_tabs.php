@@ -19,14 +19,14 @@ vc_map(array(
 			"class" => "",
 			"heading" => esc_html__( "Heading Color", DT_WOO_LAYOUTS ),
 			"param_name" => "heading_color",
-			"value" => "#363230"
+			"value" => "#ffffff"
 		),
 		array (
 			"type" => "textfield",
 			"class" => "",
 			"heading" => esc_html__( "Heading font size", DT_WOO_LAYOUTS ),
 			"param_name" => "heading_font_size",
-			"value" => "20px",
+			"value" => "14px",
 			"description" => __ ( "Enter your custom size. Example: 20px.", DT_WOO_LAYOUTS ),
 		),
 		array(
